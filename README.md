@@ -14,13 +14,54 @@ Design patterns luate in vedere: Factory Method, Facade, Adapter, Strategy
  * Notificari prin diverse mijloace dupa ce formularul a fost trimis
 
 
-## Metrici urmarite
-1. Efortul depus in adaugarea de functionalitati noi:
-    * adaugarea unei noi institutii
-    * adaugarea unui nou mijloc de notificare
-####
-2. Metrici de calitate a codului folosind SonarQube:
-    * Maintainability (Maintainability issues, Technical debt, Maintainability rating)
-    * Complexity (Cyclomatic complexity, Cognitive complexity)
-    * Duplications (Duplicated lines density (%), Duplicated lines)
-    * Reliability (Reliability issues, Reliability rating, Reliability remediation effort)
+## Metrici urmărite
+
+### 1. Efortul de dezvoltare și extensibilitate
+* **Timpul necesar** pentru adăugarea unei noi instituții (ore de development)
+* **Numărul de fișiere modificate** la adăugarea unui nou mijloc de notificare
+* **Complexitatea schimbărilor** (numărul de linii de cod modificate/adăugate)
+* **Efortul de testare** pentru funcționalități noi
+
+### 2. Metrici de calitate a codului
+* **Maintainability**: 
+  - Maintainability issues (numărul de probleme)
+  - Technical debt (timpul estimat pentru remedierea problemelor create)
+  - Maintainability rating (A-E)
+* **Complexity**: 
+  - Cyclomatic complexity (complexitatea ciclomatică medie)
+  - Cognitive complexity (complexitatea cognitivă)
+* **Duplications**: 
+  - Duplicated lines density (% de cod duplicat)
+  - Duplicated lines (numărul absolut de linii duplicate)
+* **Reliability**: 
+  - Reliability issues și rating
+  - Reliability remediation effort
+
+### 3. Metrici comparative
+* **Dimensiunea codului** (lines of code, numărul de clase/module)
+* **Acoperirea testelor** (code coverage %)
+* **Performanța runtime** (timp de răspuns pentru operații standard)
+
+## Planning
+
+### Setup și implementarea de bază
+* Configurarea proiectului (repository, dependencies, build tools)
+* Implementarea versiunii **fără design patterns**
+* Setup-ul tool-urilor de monitoring
+* Colectarea metricilor inițiale
+
+### Refactorizare cu design patterns
+* Aplicarea design patterns-urilor în implementarea existentă
+* Crearea branch-ului separat pentru versiunea refactorizată
+* Documentarea schimbărilor efectuate
+
+### Testare și comparare
+* Rularea testelor de calitate pe ambele implementări
+* Colectarea și analiza metricilor comparative
+* Simularea adăugării de funcționalități noi pe ambele versiuni
+* Documentarea rezultatelor și concluziilor
+
+### Finalizare
+* Redactarea raportului final cu analiza comparativă
+* Pregătirea prezentării rezultatelor
+* Review și optimizări finale

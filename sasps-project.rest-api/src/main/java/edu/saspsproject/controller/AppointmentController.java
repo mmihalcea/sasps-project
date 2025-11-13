@@ -1,5 +1,7 @@
 package edu.saspsproject.controller;
 
+import edu.saspsproject.dto.AppointmentRequest;
+import edu.saspsproject.dto.AvailabilityResponse;
 import edu.saspsproject.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,14 +18,29 @@ public class AppointmentController {
 
 
     @PostMapping()
-    public ResponseEntity<?> saveAppointment(@RequestBody Object appointmentRequest) {
-       throw new UnsupportedOperationException("Not yet implemented");
+    public ResponseEntity<Long> saveAppointment(@RequestBody AppointmentRequest appointmentRequest) {
+        try {
+            Long appointmentId = appointmentService.saveAppointment(appointmentRequest);
+            log.info("Created appointment with ID: {}", appointmentId);
+            return ResponseEntity.ok(appointmentId);
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            log.error("Error creating appointment: {}", e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
     }
 
 
     @GetMapping("/availability")
-    public ResponseEntity<?> getAvailability(@RequestParam Long institutionId) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    public ResponseEntity<AvailabilityResponse> getAvailability(@RequestParam Long institutionId) {
+        try {
+            AvailabilityResponse availability = appointmentService.getAvailability(institutionId);
+            log.info("Retrieved {} available slots for institution {}", 
+                    availability.getAvailableSlots().size(), institutionId);
+            return ResponseEntity.ok(availability);
+        } catch (Exception e) {
+            log.error("Error getting availability: {}", e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
 }

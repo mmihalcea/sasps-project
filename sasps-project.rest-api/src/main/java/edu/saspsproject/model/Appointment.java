@@ -22,13 +22,13 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @Column(name = "institution_id", nullable = false)
+    private Long institutionId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @JoinColumn(name = "institution_id", insertable = false, updatable = false)
     @com.fasterxml.jackson.annotation.JsonIgnore
-    private User user;
+    private Institution institution;
 
     @Setter
     @NotBlank

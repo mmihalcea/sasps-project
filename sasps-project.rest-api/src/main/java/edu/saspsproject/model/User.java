@@ -16,6 +16,11 @@ public class User {
     @Setter
     private String name;
 
-    public User() {}
+    @Setter
+    private String email;
 
+    @Setter
+    private String phone;
+
+    public User() {}
 }

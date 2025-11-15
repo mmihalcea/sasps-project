@@ -2,6 +2,8 @@ package edu.saspsproject.service;
 
 import edu.saspsproject.model.Appointment;
 import edu.saspsproject.model.Institution;
+import edu.saspsproject.model.User;
+import edu.saspsproject.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -11,11 +13,17 @@ import java.time.format.DateTimeFormatter;
 @Service
 @Slf4j
 public class NotificationService {
-    
+    private final UserRepository userRepository;
+
+    public NotificationService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     public void sendConfirmation(Appointment appointment) {
-        if (appointment.getCustomerEmail() != null) {
+        String email = getEmail(appointment);
+        if (email != null) {
             log.info("Sending basic confirmation to {} for appointment {} at {}",
-                    appointment.getCustomerEmail(),
+                    email,
                     appointment.getId(),
                     appointment.getAppointmentTime());
         }
@@ -24,52 +32,57 @@ public class NotificationService {
     // Hardcoded email notification logic - should use Adapter pattern in v2
     public void sendEmailConfirmation(Appointment appointment, Institution institution) {
         String emailContent = generateEmailContent(appointment, institution);
-        log.info("Sending EMAIL confirmation to: {}", appointment.getCustomerEmail());
+        String recipientEmail = getEmail(appointment);
+        log.info("Sending EMAIL confirmation to: {}", recipientEmail);
         log.info("Email content: {}", emailContent);
-        
+
         // Simulate different email providers based on institution - hardcoded
-        if ("ANAF".equals(institution.getType())) {
-            sendViaGovEmailProvider(appointment.getCustomerEmail(), emailContent);
-        } else if ("PRIMARIA".equals(institution.getType())) {
-            sendViaLocalGovProvider(appointment.getCustomerEmail(), emailContent);
+        Institution.InstitutionType institutionType = institution.getType();
+        if (institutionType == Institution.InstitutionType.ANAF) {
+            sendViaGovEmailProvider(recipientEmail, emailContent);
+        } else if (institutionType == Institution.InstitutionType.PRIMARIA) {
+            sendViaLocalGovProvider(recipientEmail, emailContent);
         } else {
-            sendViaGenericProvider(appointment.getCustomerEmail(), emailContent);
+            sendViaGenericProvider(recipientEmail, emailContent);
         }
     }
 
     // Hardcoded SMS notification logic - should use Adapter pattern in v2
     public void sendSMSConfirmation(Appointment appointment, Institution institution) {
         String smsContent = generateSMSContent(appointment, institution);
-        log.info("Sending SMS confirmation to: {}", appointment.getCustomerPhone());
+        String recipientPhone = getPhone(appointment);
+        log.info("Sending SMS confirmation to: {}", recipientPhone);
         log.info("SMS content: {}", smsContent);
-        
+
         // Simulate different SMS providers - hardcoded logic
-        if (appointment.getCustomerPhone() != null) {
-            if (appointment.getCustomerPhone().startsWith("07")) {
-                sendViaOrangeSMS(appointment.getCustomerPhone(), smsContent);
-            } else if (appointment.getCustomerPhone().startsWith("06")) {
-                sendViaVodafoneSMS(appointment.getCustomerPhone(), smsContent);
+        if (recipientPhone != null) {
+            if (recipientPhone.startsWith("07")) {
+                sendViaOrangeSMS(recipientPhone, smsContent);
+            } else if (recipientPhone.startsWith("06")) {
+                sendViaVodafoneSMS(recipientPhone, smsContent);
             } else {
-                sendViaTelekomSMS(appointment.getCustomerPhone(), smsContent);
+                sendViaTelekomSMS(recipientPhone, smsContent);
             }
         }
     }
 
     // Hardcoded urgent notification logic
     public void sendUrgentNotification(Appointment appointment) {
+        String recipientPhone = getPhone(appointment);
+        String recipientEmail = getEmail(appointment);
         log.warn("URGENT: Sending priority notification for appointment {} to {}",
-                appointment.getId(), appointment.getCustomerEmail());
-        
+                appointment.getId(), recipientEmail);
+
         // Send both email and SMS for urgent cases - hardcoded logic
         String urgentMessage = "URGENT: Your appointment has been confirmed with high priority. " +
                 "Please arrive 15 minutes early. Appointment ID: " + appointment.getId();
-        
-        if (appointment.getCustomerEmail() != null) {
-            sendViaGenericProvider(appointment.getCustomerEmail(), urgentMessage);
+
+        if (recipientEmail != null) {
+            sendViaGenericProvider(recipientEmail, urgentMessage);
         }
-        
-        if (appointment.getCustomerPhone() != null) {
-            sendViaOrangeSMS(appointment.getCustomerPhone(), urgentMessage);
+
+        if (recipientPhone != null) {
+            sendViaOrangeSMS(recipientPhone, urgentMessage);
         }
     }
 
@@ -78,9 +91,9 @@ public class NotificationService {
         String rightsInfo = "Important: As a consumer, you have the right to: " +
                 "1) Receive quality services, 2) File complaints, 3) Request mediation. " +
                 "Your appointment: " + appointment.getId() + " at " + appointment.getAppointmentTime();
-        
-        log.info("Sending consumer rights info to: {}", appointment.getCustomerEmail());
-        sendViaGenericProvider(appointment.getCustomerEmail(), rightsInfo);
+
+        log.info("Sending consumer rights info to: {}", getEmail(appointment));
+        sendViaGenericProvider(getEmail(appointment), rightsInfo);
     }
 
     // Hardcoded cancellation notification
@@ -88,35 +101,35 @@ public class NotificationService {
         String subject = "Appointment Cancelled - " + institution.getName();
         String message = String.format("Dear %s,\n\nYour appointment (ID: %d) scheduled for %s has been cancelled.\n\n" +
                 "Institution: %s\nService: %s\n\nPlease reschedule at your convenience.",
-                appointment.getCustomerName(),
+                getCustomerName(appointment),
                 appointment.getId(),
                 appointment.getAppointmentTime().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
                 institution.getName(),
                 appointment.getServiceType());
-        
-        log.info("Sending cancellation notification to: {}", appointment.getCustomerEmail());
-        sendViaGenericProvider(appointment.getCustomerEmail(), subject + "\n\n" + message);
+
+        log.info("Sending cancellation notification to: {}", getEmail(appointment));
+        sendViaGenericProvider(getEmail(appointment), subject + "\n\n" + message);
     }
 
     // Hardcoded reschedule notification
     public void sendRescheduleNotification(Appointment appointment, LocalDateTime oldTime, LocalDateTime newTime) {
         String message = String.format("Dear %s,\n\nYour appointment has been rescheduled:\n\n" +
                 "OLD TIME: %s\nNEW TIME: %s\n\nAppointment ID: %d\nService: %s",
-                appointment.getCustomerName(),
+                getCustomerName(appointment),
                 oldTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
                 newTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
                 appointment.getId(),
                 appointment.getServiceType());
-        
-        log.info("Sending reschedule notification to: {}", appointment.getCustomerEmail());
-        sendViaGenericProvider(appointment.getCustomerEmail(), message);
+
+        log.info("Sending reschedule notification to: {}", getEmail(appointment));
+        sendViaGenericProvider(getEmail(appointment), message);
     }
 
     // Hardcoded content generation - should use Template Method pattern in v2
     private String generateEmailContent(Appointment appointment, Institution institution) {
         StringBuilder content = new StringBuilder();
-        
-        content.append("Dear ").append(appointment.getCustomerName()).append(",\n\n");
+
+        content.append("Dear ").append(getCustomerName(appointment)).append(",\n\n");
         content.append("Your appointment has been confirmed:\n\n");
         content.append("Institution: ").append(institution.getName()).append("\n");
         content.append("Address: ").append(institution.getAddress()).append("\n");
@@ -125,24 +138,25 @@ public class NotificationService {
         content.append("Estimated Duration: ").append(appointment.getEstimatedDuration()).append(" minutes\n");
         content.append("Status: ").append(appointment.getStatus()).append("\n");
         content.append("Priority: ").append(appointment.getPriorityLevel()).append("\n\n");
-        
+
         // Add institution-specific instructions - hardcoded logic
-        if ("PRIMARIA".equals(institution.getType())) {
+        Institution.InstitutionType institutionType = institution.getType();
+        if (institutionType == Institution.InstitutionType.PRIMARIA) {
             content.append("Required documents: ID card, proof of residence\n");
             content.append("Please arrive 15 minutes early for document verification.\n");
-        } else if ("ANAF".equals(institution.getType())) {
+        } else if (institutionType == Institution.InstitutionType.ANAF) {
             content.append("Required documents: Tax declaration, supporting documents\n");
             content.append("Please bring original documents and copies.\n");
             content.append("Note: Our office has a lunch break from 12:00-13:00\n");
-        } else if ("ANPC".equals(institution.getType())) {
+        } else if (institutionType == Institution.InstitutionType.ANPC) {
             content.append("Please bring any relevant documentation for your case\n");
             content.append("Consumer protection services are free of charge\n");
         }
-        
+
         content.append("\nAppointment ID: ").append(appointment.getId()).append("\n");
         content.append("Contact: ").append(institution.getPhone()).append("\n\n");
         content.append("Best regards,\n").append(institution.getName());
-        
+
         return content.toString();
     }
 
@@ -188,5 +202,27 @@ public class NotificationService {
     private void sendViaTelekomSMS(String phone, String content) {
         log.info("[TELEKOM-SMS] Sending SMS to {} via Telekom", phone);
         log.debug("Using Telekom messaging service...");
+    }
+
+    // Helpers to read user data from appointment
+    private String getEmail(Appointment appointment) {
+        if (appointment == null || appointment.getUserId() == null) return null;
+        return userRepository.findById(appointment.getUserId())
+                .map(User::getEmail)
+                .orElse(null);
+    }
+
+    private String getPhone(Appointment appointment) {
+        if (appointment == null || appointment.getUserId() == null) return null;
+        return userRepository.findById(appointment.getUserId())
+                .map(User::getPhone)
+                .orElse(null);
+    }
+
+    private String getCustomerName(Appointment appointment) {
+        if (appointment == null || appointment.getUserId() == null) return "Customer";
+        return userRepository.findById(appointment.getUserId())
+                .map(User::getName)
+                .orElse("Customer");
     }
 }

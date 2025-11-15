@@ -1,5 +1,6 @@
 package edu.saspsproject.controller;
 
+import edu.saspsproject.repository.AppointmentRepository;
 import edu.saspsproject.dto.AppointmentRequest;
 import edu.saspsproject.dto.AvailabilityResponse;
 import edu.saspsproject.service.AppointmentService;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class AppointmentController {
 
     private final AppointmentService appointmentService;
-
+    private final AppointmentRepository repo;
 
     @PostMapping()
     public ResponseEntity<Long> saveAppointment(@RequestBody AppointmentRequest appointmentRequest) {
@@ -29,12 +30,11 @@ public class AppointmentController {
         }
     }
 
-
     @GetMapping("/availability")
     public ResponseEntity<AvailabilityResponse> getAvailability(@RequestParam Long institutionId) {
         try {
             AvailabilityResponse availability = appointmentService.getAvailability(institutionId);
-            log.info("Retrieved {} available slots for institution {}", 
+            log.info("Retrieved {} available slots for institution {}",
                     availability.getAvailableSlots().size(), institutionId);
             return ResponseEntity.ok(availability);
         } catch (Exception e) {

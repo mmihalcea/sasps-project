@@ -1,4 +1,4 @@
-package edu.saspsproject.dto;
+package edu.saspsproject.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

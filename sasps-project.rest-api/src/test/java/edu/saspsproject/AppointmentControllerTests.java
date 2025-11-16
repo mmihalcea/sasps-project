@@ -1,8 +1,8 @@
 package edu.saspsproject;
 
-import edu.saspsproject.dto.AppointmentRequest;
-import edu.saspsproject.dto.AppointmentResponse;
-import edu.saspsproject.dto.AvailabilityResponse;
+import edu.saspsproject.dto.request.AppointmentRequest;
+import edu.saspsproject.dto.response.AppointmentResponse;
+import edu.saspsproject.dto.response.AvailabilityResponse;
 import edu.saspsproject.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

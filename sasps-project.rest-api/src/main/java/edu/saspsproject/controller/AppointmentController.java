@@ -1,13 +1,16 @@
 package edu.saspsproject.controller;
 
+import edu.saspsproject.dto.response.CountyResponse;
 import edu.saspsproject.repository.AppointmentRepository;
-import edu.saspsproject.dto.AppointmentRequest;
-import edu.saspsproject.dto.AvailabilityResponse;
+import edu.saspsproject.dto.request.AppointmentRequest;
+import edu.saspsproject.dto.response.AvailabilityResponse;
 import edu.saspsproject.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RequestMapping("/api/appointment")
@@ -124,6 +127,16 @@ public class AppointmentController {
         } catch (Exception e) {
             log.error("Error getting appointments by service: {}", e.getMessage());
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/counties")
+    public ResponseEntity<List<CountyResponse>> getAllCounties() {
+        try {
+            var counties = appointmentService.getAllCounties();
+            return ResponseEntity.ok(counties);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
         }
     }
 

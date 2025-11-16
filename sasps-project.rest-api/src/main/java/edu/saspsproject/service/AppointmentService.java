@@ -1,11 +1,13 @@
 package edu.saspsproject.service;
 
-import edu.saspsproject.dto.AppointmentRequest;
-import edu.saspsproject.dto.AvailabilityResponse;
+import edu.saspsproject.dto.request.AppointmentRequest;
+import edu.saspsproject.dto.response.AvailabilityResponse;
+import edu.saspsproject.dto.response.CountyResponse;
 import edu.saspsproject.model.Appointment;
 import edu.saspsproject.model.Institution;
 import edu.saspsproject.model.User;
 import edu.saspsproject.repository.AppointmentRepository;
+import edu.saspsproject.repository.CountyRepository;
 import edu.saspsproject.repository.InstitutionRepository;
 import edu.saspsproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ public class AppointmentService {
     private final InstitutionRepository institutionRepository;
     private final UserRepository userRepository;
     private final NotificationService notificationService;
+    private final CountyRepository countyRepository;
 
     public Long saveAppointment(AppointmentRequest request) {
         // Complex validation logic - hardcoded without Validator pattern
@@ -347,5 +350,9 @@ public class AppointmentService {
         return appointmentRepository.findAll().stream()
                 .filter(a -> parsed == a.getServiceType())
                 .collect(Collectors.toList());
+    }
+
+    public List<CountyResponse> getAllCounties() {
+        return countyRepository.findAll().stream().map(county -> new CountyResponse(county.getId(), county.getName())).collect(Collectors.toList());
     }
 }

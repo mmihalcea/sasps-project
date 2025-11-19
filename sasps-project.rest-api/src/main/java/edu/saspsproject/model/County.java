@@ -2,9 +2,12 @@ package edu.saspsproject.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
+@Table
+@NoArgsConstructor
 public class County {
 
 
@@ -12,6 +15,10 @@ public class County {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column( nullable = false)
+    @Column(nullable = false)
     private String name;
+
+    public County(String name){
+        this.name=name;
+    }
 }

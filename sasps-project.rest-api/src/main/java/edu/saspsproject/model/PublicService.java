@@ -1,12 +1,22 @@
 package edu.saspsproject.model;
 
+import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Setter;
 
 @Data
-public class Service {
+@Entity
+@Table
+public class PublicService {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
     private String name;
-    private String institutionType;
+    @Setter
+    @Enumerated(EnumType.STRING)
+    private Institution.InstitutionType institutionType;
+    @Column(nullable = false)
     private Double estimatedDuration; // minutes
     private String requiredDocuments;
     private String description;

@@ -2,6 +2,7 @@ package edu.saspsproject.controller;
 
 import edu.saspsproject.model.Institution;
 import edu.saspsproject.repository.InstitutionRepository;
+import edu.saspsproject.service.InstitutionService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,9 +11,11 @@ import java.util.List;
 @RestController
 public class InstitutionController {
     private final InstitutionRepository repo;
+    private final InstitutionService institutionService;
 
-    public InstitutionController(InstitutionRepository repo) {
+    public InstitutionController(InstitutionRepository repo, InstitutionService institutionService) {
         this.repo = repo;
+        this.institutionService = institutionService;
     }
 
     @GetMapping
@@ -21,7 +24,12 @@ public class InstitutionController {
     }
 
     @PostMapping
-    public Institution add(@RequestBody Institution institution) {
-        return repo.save(institution);
+    public Institution add(@RequestBody(required = false) Institution institution) {
+        if (institution != null) {
+            return repo.save(institution);
+        } else {
+            institutionService.insertAllInstitutions();
+        }
+        return null;
     }
 }

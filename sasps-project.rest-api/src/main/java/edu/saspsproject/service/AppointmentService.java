@@ -3,8 +3,10 @@ package edu.saspsproject.service;
 import edu.saspsproject.dto.request.AppointmentRequest;
 import edu.saspsproject.dto.response.AvailabilityResponse;
 import edu.saspsproject.dto.response.CountyResponse;
+import edu.saspsproject.dto.response.InstitutionResponse;
 import edu.saspsproject.model.Appointment;
 import edu.saspsproject.model.Institution;
+import edu.saspsproject.model.PublicService;
 import edu.saspsproject.model.User;
 import edu.saspsproject.repository.AppointmentRepository;
 import edu.saspsproject.repository.CountyRepository;
@@ -246,6 +248,10 @@ public class AppointmentService {
         return institutionRepository.findAll();
     }
 
+    public List<InstitutionResponse> getInstitutionsByCounty(Long countyId) {
+        return institutionRepository.findByCountyId(countyId).stream().map(institution -> new InstitutionResponse(institution.getId(), institution.getName(), institution.getType().toString())).collect(Collectors.toList());
+    }
+
     public List<String> getServicesByInstitutionType(String institutionType) {
         Institution.InstitutionType type;
         try {
@@ -259,6 +265,7 @@ public class AppointmentService {
         return institutions.stream()
                 .filter(i -> i.getAvailableServices() != null)
                 .flatMap(i -> i.getAvailableServices().stream())
+                .map(PublicService::getName)
                 .distinct()
                 .toList();
     }

@@ -1,0 +1,70 @@
+<div class="m-10">
+  <form [formGroup]="appointmentForm" (ngSubmit)="onSubmit()">
+    <p-stepper [value]="1" class="h-screen">
+      <p-step-list>
+        <p-step [value]="1">Date institutie</p-step>
+        <p-step [value]="2">Date programare</p-step>
+        <p-step [value]="3">Date utilizator</p-step>
+      </p-step-list>
+      <p-step-panels>
+        <p-step-panel [value]="1">
+          <ng-template #content let-activateCallback="activateCallback">
+            <div class="flex flex-col h-150" formGroupName="institution">
+              <div class="flex flex-col justify-center items-center">
+                <p-select formControlName="county" [options]="counties" optionValue="id" optionLabel="name" placeholder="Selectati judet"
+                          class="ml-6 mb-2 w-full md:w-56"/>
+
+                <p-select formControlName="institution" [options]="institutions" [filter]="true" filterBy="name" optionValue="id" optionLabel="name"
+                          placeholder="Selectati institutie" class="ml-6 mt-2w-full md:w-56"/>
+
+              </div>
+            </div>
+            <div class="flex pt-6 justify-between">
+              <p-button label="Înapoi" severity="secondary" icon="pi pi-arrow-left" routerLink="/home"/>
+              <p-button [disabled]="appointmentForm.get('institution')?.invalid" label="Următorul" icon="pi pi-arrow-right" iconPos="right" (onClick)="getServicesByInstitutionType();activateCallback(2)"/>
+            </div>
+          </ng-template>
+        </p-step-panel>
+
+        <p-step-panel [value]="2">
+          <ng-template #content let-activateCallback="activateCallback">
+            <div class="flex flex-col h-auto" formGroupName="appointment">
+              <div class="flex-auto flex flex-col justify-center items-center font-medium">
+                <div class="w-90">
+                  <p-select formControlName="service" [options]="services" [fluid]="true" placeholder="Selectati serviciul"
+                  />
+                </div>
+                <div class="card flex justify-content-center mt-4">
+                    <p-datepicker formControlName="date" [inline]="true" [firstDayOfWeek]="1" [minDate]="today" [disabledDays]="[0,6]"  />
+
+                </div>
+              </div>
+              <div class="mt-4 flex flex-auto justify-center">
+                <p-selectbutton [options]="timeOptions" formControlName="time" aria-labelledby="basic" size="large"/>
+              </div>
+            </div>
+            <div class="flex pt-6 justify-between">
+              <p-button label="Înapoi" severity="secondary" icon="pi pi-arrow-left" (onClick)="activateCallback(1)"/>
+              <p-button label="Următorul" icon="pi pi-arrow-right" iconPos="right" (onClick)="activateCallback(3)"/>
+            </div>
+          </ng-template>
+        </p-step-panel>
+
+        <p-step-panel [value]="3">
+          <ng-template #content let-activateCallback="activateCallback">
+            <div class="flex flex-col">
+              <div
+                class="border-2 border-dashed border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 flex-auto flex justify-center items-center font-medium"
+              >
+                Content III
+              </div>
+            </div>
+            <div class="flex pt-6 justify-start">
+              <p-button label="Înapoi" icon="pi pi-arrow-left" iconPos="right" (onClick)="activateCallback(2)"/>
+            </div>
+          </ng-template>
+        </p-step-panel>
+      </p-step-panels>
+    </p-stepper>
+  </form>
+</div>

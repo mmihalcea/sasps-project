@@ -1,0 +1,29 @@
+<div class="flex flex-col items-stretch justify-self-center h-screen">
+  <div class="flex flex-col items-stretch justify-self-center">
+    <h2 class="mt-4 text-2xl/7 font-bold text-gray-600 sm:text-3xl sm:tracking-tight">Programare ghișeu</h2>
+  </div>
+  <div class="m-auto">
+    <div>
+      <p-inputgroup>
+        <p-floatlabel variant="on">
+          <input pInputText id="in_label" [(ngModel)]="email" autocomplete="off" email />
+          <label for="in_label">Căutare după e-mail</label>
+        </p-floatlabel>
+        <p-inputgroup-addon>
+          <p-button icon="pi pi-search" />
+        </p-inputgroup-addon>
+      </p-inputgroup>
+
+    </div>
+    <div class="relative flex py-5 items-center">
+      <div class="flex-grow border-t border-gray-400"></div>
+      <span class="flex-shrink mx-4 text-gray-400">SAU</span>
+      <div class="flex-grow border-t border-gray-400"></div>
+    </div>
+    <div class="mt-5 justify-self-center">
+      <p-button label="Programare noua" size="large" routerLink="/new-appointment" />
+    </div>
+
+  </div>
+
+</div>

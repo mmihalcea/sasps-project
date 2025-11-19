@@ -68,6 +68,16 @@ public class AppointmentController {
         }
     }
 
+    @GetMapping("/institutions/{countyId}")
+    public ResponseEntity<?> getInstitutionsByCounty(@PathVariable Long countyId) {
+        try {
+            var institutions = appointmentService.getInstitutionsByCounty(countyId);
+            return ResponseEntity.ok(institutions);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
     @GetMapping("/services/{institutionType}")
     public ResponseEntity<?> getServicesByInstitutionType(@PathVariable String institutionType) {
         try {

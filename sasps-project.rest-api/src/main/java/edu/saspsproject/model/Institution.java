@@ -12,7 +12,7 @@ import java.util.List;
 @Table(name = "institutions")
 public class Institution {
     public enum InstitutionType {
-        PRIMARIA, ANAF, ANPC, POLITIA_LOCALA
+        PRIMARIA, ANAF, ANPC, POLITIA_LOCALA, DRPCIV, SPCLEP
     }
 
     public enum NotificationType {
@@ -44,7 +44,12 @@ public class Institution {
     private LocalTime closingTime;
 
     @Setter
-    private List<String> availableServices;
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(
+            name = "institutions_services",
+            joinColumns = @JoinColumn(name = "institution_id"),
+            inverseJoinColumns = @JoinColumn(name = "service_id"))
+    private List<PublicService> availableServices;
 
     @Setter
     private Integer maxAppointmentsPerDay;
@@ -61,6 +66,11 @@ public class Institution {
     @Setter
     @Enumerated(EnumType.STRING)
     private NotificationType notificationPreferences;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "county_id")
+    @Setter
+    private County county;
 
 
     public Institution() {}

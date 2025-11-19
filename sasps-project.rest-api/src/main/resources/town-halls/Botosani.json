@@ -1,0 +1,1832 @@
+[
+    {
+        "nume": "Primăria Adășeni",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Adășeni",
+                "siruta": 36220
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717016",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-563100"
+            ],
+            "fax": [
+                "0231-563100"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Cristinești",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Cristinești",
+                "siruta": 36961
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717105",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-619104"
+            ],
+            "fax": [
+                "0231-619149"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Cristești",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Cristești",
+                "siruta": 36916
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717100",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-619912"
+            ],
+            "fax": [
+                "0231-619912"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Coțușca",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Coțușca",
+                "siruta": 36818
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717090",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-561643",
+                "0231-561936"
+            ],
+            "fax": [
+                "0231-561936"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Curtești",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Curtești",
+                "siruta": 35768
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717110",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-584001",
+                "0231-584401",
+                "0231-584402",
+                "0231-584403"
+            ],
+            "fax": [
+                "0231-584001"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Leorda",
+        "adresa": {
+            "strada": "Principală, Nr. 152",
+            "localitate": {
+                "nume": "Leorda",
+                "siruta": 37869
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717220",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-551125"
+            ],
+            "fax": [
+                "0231-551125"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Ibănești",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Ibănești",
+                "siruta": 37832
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717215",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-619755"
+            ],
+            "fax": [
+                "0231-619759"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Hudești",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Hudești",
+                "siruta": 37789
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717210",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-623102"
+            ],
+            "fax": [
+                "0231-623250"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Nicșeni",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Nicșeni",
+                "siruta": 38465
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717290",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-539530"
+            ],
+            "fax": [
+                "0231-539530"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Săveni",
+        "adresa": {
+            "strada": "1 Decembrie, Nr. 1",
+            "localitate": {
+                "nume": "Săveni",
+                "siruta": 36079
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "715300",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-541070"
+            ],
+            "fax": [
+                "0231-541213"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Santa Mare",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Santa Mare",
+                "siruta": 38900
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717345",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-565810"
+            ],
+            "fax": [
+                "0231-565810"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Românești",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Românești",
+                "siruta": 38857
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717340",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-565080"
+            ],
+            "fax": [
+                "0231-565205"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Roma",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Roma",
+                "siruta": 38820
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717335",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-544622",
+                "0231-565978"
+            ],
+            "fax": [
+                "0231-544622",
+                "0231-565978"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Ripiceni",
+        "adresa": {
+            "strada": "Aleea Blocului, Nr. 1",
+            "localitate": {
+                "nume": "Ripiceni",
+                "siruta": 38740
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717325",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-561114"
+            ],
+            "fax": [
+                "0231-561114"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Răușeni",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Răușeni",
+                "siruta": 38688
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717320",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-548220",
+                "0231-548137"
+            ],
+            "fax": [
+                "0231-548137"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Rădăuți-Prut",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Rădăuți-Prut",
+                "siruta": 38642
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717315",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-622533",
+                "0231-622607"
+            ],
+            "fax": [
+                "0231-622533"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Răchiți",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Răchiți",
+                "siruta": 35848
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717310",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-544210"
+            ],
+            "fax": [
+                "0231-544210"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Prăjeni",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Prăjeni",
+                "siruta": 38599
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717305",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-553010"
+            ],
+            "fax": [
+                "0231-553010"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Pomârla",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Pomârla",
+                "siruta": 38553
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717300",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-622802"
+            ],
+            "fax": [
+                "0231-622802"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Păltiniș",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Păltiniș",
+                "siruta": 38508
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717295",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-622103"
+            ],
+            "fax": [
+                "0231-622322"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Mitoc",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Mitoc",
+                "siruta": 38385
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717285",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-562020"
+            ],
+            "fax": [
+                "0231-562020"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Mileanca",
+        "adresa": {
+            "strada": "Principală",
+            "localitate": {
+                "nume": "Mileanca",
+                "siruta": 38330
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717280",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-624635"
+            ],
+            "fax": [
+                "0231-624696"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Mihălășeni",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Mihălășeni",
+                "siruta": 38250
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717270",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-566108"
+            ],
+            "fax": [
+                "0231-566108"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Mihăileni",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Mihăileni",
+                "siruta": 38170
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717260",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-625103"
+            ],
+            "fax": [
+                "0231-625103"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Ipotești",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Ipotești",
+                "siruta": 38072
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717253",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-512183"
+            ],
+            "fax": [
+                "0231-512183"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Manoleasa",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Manoleasa",
+                "siruta": 37967
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717230",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-560101"
+            ],
+            "fax": [
+                "0231-560222"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Lunca",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Lunca",
+                "siruta": 37921
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717225",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-573811"
+            ],
+            "fax": [
+                "0231-573811"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Lozna",
+        "adresa": {
+            "strada": "Principală, Nr. 95",
+            "localitate": {
+                "nume": "Lozna",
+                "siruta": 37039
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717126",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-626280",
+                "0231-626481"
+            ],
+            "fax": [
+                "0231-626280",
+                "0231-626481"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Hlipiceni",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Hlipiceni",
+                "siruta": 37743
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717205",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-574150"
+            ],
+            "fax": [
+                "0231-574150"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Hilișeu-Horia",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Hilișeu-Horia",
+                "siruta": 37681
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717200",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-621052",
+                "0231-621001"
+            ],
+            "fax": [
+                "0231-621052",
+                "0231-621152"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Havârna",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Havârna",
+                "siruta": 37556
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717185",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-629103",
+                "0231-629349"
+            ],
+            "fax": [
+                "0231-629349"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Hănești",
+        "adresa": {
+            "strada": "Săveni, Nr. 2",
+            "localitate": {
+                "nume": "Hănești",
+                "siruta": 37627
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717195",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-549102",
+                "0231-549044"
+            ],
+            "fax": [
+                "0231-549102"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Gorbănești",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Gorbănești",
+                "siruta": 37468
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717175",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-545148"
+            ],
+            "fax": [
+                "0231-545148"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria George Enescu",
+        "adresa": {
+            "strada": "Sat Dumeni",
+            "localitate": {
+                "nume": "George Enescu",
+                "siruta": 37422
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717170",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-628103"
+            ],
+            "fax": [
+                "0231-628060"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Frumușica",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Frumușica",
+                "siruta": 37333
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717160",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-554124",
+                "0231-554103"
+            ],
+            "fax": [
+                "0231-554124",
+                "0231-554103"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Flămânzi",
+        "adresa": {
+            "strada": "Dimitrie Iov, Nr. 284",
+            "localitate": {
+                "nume": "Flămânzi",
+                "siruta": 37299
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717155",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-552351",
+                "0231-552727"
+            ],
+            "fax": [
+                "0231-552626"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Durnești",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Durnești",
+                "siruta": 37226
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717145",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-578012",
+                "0231-578173"
+            ],
+            "fax": [
+                "0231-578173"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Drăgușeni",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Drăgușeni",
+                "siruta": 37182
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717140",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-549406"
+            ],
+            "fax": [
+                "0231-549406"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Dorohoi",
+        "adresa": {
+            "strada": "Alexandru Ioan Cuza, Nr. 41",
+            "localitate": {
+                "nume": "Dorohoi",
+                "siruta": 36015
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "715200",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-610133"
+            ],
+            "fax": [
+                "0231-611310"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Dobârceni",
+        "adresa": {
+            "strada": "Principală, Fn",
+            "localitate": {
+                "nume": "Dobârceni",
+                "siruta": 37119
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717130",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-567010",
+                "0231-708017",
+                "0231-567171"
+            ],
+            "fax": [
+                "0231-567013"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Dimăcheni",
+        "adresa": {
+            "strada": "Preot Gheorghe Ciomîrtan, Nr. 1",
+            "localitate": {
+                "nume": "Dimăcheni",
+                "siruta": 36701
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717077",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-619624",
+                "0231-619612"
+            ],
+            "fax": [
+                "0231-619612"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Dersca",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Dersca",
+                "siruta": 37020
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717125",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-626110"
+            ],
+            "fax": [
+                "0231-626130"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Darabani",
+        "adresa": {
+            "strada": "1 Decembrie, Nr. 100",
+            "localitate": {
+                "nume": "Darabani",
+                "siruta": 35955
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "715100",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-631347"
+            ],
+            "fax": [
+                "0231-631203"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Dângeni",
+        "adresa": {
+            "strada": "Principală, Nr. 1",
+            "localitate": {
+                "nume": "Dângeni",
+                "siruta": 37066
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717120",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-571085",
+                "0231-571104"
+            ],
+            "fax": [
+                "0231-571085",
+                "0231-571104"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Coșula",
+        "adresa": {
+            "strada": "Petru Rareș, Nr. 30",
+            "localitate": {
+                "nume": "Coșula",
+                "siruta": 36603
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717063",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-619411"
+            ],
+            "fax": [
+                "0231-619411"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Corni",
+        "adresa": {
+            "strada": "Nr. 1304",
+            "localitate": {
+                "nume": "Corni",
+                "siruta": 36765
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717085",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-588110"
+            ],
+            "fax": [
+                "0231-588370"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Corlăteni",
+        "adresa": {
+            "strada": "Principală, Nr. 59",
+            "localitate": {
+                "nume": "Corlăteni",
+                "siruta": 36685
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717075",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-619504",
+                "0231-619686"
+            ],
+            "fax": [
+                "0231-619686",
+                "0231-619504"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Cordăreni",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Cordăreni",
+                "siruta": 36658
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717070",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-624120"
+            ],
+            "fax": [
+                "0231-624120"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Copălău",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Copălău",
+                "siruta": 36578
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717060",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-619302"
+            ],
+            "fax": [
+                "0231-619307"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Concești",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Concești",
+                "siruta": 36541
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717055",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0331-710484"
+            ],
+            "fax": [
+                "0331-710484"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Cândești",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Cândești",
+                "siruta": 38198
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717262",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-625519"
+            ],
+            "fax": [
+                "0231-625530",
+                "0331-611576"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Călărași",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Călărași",
+                "siruta": 36505
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717050",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-548902",
+                "0231-548802"
+            ],
+            "fax": [
+                "0231-548802"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Bucecea",
+        "adresa": {
+            "strada": "Națională, Nr. 1",
+            "localitate": {
+                "nume": "Bucecea",
+                "siruta": 36462
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717045",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-550112",
+                "0231-550123"
+            ],
+            "fax": [
+                "0231-550112",
+                "0231-550123"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Broscăuți",
+        "adresa": {
+            "strada": "Principală, Nr. Fn",
+            "localitate": {
+                "nume": "Broscăuți",
+                "siruta": 36435
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717040",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-621721",
+                "0231-621621"
+            ],
+            "fax": [
+                "0231-621621"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Brăești",
+        "adresa": {
+            "strada": "Șos. Națională",
+            "localitate": {
+                "nume": "Brăești",
+                "siruta": 36382
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717035",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-620023",
+                "0231-620063"
+            ],
+            "fax": [
+                "0231-620063"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Botoșani",
+        "adresa": {
+            "strada": "Piața Revoluției, Nr. 1",
+            "localitate": {
+                "nume": "Botoșani",
+                "siruta": 35740
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "710236",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-502200"
+            ],
+            "fax": [
+                "0231-531595"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Blândești",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Blândești",
+                "siruta": 39079
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717371",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-573355"
+            ],
+            "fax": [
+                "0231-573355"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Bălușeni",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Bălușeni",
+                "siruta": 36319
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717025",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-515849"
+            ],
+            "fax": [
+                "0231-515849"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Avrămeni",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Avrămeni",
+                "siruta": 36211
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717015",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-563133",
+                "0231-563010"
+            ],
+            "fax": [
+                "0231-563133"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Albești",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Albești",
+                "siruta": 36140
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717005",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-572140"
+            ],
+            "fax": [
+                "0231-572140"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Vorona",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Vorona",
+                "siruta": 39881
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717475",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-588604"
+            ],
+            "fax": [
+                "0231-588643"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Vorniceni",
+        "adresa": {
+            "strada": "Principala",
+            "localitate": {
+                "nume": "Vorniceni",
+                "siruta": 39845
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717470",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-563533"
+            ],
+            "fax": [
+                "0231-563533"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Vlăsinești",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Vlăsinești",
+                "siruta": 39809
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717465",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-541309"
+            ],
+            "fax": [
+                "0231-541309"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Vlădeni",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Vlădeni",
+                "siruta": 39747
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717460",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-551500"
+            ],
+            "fax": [
+                "0231-551500"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Viișoara",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Viișoara",
+                "siruta": 39667
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717455",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-549910",
+                "0231-544946"
+            ],
+            "fax": [
+                "0231-544946"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Vârfu Câmpului",
+        "adresa": {
+            "strada": "Str. Principală, Nr. 735",
+            "localitate": {
+                "nume": "Vârfu Câmpului",
+                "siruta": 39701
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717450",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-627106"
+            ],
+            "fax": [
+                "0231-627106",
+                "0331-811568"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Văculești",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Văculești",
+                "siruta": 39621
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717445",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-620220"
+            ],
+            "fax": [
+                "0231-620222"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Unțeni",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Unțeni",
+                "siruta": 39541
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717435",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-543802"
+            ],
+            "fax": [
+                "0231-543802"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Ungureni",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Ungureni",
+                "siruta": 39426
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717415",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-543000",
+                "0231-543003"
+            ],
+            "fax": [
+                "0231-543555"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Tudora",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Tudora",
+                "siruta": 39408
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717410",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-589110"
+            ],
+            "fax": [
+                "0231-589110"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Trușești",
+        "adresa": {
+            "strada": "Strada 1, Nr. 64",
+            "localitate": {
+                "nume": "Trușești",
+                "siruta": 39337
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717400",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-570207",
+                "0231-570060"
+            ],
+            "fax": [
+                "0231-570207"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Todireni",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Todireni",
+                "siruta": 39275
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717395",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-574791"
+            ],
+            "fax": [
+                "0231-574791"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Sulița",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Sulița",
+                "siruta": 39060
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717370",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-573112"
+            ],
+            "fax": [
+                "0231-573212"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Suharău",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Suharău",
+                "siruta": 38991
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717360",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-623002"
+            ],
+            "fax": [
+                "0231-623000"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Știubieni",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Știubieni",
+                "siruta": 39239
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717390",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-562403"
+            ],
+            "fax": [
+                "0231-562403"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Ștefănești",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Ștefănești",
+                "siruta": 39177
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717385",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-564101"
+            ],
+            "fax": [
+                "0231-564101"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Stăuceni",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Stăuceni",
+                "siruta": 35893
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717355",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-545794"
+            ],
+            "fax": [
+                "0231-545963"
+            ]
+        }
+    },
+    {
+        "nume": "Primăria Șendriceni",
+        "adresa": {
+            "strada": "-",
+            "localitate": {
+                "nume": "Șendriceni",
+                "siruta": 39131
+            },
+            "judet": {
+                "nume": "Botosani"
+            },
+            "cod-postal": "717380",
+            "tara": "Romania"
+        },
+        "contact": {
+            "telefon": [
+                "0231-620470"
+            ],
+            "fax": [
+                "0231-620470"
+            ]
+        }
+    }
+]

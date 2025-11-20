@@ -8,5 +8,5 @@ import java.util.List;
 public interface InstitutionRepository extends JpaRepository<Institution, Long> {
 
     List<Institution> findByType(Institution.InstitutionType type);
-    List<Institution> findByCountyId(Long countyId);
+    List<Institution> findByCountyIdOrCountyIdIsNull(Long countyId);
 }

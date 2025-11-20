@@ -249,7 +249,7 @@ public class AppointmentService {
     }
 
     public List<InstitutionResponse> getInstitutionsByCounty(Long countyId) {
-        return institutionRepository.findByCountyId(countyId).stream().map(institution -> new InstitutionResponse(institution.getId(), institution.getName(), institution.getType().toString())).collect(Collectors.toList());
+        return institutionRepository.findByCountyIdOrCountyIdIsNull(countyId).stream().map(institution -> new InstitutionResponse(institution.getId(), institution.getName(), institution.getType().toString())).collect(Collectors.toList());
     }
 
     public List<String> getServicesByInstitutionType(String institutionType) {

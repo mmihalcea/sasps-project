@@ -1,9 +1,7 @@
 package edu.saspsproject.service;
 
 import edu.saspsproject.dto.request.AppointmentRequest;
-import edu.saspsproject.dto.response.AvailabilityResponse;
-import edu.saspsproject.dto.response.CountyResponse;
-import edu.saspsproject.dto.response.InstitutionResponse;
+import edu.saspsproject.dto.response.*;
 import edu.saspsproject.model.Appointment;
 import edu.saspsproject.model.Institution;
 import edu.saspsproject.model.PublicService;
@@ -250,24 +248,6 @@ public class AppointmentService {
 
     public List<InstitutionResponse> getInstitutionsByCounty(Long countyId) {
         return institutionRepository.findByCountyIdOrCountyIdIsNull(countyId).stream().map(institution -> new InstitutionResponse(institution.getId(), institution.getName(), institution.getType().toString())).collect(Collectors.toList());
-    }
-
-    public List<String> getServicesByInstitutionType(String institutionType) {
-        Institution.InstitutionType type;
-        try {
-            type = Institution.InstitutionType.valueOf(institutionType.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Invalid institution type: " + institutionType);
-        }
-
-        List<Institution> institutions = institutionRepository.findByType(type);
-
-        return institutions.stream()
-                .filter(i -> i.getAvailableServices() != null)
-                .flatMap(i -> i.getAvailableServices().stream())
-                .map(PublicService::getName)
-                .distinct()
-                .toList();
     }
 
     public List<Appointment> getAllAppointments() {

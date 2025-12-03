@@ -2,6 +2,8 @@ package edu.saspsproject.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.saspsproject.dto.response.InstitutionDetailResponse;
+import edu.saspsproject.dto.response.PublicServiceDetailResponse;
 import edu.saspsproject.dto.response.TownHallResponse;
 import edu.saspsproject.model.County;
 import edu.saspsproject.model.Institution;
@@ -24,6 +26,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +41,25 @@ public class InstitutionService {
     private final ObjectMapper objectMapper;
     private final InstitutionRepository institutionRepository;
     private final PublicServiceRepository publicServiceRepository;
+    private final AppointmentService appointmentService;
+
+    public InstitutionDetailResponse getInstitutionDetailsByType(String institutionType) {
+        Institution.InstitutionType type;
+        try {
+            type = Institution.InstitutionType.valueOf(institutionType.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid institution type: " + institutionType);
+        }
+
+        Institution institution = institutionRepository.findByType(type).get(0);
+        List<LocalDateTime> slots = appointmentService.getAvailability(institution.getId()).getAvailableSlots();
+
+        List<PublicServiceDetailResponse> services = institution.getAvailableServices().stream().map(s ->
+                new PublicServiceDetailResponse(s.getId(), s.getName(), s.getDescription(), s.getFee(), s.getEstimatedDuration())
+        ).toList();
+
+        return new InstitutionDetailResponse(institution.getId(), institution.getName(), institution.getOpeningTime(), institution.getClosingTime(), institution.getMaxAppointmentsPerDay(), services, slots);
+    }
 
 
 

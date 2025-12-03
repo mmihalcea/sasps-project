@@ -31,16 +31,20 @@
             <div class="flex flex-col h-auto" formGroupName="appointment">
               <div class="flex-auto flex flex-col justify-center items-center font-medium">
                 <div class="w-90">
-                  <p-select formControlName="service" [options]="services" [fluid]="true" placeholder="Selectati serviciul"
+                  <p-select formControlName="service" [options]="institutionDetails?.availableServices" optionValue="id" optionLabel="name" [fluid]="true" placeholder="Selectati serviciul"
                   />
                 </div>
                 <div class="card flex justify-content-center mt-4">
-                    <p-datepicker formControlName="date" [inline]="true" [firstDayOfWeek]="1" [minDate]="today" [disabledDays]="[0,6]"  />
+                    <p-datepicker [inline]="true" [firstDayOfWeek]="1" [minDate]="today" [disabledDays]="[0,6]"  />
 
                 </div>
               </div>
               <div class="mt-4 flex flex-auto justify-center">
-                <p-selectbutton [options]="timeOptions" formControlName="time" aria-labelledby="basic" size="large"/>
+                <p-selectbutton formControlName="date" [options]="timeOptions"  aria-labelledby="basic" size="large">
+                  <ng-template #item let-item>
+                    <div>{{('0' + item.getHours()).slice(-2) + ':' + ('0' + item.getMinutes()).slice(-2)}}</div>
+                  </ng-template>
+                </p-selectbutton>
               </div>
             </div>
             <div class="flex pt-6 justify-between">

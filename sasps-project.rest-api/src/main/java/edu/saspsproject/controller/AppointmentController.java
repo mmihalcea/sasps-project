@@ -1,6 +1,7 @@
 package edu.saspsproject.controller;
 
 import edu.saspsproject.dto.response.CountyResponse;
+import edu.saspsproject.dto.response.InstitutionDetailResponse;
 import edu.saspsproject.repository.AppointmentRepository;
 import edu.saspsproject.dto.request.AppointmentRequest;
 import edu.saspsproject.dto.response.AvailabilityResponse;
@@ -78,15 +79,7 @@ public class AppointmentController {
         }
     }
 
-    @GetMapping("/services/{institutionType}")
-    public ResponseEntity<?> getServicesByInstitutionType(@PathVariable String institutionType) {
-        try {
-            var services = appointmentService.getServicesByInstitutionType(institutionType);
-            return ResponseEntity.ok(services);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
-        }
-    }
+
 
     @GetMapping("/all")
     public ResponseEntity<?> getAllAppointments() {

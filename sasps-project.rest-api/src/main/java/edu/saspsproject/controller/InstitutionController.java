@@ -1,8 +1,10 @@
 package edu.saspsproject.controller;
 
+import edu.saspsproject.dto.response.InstitutionDetailResponse;
 import edu.saspsproject.model.Institution;
 import edu.saspsproject.repository.InstitutionRepository;
 import edu.saspsproject.service.InstitutionService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,5 +33,15 @@ public class InstitutionController {
             institutionService.insertAllInstitutions();
         }
         return null;
+    }
+
+    @GetMapping("/{institutionType}")
+    public ResponseEntity<InstitutionDetailResponse> getInstitutionDetails(@PathVariable String institutionType) {
+        try {
+            var institutionDetails = institutionService.getInstitutionDetailsByType(institutionType);
+            return ResponseEntity.ok(institutionDetails);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

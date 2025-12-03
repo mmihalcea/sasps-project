@@ -11,6 +11,7 @@ import {NewAppointmentService} from './new-appointment-service';
 import {InstitutionResponse} from './institution-response';
 import { DatePickerModule } from 'primeng/datepicker';
 import {SelectButton} from 'primeng/selectbutton';
+import {InstitutionDetailsResponse} from './institution-details-response';
 
 @Component({
   selector: 'app-new-appointment',
@@ -22,10 +23,10 @@ import {SelectButton} from 'primeng/selectbutton';
 export class NewAppointment implements OnInit {
  counties: CountyResponse[] | undefined = undefined;
  institutions: InstitutionResponse[] | undefined = undefined;
- services: string[] | undefined = undefined;
+ institutionDetails: InstitutionDetailsResponse | undefined = undefined;
  appointmentForm: FormGroup;
   protected today: Date = new Date();
-  protected timeOptions = ['14:20', '15:00', '15:15', '15:30', '15:45', '16:00', '16:15', '16:30', '16:45', '17:00', '17:15', '18:00'];
+  protected timeOptions: Date[] = [];
 
   constructor( private route: ActivatedRoute, private fb: FormBuilder, private newAppointmentService: NewAppointmentService) {
     this.appointmentForm = this.fb.group({
@@ -60,7 +61,11 @@ export class NewAppointment implements OnInit {
   protected getServicesByInstitutionType() {
     let institutionId = this.appointmentForm.get('institution.institution')?.value;
     let institution = this.institutions?.find(institution=> institution.id === institutionId);
-    this.newAppointmentService.getServicesByInstitutionType(String(institution?.institutionType)).subscribe(res => {this.services = res})
+    this.newAppointmentService.getInstitutionDetails(String(institution?.institutionType)).subscribe(res => {
+      this.institutionDetails = res;
+      this.timeOptions = this.institutionDetails.availability.filter(availability=> availability.getDay() === new Date().getDay());
+    })
 
   }
+
 }

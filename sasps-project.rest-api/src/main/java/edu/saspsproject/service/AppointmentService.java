@@ -28,6 +28,7 @@ public class AppointmentService {
     private final UserRepository userRepository;
     private final NotificationService notificationService;
     private final CountyRepository countyRepository;
+    private final EmailService emailService;
 
     public Long saveAppointment(AppointmentRequest request) {
         // Complex validation logic - hardcoded without Validator pattern
@@ -114,6 +115,7 @@ public class AppointmentService {
         Appointment appointment = new Appointment();
         appointment.setInstitutionId(request.getInstitutionId());
         appointment.setUserId(userId);
+        appointment.setInstitutionType(request.getInstitutionType());
 
         String title = "Programare " + request.getServiceType() + " la instituția " + request.getInstitutionId();
         appointment.setTitle(title);
@@ -179,6 +181,18 @@ public class AppointmentService {
     private void sendNotifications(Appointment appointment) {
         // Hardcoded notification logic - should use Adapter pattern in v2
         notificationService.sendConfirmation(appointment);
+        
+        // Tightly coupled email sending - no event-driven architecture
+        try {
+            User user = userRepository.findById(appointment.getUserId()).orElse(null);
+            if (user != null && user.getEmailNotificationsEnabled()) {
+                Institution institution = institutionRepository.findById(appointment.getInstitutionId()).orElse(null);
+                String institutionName = institution != null ? institution.getName() : "Instituție necunoscută";
+                emailService.sendAppointmentConfirmationEmail(user, appointment, institutionName);
+            }
+        } catch (Exception e) {
+            System.err.println("Failed to send confirmation email: " + e.getMessage());
+        }
     }
 
     public AvailabilityResponse getAvailability(Long institutionId) {
@@ -341,5 +355,73 @@ public class AppointmentService {
 
     public List<CountyResponse> getAllCounties() {
         return countyRepository.findAll().stream().map(county -> new CountyResponse(county.getId(), county.getName())).collect(Collectors.toList());
+    }
+
+    // Cancel appointment with email notification - tightly coupled
+    public void cancelAppointment(Long appointmentId, String reason) {
+        Appointment appointment = appointmentRepository.findById(appointmentId)
+                .orElseThrow(() -> new RuntimeException("Appointment not found"));
+        
+        appointment.setStatus(Appointment.Status.CANCELLED);
+        appointment.setUpdatedAt(LocalDateTime.now());
+        appointmentRepository.save(appointment);
+
+        // Hardcoded notification sending - no event system
+        try {
+            User user = userRepository.findById(appointment.getUserId()).orElse(null);
+            if (user != null && user.getEmailNotificationsEnabled()) {
+                Institution institution = institutionRepository.findById(appointment.getInstitutionId()).orElse(null);
+                String institutionName = institution != null ? institution.getName() : "Instituție necunoscută";
+                emailService.sendAppointmentCancellationEmail(user, appointment, institutionName, reason);
+            }
+            
+            notificationService.createNotification(
+                appointment.getUserId(),
+                "Programarea dumneavoastră a fost anulată" + (reason != null ? ": " + reason : ""),
+                "CANCELLATION"
+            );
+        } catch (Exception e) {
+            System.err.println("Failed to send cancellation notifications: " + e.getMessage());
+        }
+    }
+
+    // Confirm appointment
+    public void confirmAppointment(Long appointmentId) {
+        Appointment appointment = appointmentRepository.findById(appointmentId)
+                .orElseThrow(() -> new RuntimeException("Appointment not found"));
+        
+        appointment.setStatus(Appointment.Status.CONFIRMED);
+        appointment.setUpdatedAt(LocalDateTime.now());
+        appointmentRepository.save(appointment);
+
+        try {
+            notificationService.createNotification(
+                appointment.getUserId(),
+                "Programarea dumneavoastră a fost confirmată",
+                "CONFIRMATION"
+            );
+        } catch (Exception e) {
+            System.err.println("Failed to send confirmation notification: " + e.getMessage());
+        }
+    }
+
+    // Complete appointment
+    public void completeAppointment(Long appointmentId) {
+        Appointment appointment = appointmentRepository.findById(appointmentId)
+                .orElseThrow(() -> new RuntimeException("Appointment not found"));
+        
+        appointment.setStatus(Appointment.Status.COMPLETED);
+        appointment.setUpdatedAt(LocalDateTime.now());
+        appointmentRepository.save(appointment);
+
+        try {
+            notificationService.createNotification(
+                appointment.getUserId(),
+                "Programarea dumneavoastră a fost finalizată",
+                "COMPLETION"
+            );
+        } catch (Exception e) {
+            System.err.println("Failed to send completion notification: " + e.getMessage());
+        }
     }
 }

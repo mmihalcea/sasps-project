@@ -234,10 +234,15 @@ export class NewAppointment implements OnInit {
   private updateTimeOptions(selectedDate: Date) {
     if (!this.institutionDetails) return;
 
-    const dayOfWeek = selectedDate.getDay();
-    this.timeOptions = this.institutionDetails.availability.filter(
-      (availability) => availability.getDay() === dayOfWeek
-    );
+    // Filter availability slots for the selected date
+    const selectedDateOnly = new Date(selectedDate);
+    selectedDateOnly.setHours(0, 0, 0, 0);
+
+    this.timeOptions = this.institutionDetails.availability.filter((availability) => {
+      const availabilityDate = new Date(availability);
+      availabilityDate.setHours(0, 0, 0, 0);
+      return availabilityDate.getTime() === selectedDateOnly.getTime();
+    });
   }
 
   protected getSelectedCountyName(): string {

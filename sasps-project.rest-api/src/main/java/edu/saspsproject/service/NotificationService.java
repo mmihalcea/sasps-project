@@ -225,4 +225,10 @@ public class NotificationService {
                 .map(User::getName)
                 .orElse("Customer");
     }
+
+    public void createNotification(Long userId, String message, String type) {
+        log.info("Creating notification for user {}: [{}] {}", userId, type, message);
+        // Hardcoded logic - no database, no queue, just console output
+        System.out.println(String.format("[NOTIFICATION][%s] User %d: %s", type, userId, message));
+    }
 }

@@ -64,6 +64,9 @@ public class Appointment {
     @Column(nullable = false)
     private Status status;
 
+    @Column(name = "institution_type")
+    private String institutionType;
+
     @NotNull
     private Double estimatedDuration;
 

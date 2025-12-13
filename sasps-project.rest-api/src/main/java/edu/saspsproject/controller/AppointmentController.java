@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RequestMapping("/api/appointment")
@@ -140,6 +141,46 @@ public class AppointmentController {
             return ResponseEntity.ok(counties);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    // Cancel appointment with notification
+    @PostMapping("/{id}/cancel")
+    public ResponseEntity<Void> cancelAppointment(@PathVariable Long id, @RequestBody(required = false) Map<String, String> body) {
+        try {
+            String reason = body != null ? body.get("reason") : null;
+            appointmentService.cancelAppointment(id, reason);
+            log.info("Cancelled appointment {}", id);
+            return ResponseEntity.ok().build();
+        } catch (RuntimeException e) {
+            log.error("Error cancelling appointment: {}", e.getMessage());
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // Confirm appointment with notification
+    @PostMapping("/{id}/confirm")
+    public ResponseEntity<Void> confirmAppointment(@PathVariable Long id) {
+        try {
+            appointmentService.confirmAppointment(id);
+            log.info("Confirmed appointment {}", id);
+            return ResponseEntity.ok().build();
+        } catch (RuntimeException e) {
+            log.error("Error confirming appointment: {}", e.getMessage());
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // Complete appointment
+    @PostMapping("/{id}/complete")
+    public ResponseEntity<Void> completeAppointment(@PathVariable Long id) {
+        try {
+            appointmentService.completeAppointment(id);
+            log.info("Completed appointment {}", id);
+            return ResponseEntity.ok().build();
+        } catch (RuntimeException e) {
+            log.error("Error completing appointment: {}", e.getMessage());
+            return ResponseEntity.notFound().build();
         }
     }
 

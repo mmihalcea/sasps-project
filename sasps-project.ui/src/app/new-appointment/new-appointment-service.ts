@@ -1,22 +1,21 @@
 import { Injectable } from '@angular/core';
-import {environment} from "../../environments/environment";
-import {map, Observable} from 'rxjs';
-import {CountyResponse} from './county-response';
-import {HttpClient} from '@angular/common/http';
-import {InstitutionResponse} from './institution-response';
-import {InstitutionDetailsResponse} from './institution-details-response';
+import { environment } from '../../environments/environment';
+import { map, Observable } from 'rxjs';
+import { CountyResponse } from './county-response';
+import { HttpClient } from '@angular/common/http';
+import { InstitutionResponse } from './institution-response';
+import { InstitutionDetailsResponse } from './institution-details-response';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NewAppointmentService {
-
   private readonly countiesUrl = environment.apiUrl + '/appointment/counties';
   private readonly institutionsUrl = environment.apiUrl + '/appointment/institutions';
   private readonly institutionUrl = environment.apiUrl + '/institution';
+  private readonly appointmentUrl = environment.apiUrl + '/appointment';
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   getAllCounties(): Observable<CountyResponse[]> {
     return this.http.get<CountyResponse[]>(this.countiesUrl);
@@ -27,9 +26,16 @@ export class NewAppointmentService {
   }
 
   getInstitutionDetails(institutionType: string): Observable<InstitutionDetailsResponse> {
-    return this.http.get<InstitutionDetailsResponse>(this.institutionUrl + '/' + institutionType).pipe(
-      map((data)=>{
-       return {...data, availability: data.availability.map(av=> new Date((String(av))))};}
-    ));
+    return this.http
+      .get<InstitutionDetailsResponse>(this.institutionUrl + '/' + institutionType)
+      .pipe(
+        map((data) => {
+          return { ...data, availability: data.availability.map((av) => new Date(String(av))) };
+        })
+      );
+  }
+
+  saveAppointment(appointmentRequest: any): Observable<number> {
+    return this.http.post<number>(this.appointmentUrl, appointmentRequest);
   }
 }

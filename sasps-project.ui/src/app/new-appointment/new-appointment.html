@@ -1,6 +1,6 @@
 <div class="m-10">
   <form [formGroup]="appointmentForm" (ngSubmit)="onSubmit()">
-    <p-stepper [value]="1" class="h-screen">
+    <p-stepper [(value)]="currentStep" class="h-screen">
       <p-step-list>
         <p-step [value]="1">Date institutie</p-step>
         <p-step [value]="2">Date programare</p-step>
@@ -11,17 +11,41 @@
           <ng-template #content let-activateCallback="activateCallback">
             <div class="flex flex-col h-150" formGroupName="institution">
               <div class="flex flex-col justify-center items-center">
-                <p-select formControlName="county" [options]="counties" optionValue="id" optionLabel="name" placeholder="Selectati judet"
-                          class="ml-6 mb-2 w-full md:w-56"/>
+                <p-select
+                  formControlName="county"
+                  [options]="counties"
+                  optionValue="id"
+                  optionLabel="name"
+                  placeholder="Selectati judet"
+                  class="ml-6 mb-2 w-full md:w-56"
+                />
 
-                <p-select formControlName="institution" [options]="institutions" [filter]="true" filterBy="name" optionValue="id" optionLabel="name"
-                          placeholder="Selectati institutie" class="ml-6 mt-2w-full md:w-56"/>
-
+                <p-select
+                  formControlName="institution"
+                  [options]="institutions"
+                  [filter]="true"
+                  filterBy="name"
+                  optionValue="id"
+                  optionLabel="name"
+                  placeholder="Selectati institutie"
+                  class="ml-6 mt-2w-full md:w-56"
+                />
               </div>
             </div>
             <div class="flex pt-6 justify-between">
-              <p-button label="Înapoi" severity="secondary" icon="pi pi-arrow-left" routerLink="/home"/>
-              <p-button [disabled]="appointmentForm.get('institution')?.invalid" label="Următorul" icon="pi pi-arrow-right" iconPos="right" (onClick)="getServicesByInstitutionType();activateCallback(2)"/>
+              <p-button
+                label="Înapoi"
+                severity="secondary"
+                icon="pi pi-arrow-left"
+                routerLink="/home"
+              />
+              <p-button
+                [disabled]="appointmentForm.get('institution')?.invalid"
+                label="Următorul"
+                icon="pi pi-arrow-right"
+                iconPos="right"
+                (onClick)="getServicesByInstitutionType(); activateCallback(2)"
+              />
             </div>
           </ng-template>
         </p-step-panel>
@@ -31,40 +55,139 @@
             <div class="flex flex-col h-auto" formGroupName="appointment">
               <div class="flex-auto flex flex-col justify-center items-center font-medium">
                 <div class="w-90">
-                  <p-select formControlName="service" [options]="institutionDetails?.availableServices" optionValue="id" optionLabel="name" [fluid]="true" placeholder="Selectati serviciul"
+                  <p-select
+                    formControlName="service"
+                    [options]="institutionDetails?.availableServices"
+                    optionValue="id"
+                    optionLabel="name"
+                    [fluid]="true"
+                    placeholder="Selectati serviciul"
                   />
                 </div>
                 <div class="card flex justify-content-center mt-4">
-                    <p-datepicker [inline]="true" [firstDayOfWeek]="1" [minDate]="today" [disabledDays]="[0,6]"  />
-
+                  <p-datepicker
+                    formControlName="date"
+                    [inline]="true"
+                    [firstDayOfWeek]="1"
+                    [minDate]="today"
+                    [disabledDays]="[0, 6]"
+                  />
                 </div>
               </div>
               <div class="mt-4 flex flex-auto justify-center">
-                <p-selectbutton formControlName="date" [options]="timeOptions"  aria-labelledby="basic" size="large">
+                <p-selectbutton
+                  formControlName="time"
+                  [options]="timeOptions"
+                  aria-labelledby="basic"
+                  size="large"
+                >
                   <ng-template #item let-item>
-                    <div>{{('0' + item.getHours()).slice(-2) + ':' + ('0' + item.getMinutes()).slice(-2)}}</div>
+                    <div>
+                      {{
+                        ('0' + item.getHours()).slice(-2) +
+                          ':' +
+                          ('0' + item.getMinutes()).slice(-2)
+                      }}
+                    </div>
                   </ng-template>
                 </p-selectbutton>
               </div>
             </div>
             <div class="flex pt-6 justify-between">
-              <p-button label="Înapoi" severity="secondary" icon="pi pi-arrow-left" (onClick)="activateCallback(1)"/>
-              <p-button label="Următorul" icon="pi pi-arrow-right" iconPos="right" (onClick)="activateCallback(3)"/>
+              <p-button
+                label="Înapoi"
+                severity="secondary"
+                icon="pi pi-arrow-left"
+                (onClick)="activateCallback(1)"
+              />
+              <p-button
+                [disabled]="appointmentForm.get('appointment')?.invalid"
+                label="Următorul"
+                icon="pi pi-arrow-right"
+                iconPos="right"
+                (onClick)="activateCallback(3)"
+              />
             </div>
           </ng-template>
         </p-step-panel>
 
         <p-step-panel [value]="3">
           <ng-template #content let-activateCallback="activateCallback">
-            <div class="flex flex-col">
-              <div
-                class="border-2 border-dashed border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 flex-auto flex justify-center items-center font-medium"
-              >
-                Content III
+            <div class="flex flex-col gap-6">
+              <!-- Sumar programare -->
+              <div class="border-2 border-primary-300 rounded-lg p-6 bg-primary-50">
+                <h3 class="text-xl font-bold text-primary-700 mb-4">📋 Sumar programare</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <p class="text-sm text-gray-600">Județ</p>
+                    <p class="font-semibold">{{ getSelectedCountyName() }}</p>
+                  </div>
+                  <div>
+                    <p class="text-sm text-gray-600">Instituție</p>
+                    <p class="font-semibold">{{ getSelectedInstitutionName() }}</p>
+                  </div>
+                  <div>
+                    <p class="text-sm text-gray-600">Serviciu</p>
+                    <p class="font-semibold">{{ getSelectedServiceName() }}</p>
+                  </div>
+                  <div>
+                    <p class="text-sm text-gray-600">Data și ora</p>
+                    <p class="font-semibold">
+                      {{ getFormattedDate() }} la {{ getFormattedTime() }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Date utilizator -->
+              <div class="border-2 border-gray-300 rounded-lg p-6" formGroupName="user">
+                <h3 class="text-xl font-bold text-gray-700 mb-4">👤 Datele dumneavoastră</h3>
+                <div class="flex flex-col gap-4">
+                  <div class="flex flex-col">
+                    <label class="text-sm font-semibold mb-2">Nume complet</label>
+                    <input
+                      type="text"
+                      formControlName="name"
+                      class="p-3 border border-gray-300 rounded-md"
+                      placeholder="Ex: Ion Popescu"
+                    />
+                  </div>
+                  <div class="flex flex-col">
+                    <label class="text-sm font-semibold mb-2">Email</label>
+                    <input
+                      type="email"
+                      formControlName="email"
+                      class="p-3 border border-gray-300 rounded-md"
+                      placeholder="Ex: ion.popescu@email.com"
+                    />
+                  </div>
+                  <div class="flex flex-col">
+                    <label class="text-sm font-semibold mb-2">Telefon</label>
+                    <input
+                      type="tel"
+                      formControlName="phone"
+                      class="p-3 border border-gray-300 rounded-md"
+                      placeholder="Ex: 0700000000"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="flex pt-6 justify-start">
-              <p-button label="Înapoi" icon="pi pi-arrow-left" iconPos="right" (onClick)="activateCallback(2)"/>
+            <div class="flex pt-6 justify-between">
+              <p-button
+                label="Înapoi"
+                severity="secondary"
+                icon="pi pi-arrow-left"
+                (onClick)="activateCallback(2)"
+              />
+              <p-button
+                label="Confirmă programarea"
+                icon="pi pi-check"
+                iconPos="right"
+                [disabled]="appointmentForm.invalid"
+                (click)="onSubmit()"
+                severity="success"
+              />
             </div>
           </ng-template>
         </p-step-panel>

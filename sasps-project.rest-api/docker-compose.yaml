@@ -35,6 +35,20 @@ services:
     networks:
       - app-net
     restart: unless-stopped
+
+  frontend:
+    build:
+      context: ../sasps-project.ui
+      dockerfile: Dockerfile
+    container_name: sasps-frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+    networks:
+      - app-net
+    restart: unless-stopped
+
   sonarqube:
     image: sonarqube:latest
     container_name: sonarqube

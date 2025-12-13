@@ -10,6 +10,31 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    networks:
+      - app-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U appuser -d appdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sasps-backend
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/appdb
+      SPRING_DATASOURCE_USERNAME: appuser
+      SPRING_DATASOURCE_PASSWORD: secret
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - app-net
+    restart: unless-stopped
   sonarqube:
     image: sonarqube:latest
     container_name: sonarqube
@@ -47,11 +72,11 @@ services:
       retries: 5
 volumes:
   pgdata: {}
-  sonarqube_conf: { }
-  sonarqube_data: { }
-  sonarqube_extensions: { }
-  sonarqube_logs: { }
-  sonarqube_pgdata: { }
+  sonarqube_conf: {}
+  sonarqube_data: {}
+  sonarqube_extensions: {}
+  sonarqube_logs: {}
+  sonarqube_pgdata: {}
 networks:
   app-net:
     driver: bridge

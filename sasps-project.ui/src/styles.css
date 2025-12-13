@@ -1,16 +1,16 @@
-@import "tailwindcss";
-@import "primeicons/primeicons.css";
-@import "tailwindcss-primeui";
+@import 'tailwindcss';
+@import 'primeicons/primeicons.css';
 
+@plugin "tailwindcss-primeui";
 
 @theme {
   --p-datepicker-week-day-padding: 1rem;
-  --p-datepicker-date-padding: 1rem
+  --p-datepicker-date-padding: 1rem;
 }
 
-
 @layer theme {
-  :root, :host {
+  :root,
+  :host {
     @variant * {
       --p-datepicker-week-day-padding: 0.5rem;
       --p-datepicker-date-padding: 0.5rem;
@@ -31,7 +31,3 @@
     }
   }
 }
-
-
-
-

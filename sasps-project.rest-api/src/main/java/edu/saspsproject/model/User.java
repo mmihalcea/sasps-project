@@ -64,6 +64,13 @@ public class User {
     @Setter
     private Boolean active = true;
 
+    @Setter
+    @Column(name = "user_role")
+    private String role = "USER"; // USER, ADMIN
+
+    @Setter
+    private String password; // Simplistic - no encryption for baseline
+
     public User() {}
 
     @PrePersist

@@ -40,3 +40,14 @@ INSERT INTO public.county (id, name) VALUES (39, 'Tulcea');
 INSERT INTO public.county (id, name) VALUES (40, 'Valcea');
 INSERT INTO public.county (id, name) VALUES (41, 'Vaslui');
 INSERT INTO public.county (id, name) VALUES (42, 'Vrancea');
+
+-- Test users for baseline authentication system (NO encryption for baseline metrics)
+INSERT INTO public.users (id, name, email, phone, county, city, address, active, email_notifications_enabled, sms_notifications_enabled, reminder_hours_before, user_role, password)
+VALUES (1, 'Admin User', 'admin@test.com', '0700000001', 'Bucuresti', 'Bucuresti', 'Str. Administratorilor 1', true, true, true, 24, 'ADMIN', 'admin123');
+
+INSERT INTO public.users (id, name, email, phone, county, city, address, active, email_notifications_enabled, sms_notifications_enabled, reminder_hours_before, user_role, password)
+VALUES (2, 'Regular User', 'user@test.com', '0700000002', 'Cluj', 'Cluj-Napoca', 'Str. Utilizatorilor 2', true, true, false, 24, 'USER', 'user123');
+
+INSERT INTO public.users (id, name, email, phone, county, city, address, active, email_notifications_enabled, sms_notifications_enabled, reminder_hours_before, user_role, password)
+VALUES (3, 'Test Client', 'test@example.com', '0700000003', 'Timis', 'Timisoara', 'Str. Testelor 3', true, true, true, 48, 'USER', 'test123');
+

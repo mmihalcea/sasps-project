@@ -1,0 +1,77 @@
+<div class="admin-container">
+  <p-card>
+    <ng-template pTemplate="header">
+      <div class="card-header">
+        <h2>Admin - All Notifications</h2>
+        <div class="header-actions">
+          <p-select
+            [(ngModel)]="selectedStatus"
+            [options]="statusOptions"
+            placeholder="Filter by status"
+            (onChange)="onStatusChange()"
+            [style]="{ 'margin-right': '1rem' }"
+          />
+          <p-button label="Logout" icon="pi pi-sign-out" (onClick)="logout()" />
+        </div>
+      </div>
+    </ng-template>
+
+    <p-table
+      [value]="notifications"
+      [loading]="loading"
+      [paginator]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      [tableStyle]="{ 'min-width': '50rem' }"
+      responsiveLayout="scroll"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>ID</th>
+          <th>User ID</th>
+          <th>Type</th>
+          <th>Status</th>
+          <th>Method</th>
+          <th>Message</th>
+          <th>Recipient</th>
+          <th>Sent At</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-notification>
+        <tr>
+          <td>{{ notification.id }}</td>
+          <td>{{ notification.userId }}</td>
+          <td>
+            <p-tag [value]="notification.type" [severity]="getTypeSeverity(notification.type)" />
+          </td>
+          <td>
+            <p-tag
+              [value]="notification.status"
+              [severity]="getStatusSeverity(notification.status)"
+            />
+          </td>
+          <td>{{ notification.method }}</td>
+          <td class="message-cell">{{ notification.message }}</td>
+          <td>
+            <div class="recipient-info">
+              <div *ngIf="notification.recipientEmail">
+                <i class="pi pi-envelope"></i> {{ notification.recipientEmail }}
+              </div>
+              <div *ngIf="notification.recipientPhone">
+                <i class="pi pi-phone"></i> {{ notification.recipientPhone }}
+              </div>
+            </div>
+          </td>
+          <td>{{ notification.sentAt | date : 'short' }}</td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="8" class="empty-message">No notifications found</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+</div>

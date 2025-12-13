@@ -6,6 +6,9 @@ import { environment } from '../../environments/environment';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
 import { Table, TableModule } from 'primeng/table';
+import { CardModule } from 'primeng/card';
+import { Router } from '@angular/router';
+import { LoginComponent } from '../login/login';
 
 interface Appointment {
   id: number;
@@ -18,20 +21,27 @@ interface Appointment {
 
 @Component({
   selector: 'app-user-appointments',
-  imports: [CommonModule, FormsModule, Button, InputText, TableModule],
+  imports: [CommonModule, FormsModule, Button, InputText, TableModule, CardModule],
   templateUrl: './user-appointments.html',
   styleUrl: './user-appointments.css',
   standalone: true,
 })
-export class UserAppointments implements OnInit {
+export class UserAppointmentsComponent implements OnInit {
   email: string = '';
   appointments: Appointment[] = [];
   loading: boolean = false;
   searched: boolean = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // Auto-load appointments if user is logged in
+    if (LoginComponent.isLoggedIn()) {
+      const user = LoginComponent.getCurrentUser();
+      this.email = user.email;
+      this.searchAppointments();
+    }
+  }
 
   searchAppointments() {
     if (!this.email || this.email.trim() === '') {

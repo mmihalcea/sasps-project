@@ -1,0 +1,40 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 2rem;
+}
+
+p-card {
+  width: 100%;
+  max-width: 400px;
+}
+
+.form-field {
+  margin-bottom: 1.5rem;
+}
+
+.form-field label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.form-field input,
+.form-field p-password {
+  width: 100%;
+}
+
+p-message {
+  margin: 1rem 0;
+  display: block;
+}
+
+.button-container {
+  margin-top: 1.5rem;
+}
+
+.button-container p-button {
+  width: 100%;
+}

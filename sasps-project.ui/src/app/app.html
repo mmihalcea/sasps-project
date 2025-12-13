@@ -1,2 +1,34 @@
+<div class="app-container">
+  <!-- Simple navigation bar -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      <a routerLink="/home">Appointment System</a>
+    </div>
 
-<router-outlet></router-outlet>
+    <div class="nav-links">
+      <a routerLink="/home" routerLinkActive="active">Home</a>
+      <a routerLink="/new-appointment" routerLinkActive="active">New Appointment</a>
+
+      <ng-container *ngIf="isLoggedIn()">
+        <a routerLink="/user-appointments" routerLinkActive="active">My Appointments</a>
+
+        <ng-container *ngIf="isAdmin()">
+          <a routerLink="/admin-notifications" routerLinkActive="active" class="admin-link">
+            <i class="pi pi-shield"></i> Admin
+          </a>
+        </ng-container>
+
+        <span class="user-info">{{ getCurrentUserName() }}</span>
+        <a (click)="logout()" class="logout-link"> <i class="pi pi-sign-out"></i> Logout </a>
+      </ng-container>
+
+      <ng-container *ngIf="!isLoggedIn()">
+        <a routerLink="/login" routerLinkActive="active">Login</a>
+      </ng-container>
+    </div>
+  </nav>
+
+  <div class="main-content">
+    <router-outlet></router-outlet>
+  </div>
+</div>

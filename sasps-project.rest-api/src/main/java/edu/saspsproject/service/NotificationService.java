@@ -2,7 +2,9 @@ package edu.saspsproject.service;
 
 import edu.saspsproject.model.Appointment;
 import edu.saspsproject.model.Institution;
+import edu.saspsproject.model.Notification;
 import edu.saspsproject.model.User;
+import edu.saspsproject.repository.NotificationRepository;
 import edu.saspsproject.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,9 +16,11 @@ import java.time.format.DateTimeFormatter;
 @Slf4j
 public class NotificationService {
     private final UserRepository userRepository;
+    private final NotificationRepository notificationRepository;
 
-    public NotificationService(UserRepository userRepository) {
+    public NotificationService(UserRepository userRepository, NotificationRepository notificationRepository) {
         this.userRepository = userRepository;
+        this.notificationRepository = notificationRepository;
     }
 
     public void sendConfirmation(Appointment appointment) {
@@ -226,9 +230,52 @@ public class NotificationService {
                 .orElse("Customer");
     }
 
+    // Simple notification creation - NOW with database storage!
+    // No event system, just direct database insert - baseline approach
     public void createNotification(Long userId, String message, String type) {
         log.info("Creating notification for user {}: [{}] {}", userId, type, message);
-        // Hardcoded logic - no database, no queue, just console output
-        System.out.println(String.format("[NOTIFICATION][%s] User %d: %s", type, userId, message));
+        
+        // Create and save notification entity - hardcoded logic
+        Notification notification = new Notification();
+        notification.setUserId(userId);
+        notification.setMessage(message);
+        
+        // Map string type to enum - hardcoded mapping
+        switch (type.toUpperCase()) {
+            case "CONFIRMATION" -> notification.setType(Notification.NotificationType.CONFIRMATION);
+            case "REMINDER" -> notification.setType(Notification.NotificationType.REMINDER);
+            case "CANCELLATION" -> notification.setType(Notification.NotificationType.CANCELLATION);
+            case "WELCOME" -> notification.setType(Notification.NotificationType.WELCOME);
+            default -> notification.setType(Notification.NotificationType.ANNOUNCEMENT);
+        }
+        
+        notification.setMethod(Notification.NotificationMethod.EMAIL);
+        notification.setStatus(Notification.NotificationStatus.SENT);
+        notification.setSentAt(LocalDateTime.now());
+        
+        // Get user email - hardcoded lookup
+        User user = userRepository.findById(userId).orElse(null);
+        if (user != null) {
+            notification.setRecipientEmail(user.getEmail());
+            notification.setRecipientPhone(user.getPhone());
+        }
+        
+        notificationRepository.save(notification);
+        System.out.println(String.format("[NOTIFICATION][%s] Saved to DB - User %d: %s", type, userId, message));
+    }
+    
+    // Get all notifications for a user
+    public java.util.List<Notification> getUserNotifications(Long userId) {
+        return notificationRepository.findByUserId(userId);
+    }
+    
+    // Get all notifications (admin only)
+    public java.util.List<Notification> getAllNotifications() {
+        return notificationRepository.findAllByOrderBySentAtDesc();
+    }
+    
+    // Get notifications by status
+    public java.util.List<Notification> getNotificationsByStatus(Notification.NotificationStatus status) {
+        return notificationRepository.findByStatusOrderBySentAtDesc(status);
     }
 }

@@ -5,12 +5,17 @@ import edu.saspsproject.repository.AppointmentRepository;
 import edu.saspsproject.dto.request.AppointmentRequest;
 import edu.saspsproject.dto.response.AvailabilityResponse;
 import edu.saspsproject.service.AppointmentService;
+import edu.saspsproject.model.Appointment;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -186,4 +191,194 @@ public class AppointmentController {
         }
     }
 
+    // BASELINE PROBLEM: Export appointments to CSV - NO separation of concerns
+    @GetMapping("/export/csv")
+    public ResponseEntity<byte[]> exportAppointmentsToCSV() {
+        try {
+            List<Appointment> appointments = repo.findAll();
+            
+            // CSV generation hardcoded in controller - poor design!
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            PrintWriter writer = new PrintWriter(outputStream);
+            
+            // Write header
+            writer.println("ID,Title,Institution,Service Type,Date Time,Status,Priority Level,Duration");
+            
+            // Write data - duplicated logic from multiple places
+            for (Appointment app : appointments) {
+                writer.printf("%d,%s,%s,%s,%s,%s,%s,%s%n",
+                    app.getId(),
+                    app.getTitle(),
+                    app.getInstitution().getName(),
+                    app.getServiceType(),
+                    app.getAppointmentTime(),
+                    app.getStatus(),
+                    app.getPriorityLevel(),
+                    app.getEstimatedDuration()
+                );
+            }
+            
+            writer.flush();
+            byte[] csvData = outputStream.toByteArray();
+            
+            // Also send email notification - tight coupling!
+            sendEmailNotification("admin@test.com", "CSV Export", "Exported " + appointments.size() + " appointments");
+            
+            log.info("Exported {} appointments to CSV", appointments.size());
+            
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.valueOf("text/csv"));
+            headers.setContentDispositionFormData("attachment", "appointments.csv");
+            
+            return ResponseEntity.ok().headers(headers).body(csvData);
+        } catch (Exception e) {
+            log.error("Error exporting appointments: {}", e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    // BASELINE PROBLEM: Email notification hardcoded in controller - tight coupling!
+    private void sendEmailNotification(String to, String subject, String message) {
+        try {
+            // Hardcoded email sending - no interface, no abstraction
+            log.info("Sending email to {} - Subject: {} - Message: {}", to, subject, message);
+            
+            // In real world, this would be hardcoded SMTP logic here too
+            // Demonstrates tight coupling and code duplication
+            
+            // Simulate sending (in real app, would be SMTP client directly here)
+            if (!to.contains("@")) {
+                throw new RuntimeException("Invalid email");
+            }
+            log.info("Email sent successfully to {}", to);
+        } catch (Exception e) {
+            log.error("Error sending email: {}", e.getMessage());
+            // Silently fail - poor error handling
+        }
+    }
+
+    // BASELINE PROBLEM: PDF Export - duplicate logic similar to CSV export
+    // HARDCODED PDF generation directly in controller - no separation of concerns!
+    @GetMapping("/export/pdf")
+    public ResponseEntity<byte[]> exportAppointmentsToPDF() {
+        try {
+            List<Appointment> appointments = repo.findAll();
+            
+            // Hardcoded PDF generation using PDFBox - all logic in controller!
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            
+            // Create PDF document - hardcoded page setup
+            org.apache.pdfbox.pdmodel.PDDocument document = new org.apache.pdfbox.pdmodel.PDDocument();
+            org.apache.pdfbox.pdmodel.PDPage page = new org.apache.pdfbox.pdmodel.PDPage();
+            document.addPage(page);
+            
+            // Hardcoded content stream
+            org.apache.pdfbox.pdmodel.PDPageContentStream contentStream = 
+                new org.apache.pdfbox.pdmodel.PDPageContentStream(document, page);
+            
+            // Hardcoded font and position
+            contentStream.setFont(org.apache.pdfbox.pdmodel.font.PDType1Font.HELVETICA_BOLD, 16);
+            contentStream.beginText();
+            contentStream.newLineAtOffset(50, 750);
+            contentStream.showText("Appointments Report");
+            contentStream.endText();
+            
+            // Hardcoded subtitle
+            contentStream.setFont(org.apache.pdfbox.pdmodel.font.PDType1Font.HELVETICA, 10);
+            contentStream.beginText();
+            contentStream.newLineAtOffset(50, 730);
+            contentStream.showText("Generated: " + java.time.LocalDateTime.now().toString());
+            contentStream.endText();
+            
+            contentStream.beginText();
+            contentStream.newLineAtOffset(50, 715);
+            contentStream.showText("Total appointments: " + appointments.size());
+            contentStream.endText();
+            
+            // Hardcoded table header
+            float yPosition = 690;
+            contentStream.setFont(org.apache.pdfbox.pdmodel.font.PDType1Font.HELVETICA_BOLD, 9);
+            contentStream.beginText();
+            contentStream.newLineAtOffset(50, yPosition);
+            contentStream.showText("ID");
+            contentStream.newLineAtOffset(30, 0);
+            contentStream.showText("Title");
+            contentStream.newLineAtOffset(120, 0);
+            contentStream.showText("Institution");
+            contentStream.newLineAtOffset(100, 0);
+            contentStream.showText("Date");
+            contentStream.newLineAtOffset(80, 0);
+            contentStream.showText("Status");
+            contentStream.endText();
+            
+            // Hardcoded line separator
+            yPosition -= 15;
+            contentStream.moveTo(50, yPosition);
+            contentStream.lineTo(550, yPosition);
+            contentStream.stroke();
+            
+            // Hardcoded data rows - manual loop without abstraction
+            yPosition -= 15;
+            contentStream.setFont(org.apache.pdfbox.pdmodel.font.PDType1Font.HELVETICA, 8);
+            
+            for (Appointment app : appointments) {
+                if (yPosition < 50) {
+                    // Hardcoded page break logic
+                    contentStream.close();
+                    page = new org.apache.pdfbox.pdmodel.PDPage();
+                    document.addPage(page);
+                    contentStream = new org.apache.pdfbox.pdmodel.PDPageContentStream(document, page);
+                    contentStream.setFont(org.apache.pdfbox.pdmodel.font.PDType1Font.HELVETICA, 8);
+                    yPosition = 750;
+                }
+                
+                contentStream.beginText();
+                contentStream.newLineAtOffset(50, yPosition);
+                contentStream.showText(String.valueOf(app.getId()));
+                contentStream.newLineAtOffset(30, 0);
+                String title = app.getTitle().length() > 15 ? app.getTitle().substring(0, 15) + "..." : app.getTitle();
+                contentStream.showText(title);
+                contentStream.newLineAtOffset(120, 0);
+                String inst = app.getInstitution().getName().length() > 12 ? app.getInstitution().getName().substring(0, 12) + "..." : app.getInstitution().getName();
+                contentStream.showText(inst);
+                contentStream.newLineAtOffset(100, 0);
+                contentStream.showText(app.getAppointmentTime().toString().substring(0, 16));
+                contentStream.newLineAtOffset(80, 0);
+                contentStream.showText(app.getStatus().toString());
+                contentStream.endText();
+                
+                yPosition -= 12;
+            }
+            
+            contentStream.close();
+            document.save(outputStream);
+            document.close();
+            
+            byte[] pdfData = outputStream.toByteArray();
+            
+            // Hardcoded email notification - tight coupling!
+            sendEmailNotification("admin@test.com", "PDF Export", "Exported " + appointments.size() + " appointments to PDF");
+            
+            log.info("Exported {} appointments to PDF", appointments.size());
+            
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDispositionFormData("attachment", "appointments.pdf");
+            
+            return ResponseEntity.ok().headers(headers).body(pdfData);
+        } catch (Exception e) {
+            log.error("Error exporting appointments to PDF: {}", e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+    
+    // Helper method to escape HTML special characters
+    private String escapeHtml(String text) {
+        if (text == null) return "";
+        return text.replace("&", "&amp;")
+                   .replace("<", "&lt;")
+                   .replace(">", "&gt;")
+                   .replace("\"", "&quot;")
+                   .replace("'", "&#39;");
+    }
 }

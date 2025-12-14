@@ -24,8 +24,8 @@ public class AppointmentControllerTests {
     }
 
     @GetMapping("/availability")
-    public ResponseEntity<AvailabilityResponse> getAvailability(@RequestParam Long institutionId) {
-        AvailabilityResponse resp = appointmentService.getAvailability(institutionId);
+    public ResponseEntity<AvailabilityResponse> getAvailability(@RequestParam Long institutionId, @RequestParam(required = false) String date) {
+        AvailabilityResponse resp = appointmentService.getAvailability(institutionId, java.util.Optional.ofNullable(date).map(java.time.LocalDate::parse));
         return ResponseEntity.ok(resp);
     }
 }

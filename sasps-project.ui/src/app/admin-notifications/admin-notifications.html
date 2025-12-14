@@ -11,6 +11,20 @@
             (onChange)="onStatusChange()"
             [style]="{ 'margin-right': '1rem' }"
           />
+          <p-button
+            label="Export CSV"
+            icon="pi pi-file"
+            (onClick)="exportToCSV()"
+            severity="secondary"
+            [style]="{ 'margin-right': '0.5rem' }"
+          />
+          <p-button
+            label="Export PDF"
+            icon="pi pi-file-pdf"
+            (onClick)="exportToPDF()"
+            severity="secondary"
+            [style]="{ 'margin-right': '1rem' }"
+          />
           <p-button label="Logout" icon="pi pi-sign-out" (onClick)="logout()" />
         </div>
       </div>

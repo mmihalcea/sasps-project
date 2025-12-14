@@ -124,4 +124,66 @@ export class AdminNotificationsComponent implements OnInit {
   onStatusChange() {
     this.loadNotifications();
   }
+
+  // Export appointments to CSV
+  exportToCSV() {
+    const user = LoginComponent.getCurrentUser();
+    const headers = new HttpHeaders({
+      'X-User-Role': user.role,
+    });
+
+    this.http
+      .get('http://localhost:8080/api/appointment/export/csv', {
+        headers,
+        responseType: 'blob',
+      })
+      .subscribe({
+        next: (data) => {
+          const blob = new Blob([data], { type: 'text/csv' });
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `appointments_${new Date().getTime()}.csv`;
+          link.click();
+          window.URL.revokeObjectURL(url);
+        },
+        error: (error) => {
+          console.error('Failed to export CSV', error);
+          alert('Failed to export appointments to CSV');
+        },
+      });
+  }
+
+  // Export appointments to PDF
+  exportToPDF() {
+    const user = LoginComponent.getCurrentUser();
+    const headers = new HttpHeaders({
+      'X-User-Role': user.role,
+    });
+
+    this.http
+      .get('http://localhost:8080/api/appointment/export/pdf', {
+        headers,
+        responseType: 'blob',
+      })
+      .subscribe({
+        next: (data) => {
+          const blob = new Blob([data], { type: 'text/html' });
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `appointments_${new Date().getTime()}.html`;
+          link.click();
+          window.URL.revokeObjectURL(url);
+        },
+        error: (error) => {
+          console.error('Failed to export PDF', error);
+          alert('Failed to export appointments to PDF');
+        },
+      });
+  }
+          alert('Failed to export appointments to PDF');
+        },
+      });
+  }
 }

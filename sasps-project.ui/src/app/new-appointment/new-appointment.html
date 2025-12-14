@@ -152,7 +152,9 @@
                       placeholder="Ex: Ion Popescu"
                     />
                     @if (isInvalid('user.name')) {
-                      <p-message severity="error" size="small" variant="simple">Numele este obligatoriu.</p-message>
+                    <p-message severity="error" size="small" variant="simple"
+                      >Numele este obligatoriu.</p-message
+                    >
                     }
                   </div>
                   <div class="flex flex-col">
@@ -163,14 +165,16 @@
                       class="p-3 border border-gray-300 rounded-md"
                       placeholder="Ex: ion.popescu@email.com"
                     />
-                    @if (isInvalid('user.email')) {
-                      @if (appointmentForm.get('user.email')?.errors?.['required']) {
-                        <p-message severity="error" size="small" variant="simple">Email-ul este obligatoriu.</p-message>
-                      }
-                      @if (appointmentForm.get('user.email')?.errors?.['email']) {
-                        <p-message severity="error" size="small" variant="simple">Adresa de e-mail nu este valida.</p-message>
-                      }
-                    }
+                    @if (isInvalid('user.email')) { @if
+                    (appointmentForm.get('user.email')?.errors?.['required']) {
+                    <p-message severity="error" size="small" variant="simple"
+                      >Email-ul este obligatoriu.</p-message
+                    >
+                    } @if (appointmentForm.get('user.email')?.errors?.['email']) {
+                    <p-message severity="error" size="small" variant="simple"
+                      >Adresa de e-mail nu este valida.</p-message
+                    >
+                    } }
                   </div>
                   <div class="flex flex-col">
                     <label class="text-sm font-semibold mb-2">Telefon</label>
@@ -180,15 +184,16 @@
                       class="p-3 border border-gray-300 rounded-md"
                       placeholder="Ex: 0700000000"
                     />
-                    @if (isInvalid('user.phone')) {
-                      @if (appointmentForm.get('user.phone')?.errors?.['required']) {
-                        <p-message severity="error" size="small" variant="simple">Telefonul este
-                          obligatoriu.</p-message>
-                      }
-                      @if (appointmentForm.get('user.phone')?.errors?.['pattern'] ) {
-                        <p-message severity="error" size="small" variant="simple">Numarul de telefon nu este corect.</p-message>
-                      }
-                    }
+                    @if (isInvalid('user.phone')) { @if
+                    (appointmentForm.get('user.phone')?.errors?.['required']) {
+                    <p-message severity="error" size="small" variant="simple"
+                      >Telefonul este obligatoriu.</p-message
+                    >
+                    } @if (appointmentForm.get('user.phone')?.errors?.['pattern'] ) {
+                    <p-message severity="error" size="small" variant="simple"
+                      >Numarul de telefon nu este corect.</p-message
+                    >
+                    } }
                   </div>
                 </div>
               </div>

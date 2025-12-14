@@ -60,7 +60,7 @@ export class Home implements OnInit {
     this.loading = true;
 
     if (this.isAdmin) {
-      // Admin: Load all appointments for statistics
+      // Admin Load all appointments for statistics
       this.http.get<Appointment[]>(`${environment.apiUrl}/appointment/all`).subscribe({
         next: (appointments) => {
           this.calculateStats(appointments);
@@ -72,7 +72,7 @@ export class Home implements OnInit {
         },
       });
     } else {
-      // Normal user: Load their appointments
+      // Normal user Load their appointments
       const user = LoginComponent.getCurrentUser();
       this.http
         .get<Appointment[]>(`${environment.apiUrl}/appointment/customer/${user.email}`)

@@ -33,7 +33,7 @@ export class LoginComponent {
   errorMessage = '';
   loading = false;
 
-  // Super simple login - no proper state management
+  // Super simple login, no proper state management
   login() {
     this.loading = true;
     this.errorMessage = '';
@@ -45,7 +45,7 @@ export class LoginComponent {
       })
       .subscribe({
         next: (response) => {
-          // BASELINE: Store user in localStorage - no proper session management
+          // Store user in localStorage, no proper session management
           localStorage.setItem('currentUser', JSON.stringify(response));
 
           // Redirect based on role

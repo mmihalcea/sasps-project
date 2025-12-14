@@ -30,30 +30,30 @@ public class AppointmentService {
     private final EmailService emailService;
 
     public Long saveAppointment(AppointmentRequest request) {
-        // Complex validation logic - hardcoded without Validator pattern
+        // Complex validation logic, hardcoded without Validator pattern
         validateAppointmentRequest(request);
 
         Institution institution = institutionRepository.findById(request.getInstitutionId())
                 .orElseThrow(() -> new IllegalArgumentException("Institution not found"));
 
-        // Business rules validation - hardcoded without Strategy pattern
+        // Business rules validation, hardcoded without Strategy pattern
         validateBusinessRules(request, institution);
 
         User user = findOrCreateUser(request);
 
-        // Create appointment with complex logic - no Factory pattern
+        // Create appointment with complex logic, no Factory pattern
         Appointment appointment = createAppointmentFromRequest(request, user.getId());
 
-        // Calculate estimated duration based on service type - hardcoded
+        // Calculate estimated duration based on service type, hardcoded
         calculateEstimatedDuration(appointment);
 
-        // Set priority and status based on complex rules - no Strategy pattern
+        // Set priority and status based on complex rules, no Strategy pattern
         setPriorityAndStatus(appointment);
 
         // Save in DB
         Appointment saved = appointmentRepository.save(appointment);
 
-        // Send different notifications based on institution type - hardcoded without Adapter pattern
+        // Send different notifications based on institution type, hardcoded without Adapter pattern
         sendNotifications(saved);
 
         return saved.getId();
@@ -94,7 +94,7 @@ public class AppointmentService {
     private User findOrCreateUser(AppointmentRequest request) {
         return userRepository.findByEmail(request.getCustomerEmail())
                 .map(existing -> {
-                    // optional: update name/phone if changed
+                    // update name/phone if changed
                     existing.setName(request.getCustomerName());
                     existing.setPhone(request.getCustomerPhone());
                     return userRepository.save(existing);
@@ -151,7 +151,7 @@ public class AppointmentService {
     }
 
     private void calculateEstimatedDuration(Appointment appointment) {
-        // Hardcoded duration calculation - should use Strategy pattern in v2
+        // Hardcoded duration calculation,should use Strategy pattern in v2
         double baseDuration;
 
         switch (appointment.getServiceType()) {
@@ -178,10 +178,10 @@ public class AppointmentService {
     }
 
     private void sendNotifications(Appointment appointment) {
-        // Hardcoded notification logic - should use Adapter pattern in v2
+        // Hardcoded notification logic, should use Adapter pattern in v2
         notificationService.sendConfirmation(appointment);
         
-        // Tightly coupled email sending - no event-driven architecture
+        // Tightly coupled email sending, no event-driven architecture
         try {
             User user = userRepository.findById(appointment.getUserId()).orElse(null);
             if (user != null && user.getEmailNotificationsEnabled()) {
@@ -198,7 +198,7 @@ public class AppointmentService {
         Institution institution = institutionRepository.findById(institutionId)
                 .orElseThrow(() -> new IllegalArgumentException("Institution not found"));
 
-        // Generate slots based on institution-specific rules - hardcoded
+        // Generate slots based on institution-specific rules, hardcoded
         List<LocalDateTime> allSlots = generateAvailableSlots(institution, startDate);
 
         // Get all booked slots
@@ -226,7 +226,7 @@ public class AppointmentService {
             boolean weekend = currentDate.getDayOfWeek().getValue() == 6
                     || currentDate.getDayOfWeek().getValue() == 7;
 
-            // Skip weekends for government institutions - hardcoded logic
+            // Skip weekends for government institutions, hardcoded logic
             if (weekend && (institution.getType() == Institution.InstitutionType.PRIMARIA
                     || institution.getType() == Institution.InstitutionType.ANAF)) {
                 continue;
@@ -236,7 +236,7 @@ public class AppointmentService {
             while (currentTime.isBefore(institution.getClosingTime())) {
                 slots.add(LocalDateTime.of(currentDate, currentTime));
 
-                // Different slot intervals based on institution type - hardcoded
+                // Different slot intervals based on institution type,- hardcoded
                 if (institution.getType() == Institution.InstitutionType.ANAF) {
                     currentTime = currentTime.plusMinutes(45);
                 } else {
@@ -356,7 +356,7 @@ public class AppointmentService {
         return countyRepository.findAll().stream().map(county -> new CountyResponse(county.getId(), county.getName())).collect(Collectors.toList());
     }
 
-    // Cancel appointment with email notification - tightly coupled
+    // Cancel appointment with email notification, tightly coupled
     public void cancelAppointment(Long appointmentId, String reason) {
         Appointment appointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow(() -> new RuntimeException("Appointment not found"));
@@ -365,7 +365,7 @@ public class AppointmentService {
         appointment.setUpdatedAt(LocalDateTime.now());
         appointmentRepository.save(appointment);
 
-        // Hardcoded notification sending - no event system
+        // Hardcoded notification sending, no event system
         try {
             User user = userRepository.findById(appointment.getUserId()).orElse(null);
             if (user != null && user.getEmailNotificationsEnabled()) {

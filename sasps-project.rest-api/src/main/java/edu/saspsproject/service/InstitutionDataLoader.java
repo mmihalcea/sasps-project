@@ -61,7 +61,7 @@ public class InstitutionDataLoader {
             allInstitutions.add(spclep);
         }
         
-        // Add DRPCIV - one per country
+        // Add DRPCIV, one per country
         Institution drpciv = new Institution();
         drpciv.setName("DRPCIV Bucuresti");
         drpciv.setCounty(countyRepository.findByName("Bucuresti").orElse(counties.get(0)));

@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * User service without design patterns - monolithic service with tight coupling
+ * User service without design patterns, monolithic service with tight coupling
  * No facade pattern, no single responsibility principle
  */
 @Service
@@ -34,9 +34,9 @@ public class UserService {
         this.notificationService = notificationService;
     }
 
-    // Create user with notification - tightly coupled
+    // Create user with notification, tightly coupled
     public User createUser(User user) {
-        // Validation logic directly in service - no validator pattern
+        // Validation logic directly in service, no validator pattern
         if (user.getEmail() == null || user.getEmail().isEmpty()) {
             throw new RuntimeException("Email is required");
         }
@@ -45,7 +45,7 @@ public class UserService {
             throw new RuntimeException("Email already exists");
         }
 
-        // Set defaults - no builder pattern
+        // Set defaults, no builder pattern
         if (user.getEmailNotificationsEnabled() == null) {
             user.setEmailNotificationsEnabled(true);
         }
@@ -64,7 +64,7 @@ public class UserService {
 
         User savedUser = userRepository.save(user);
 
-        // Directly call email service - no event system
+        // Directly call email service, no event system
         try {
             emailService.sendWelcomeEmail(savedUser);
         } catch (Exception e) {
@@ -74,12 +74,12 @@ public class UserService {
         return savedUser;
     }
 
-    // Update user with notifications - duplicated validation
+    // Update user with notifications, duplicated validation
     public User updateUser(Long userId, User updatedUser) {
         User existingUser = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Hardcoded field updates - no mapper pattern
+        // Hardcoded field updates, no mapper pattern
         if (updatedUser.getName() != null) {
             existingUser.setName(updatedUser.getName());
         }
@@ -132,7 +132,7 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
     }
 
-    // Get all users - no pagination
+    // Get all users, no pagination
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
@@ -142,7 +142,7 @@ public class UserService {
         return userRepository.findByActive(true);
     }
 
-    // Deactivate user - cascading logic hardcoded
+    // Deactivate user, cascading logic hardcoded
     public void deactivateUser(Long userId) {
         User user = getUserById(userId);
         user.setActive(false);
@@ -159,7 +159,7 @@ public class UserService {
             apt.setStatus(Appointment.Status.CANCELLED);
             appointmentRepository.save(apt);
             
-            // Send cancellation notification - tightly coupled
+            // Send cancellation notification, tightly coupled
             try {
                 notificationService.createNotification(
                     userId, 
@@ -172,7 +172,7 @@ public class UserService {
         }
     }
 
-    // Complex user statistics - no separate analytics service
+    // Complex user statistics, no separate analytics service
     public Map<String, Object> getUserStatistics(Long userId) {
         User user = getUserById(userId);
         List<Appointment> allAppointments = appointmentRepository.findAll().stream()
@@ -185,7 +185,7 @@ public class UserService {
         stats.put("email", user.getEmail());
         stats.put("totalAppointments", allAppointments.size());
 
-        // Count by status - hardcoded logic
+        // Count by status, hardcoded logic
         long pending = allAppointments.stream()
                 .filter(apt -> apt.getStatus() == Appointment.Status.PENDING).count();
         long confirmed = allAppointments.stream()
@@ -216,7 +216,7 @@ public class UserService {
         return stats;
     }
 
-    // Get users by county - for administrative purposes
+    // Get users by county, for administrative purposes
     public List<User> getUsersByCounty(String county) {
         return userRepository.findByCounty(county);
     }
@@ -226,14 +226,14 @@ public class UserService {
         return userRepository.findByCity(city);
     }
 
-    // Bulk notification to all users in a county - no batch processing pattern
+    // Bulk notification to all users in a county, no batch processing pattern
     public void sendCountyAnnouncement(String county, String message) {
         List<User> users = getUsersByCounty(county);
         
         for (User user : users) {
             if (user.getActive() && user.getEmailNotificationsEnabled()) {
                 try {
-                    // Hardcoded notification creation - duplicate code
+                    // Hardcoded notification creation, duplicate code
                     notificationService.createNotification(user.getId(), message, "ANNOUNCEMENT");
                 } catch (Exception e) {
                     System.err.println("Failed to send announcement to user: " + user.getId());
@@ -267,7 +267,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    // Get user appointment history - duplicated from AppointmentService
+    // Get user appointment history, duplicated from AppointmentService
     public List<Appointment> getUserAppointmentHistory(Long userId) {
         return appointmentRepository.findAll().stream()
                 .filter(apt -> apt.getUserId().equals(userId))
@@ -275,11 +275,11 @@ public class UserService {
                 .toList();
     }
 
-    // Delete user - cascade delete not handled by DB
+    // Delete user, cascade delete not handled by DB
     public void deleteUser(Long userId) {
         User user = getUserById(userId);
         
-        // Manually delete all user's appointments - no cascade
+        // Manually delete all users appointments, no cascade
         List<Appointment> userAppointments = appointmentRepository.findAll().stream()
                 .filter(apt -> apt.getUserId().equals(userId))
                 .toList();

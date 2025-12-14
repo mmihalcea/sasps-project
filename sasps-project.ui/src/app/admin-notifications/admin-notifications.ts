@@ -182,8 +182,4 @@ export class AdminNotificationsComponent implements OnInit {
         },
       });
   }
-          alert('Failed to export appointments to PDF');
-        },
-      });
-  }
 }

@@ -62,7 +62,7 @@ public class InstitutionService {
         try {
             URI uri = ClassLoader.getSystemResource("town-halls").toURI();
             String path = Paths.get(uri).toString();
-            //common institution services
+            // common institution services
             List<Institution> institutions = new ArrayList<>();
             Institution drpciv = new Institution();
             drpciv.setName("DRPCIV");

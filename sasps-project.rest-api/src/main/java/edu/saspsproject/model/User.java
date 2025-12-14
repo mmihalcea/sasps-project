@@ -69,7 +69,7 @@ public class User {
     private String role = "USER"; // USER, ADMIN
 
     @Setter
-    private String password; // Simplistic - no encryption for baseline
+    private String password; // Simplistic no encryption for baseline version
 
     public User() {}
 

@@ -22,7 +22,7 @@ public class NotificationController {
         return ResponseEntity.ok(notificationService.getUserNotifications(userId));
     }
     
-    // Get all notifications - ADMIN ONLY (no actual check for baseline)
+    // Get all notifications - admin only (no actual check for baseline)
     @GetMapping("/all")
     public ResponseEntity<List<Notification>> getAllNotifications(
             @RequestHeader(value = "X-User-Role", required = false) String role) {
@@ -35,13 +35,13 @@ public class NotificationController {
         return ResponseEntity.ok(notificationService.getAllNotifications());
     }
     
-    // Get notifications by status - ADMIN ONLY
+    // Get notifications by status - admin only
     @GetMapping("/status/{status}")
     public ResponseEntity<List<Notification>> getNotificationsByStatus(
             @PathVariable String status,
             @RequestHeader(value = "X-User-Role", required = false) String role) {
         
-        // BASELINE: Duplicated role check - no DRY principle
+        // Duplicated role check - no DRY principle
         if (!"ADMIN".equals(role)) {
             return ResponseEntity.status(403).body(null);
         }

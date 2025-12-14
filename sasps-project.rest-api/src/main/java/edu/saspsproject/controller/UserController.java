@@ -24,7 +24,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    // Get all users - no pagination
+    // Get all users no pagination
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
@@ -40,7 +40,7 @@ public class UserController {
         }
     }
 
-    // Get user by email - exposing email in URL (not good practice)
+    // Get user by email exposing email in URL (not good practice)
     @GetMapping("/email/{email}")
     public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
         try {
@@ -50,7 +50,7 @@ public class UserController {
         }
     }
 
-    // Create user - basic validation only
+    // Create user basic validation only
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
         try {
@@ -61,7 +61,7 @@ public class UserController {
         }
     }
 
-    // Update user - partial updates supported but poorly handled
+    // Update user partial updates supported but poorly handled
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
         try {
@@ -72,7 +72,7 @@ public class UserController {
         }
     }
 
-    // Delete user - cascade deletion
+    // Delete user cascade deletion
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         try {

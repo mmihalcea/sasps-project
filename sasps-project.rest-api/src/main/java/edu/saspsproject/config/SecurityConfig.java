@@ -34,7 +34,6 @@ public class SecurityConfig {
                 .requestMatchers("/api/user/**").permitAll() // Allow user creation/lookup
                 
                 // BASELINE: Admin endpoints are public for comparison without Keycloak
-                // In production, these should be protected with proper JWT validation
                 .requestMatchers("/api/notifications/**").permitAll() // Temporarily public for baseline
                 .requestMatchers("/api/admin/**").permitAll() // Temporarily public for baseline
                 

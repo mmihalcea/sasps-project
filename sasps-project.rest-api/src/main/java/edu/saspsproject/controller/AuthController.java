@@ -17,7 +17,7 @@ public class AuthController {
 
     private final UserRepository userRepository;
 
-    // Super simple login - NO JWT, NO encryption for baseline
+    // Super simple login - no JWT, no encryption for baseline
     // Just check email and password match
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
@@ -27,7 +27,7 @@ public class AuthController {
             return ResponseEntity.status(401).body(Map.of("error", "Invalid credentials"));
         }
         
-        // BASELINE: Direct password comparison - NO ENCRYPTION!
+        // Direct password comparison - no encryption/hashing
         if (!request.getPassword().equals(user.getPassword())) {
             return ResponseEntity.status(401).body(Map.of("error", "Invalid credentials"));
         }

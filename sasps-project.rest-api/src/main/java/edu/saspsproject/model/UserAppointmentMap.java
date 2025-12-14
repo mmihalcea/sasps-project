@@ -3,7 +3,7 @@ package edu.saspsproject.model;
 import jakarta.persistence.*;
 import lombok.Setter;
 
-// Mapping entity to associate Users with Appointments -> Not used directly in application logic at the moment
+// Mapping entity to associate Users with Appointments, Not used directly in application logic at the moment
 @Entity
 @Table(name = "user_appointment_map")
 public class UserAppointmentMap {

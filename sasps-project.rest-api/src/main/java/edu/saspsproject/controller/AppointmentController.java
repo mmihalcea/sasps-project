@@ -197,7 +197,7 @@ public class AppointmentController {
         try {
             List<Appointment> appointments = repo.findAll();
             
-            // CSV generation hardcoded in controller - poor design!
+            // CSV generation hardcoded in controller - poor design
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             PrintWriter writer = new PrintWriter(outputStream);
             
@@ -221,7 +221,7 @@ public class AppointmentController {
             writer.flush();
             byte[] csvData = outputStream.toByteArray();
             
-            // Also send email notification - tight coupling!
+            // Also send email notification - tight coupling
             sendEmailNotification("admin@test.com", "CSV Export", "Exported " + appointments.size() + " appointments");
             
             log.info("Exported {} appointments to CSV", appointments.size());
@@ -237,10 +237,10 @@ public class AppointmentController {
         }
     }
 
-    // BASELINE PROBLEM: Email notification hardcoded in controller - tight coupling!
+    // Email notification hardcoded in controller - tight coupling
     private void sendEmailNotification(String to, String subject, String message) {
         try {
-            // Hardcoded email sending - no interface, no abstraction
+            // Hardcoded email sending, no interface, no abstraction
             log.info("Sending email to {} - Subject: {} - Message: {}", to, subject, message);
             
             // In real world, this would be hardcoded SMTP logic here too
@@ -257,14 +257,15 @@ public class AppointmentController {
         }
     }
 
-    // BASELINE PROBLEM: PDF Export - duplicate logic similar to CSV export
-    // HARDCODED PDF generation directly in controller - no separation of concerns!
+    // Email notification hardcoded in controller - tight coupling
+    // PDF Export - duplicate logic similar to CSV export
+    // Hardcoded PDF generation directly in controller - no separation of concerns
     @GetMapping("/export/pdf")
     public ResponseEntity<byte[]> exportAppointmentsToPDF() {
         try {
             List<Appointment> appointments = repo.findAll();
             
-            // Hardcoded PDF generation using PDFBox - all logic in controller!
+            // Hardcoded PDF generation using PDFBox - all logic in controller
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             
             // Create PDF document - hardcoded page setup
@@ -356,7 +357,7 @@ public class AppointmentController {
             
             byte[] pdfData = outputStream.toByteArray();
             
-            // Hardcoded email notification - tight coupling!
+            // Hardcoded email notification - tight coupling
             sendEmailNotification("admin@test.com", "PDF Export", "Exported " + appointments.size() + " appointments to PDF");
             
             log.info("Exported {} appointments to PDF", appointments.size());

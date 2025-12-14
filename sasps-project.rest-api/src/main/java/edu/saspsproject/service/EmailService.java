@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Email service without design patterns - intentionally duplicating code
+ * Email service without design patterns, intentionally duplicating code
  * for baseline comparison with pattern-based implementation
  */
 @Service
@@ -27,7 +27,7 @@ public class EmailService {
         this.mailSender = mailSender;
     }
 
-    // Duplicated code - no template method pattern
+    // Duplicated code, no template method pattern
     public void sendAppointmentConfirmationEmail(User user, Appointment appointment, String institutionName) {
         if (user.getEmail() == null || !user.getEmailNotificationsEnabled()) {
             return;
@@ -39,9 +39,9 @@ public class EmailService {
 
             helper.setFrom(fromEmail);
             helper.setTo(user.getEmail());
-            helper.setSubject("Confirmare programare - SASPS");
+            helper.setSubject("Confirmare programare, SASPS");
 
-            // Hardcoded HTML - no template engine usage
+            // Hardcoded HTML, no template engine usage
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
             String htmlContent = "<!DOCTYPE html><html><head><style>"
                     + "body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }"
@@ -67,7 +67,7 @@ public class EmailService {
                     + "</div>"
                     + "<div class='footer'>"
                     + "<p>Acest email a fost generat automat. Vă rugăm să nu răspundeți.</p>"
-                    + "<p>&copy; 2025 SASPS - Sistem de Agendat la Servicii Publice</p>"
+                    + "<p>&copy; 2025 SASPS, Sistem de Agendat la Servicii Publice</p>"
                     + "</div></div></body></html>";
 
             helper.setText(htmlContent, true);
@@ -79,7 +79,7 @@ public class EmailService {
         }
     }
 
-    // More duplicated code - no strategy pattern
+    // More duplicated code, no strategy pattern
     public void sendAppointmentReminderEmail(User user, Appointment appointment, String institutionName) {
         if (user.getEmail() == null || !user.getEmailNotificationsEnabled()) {
             return;
@@ -91,7 +91,7 @@ public class EmailService {
 
             helper.setFrom(fromEmail);
             helper.setTo(user.getEmail());
-            helper.setSubject("Reminder: Programare mâine - SASPS");
+            helper.setSubject("Reminder: Programare mâine, SASPS");
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
             String htmlContent = "<!DOCTYPE html><html><head><style>"
@@ -107,7 +107,7 @@ public class EmailService {
                     + "<div class='content'>"
                     + "<p>Bună " + user.getName() + ",</p>"
                     + "<div class='warning'>"
-                    + "<p><strong>⚠️ Atenție!</strong> Aveți o programare mâine!</p>"
+                    + "<p><strong>Atenție!</strong> Aveți o programare mâine!</p>"
                     + "</div>"
                     + "<div class='details'>"
                     + "<h3>Detalii programare:</h3>"
@@ -136,7 +136,7 @@ public class EmailService {
         }
     }
 
-    // Even more duplication - no builder pattern
+    // Even more duplication, no builder pattern
     public void sendAppointmentCancellationEmail(User user, Appointment appointment, String institutionName, String reason) {
         if (user.getEmail() == null || !user.getEmailNotificationsEnabled()) {
             return;
@@ -148,7 +148,7 @@ public class EmailService {
 
             helper.setFrom(fromEmail);
             helper.setTo(user.getEmail());
-            helper.setSubject("Programare anulată - SASPS");
+            helper.setSubject("Programare anulată, SASPS");
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
             String htmlContent = "<!DOCTYPE html><html><head><style>"
@@ -186,7 +186,7 @@ public class EmailService {
         }
     }
 
-    // Welcome email - more duplication
+    // Welcome email, more duplication
     public void sendWelcomeEmail(User user) {
         if (user.getEmail() == null) {
             return;
@@ -211,7 +211,7 @@ public class EmailService {
                     + "<div class='header'><h1>Bun venit!</h1></div>"
                     + "<div class='content'>"
                     + "<p>Bună " + user.getName() + ",</p>"
-                    + "<p>Bine ați venit la SASPS - Sistemul de Agendat la Servicii Publice!</p>"
+                    + "<p>Bine ați venit la SASPS, Sistemul de Agendat la Servicii Publice!</p>"
                     + "<div class='features'>"
                     + "<h3>Ce puteți face cu SASPS:</h3>"
                     + "<ul>"

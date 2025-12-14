@@ -26,7 +26,7 @@ import { LoginComponent } from './login/login';
 export class App {
   constructor(private router: Router) {}
 
-  // Check if user is logged in - baseline approach with direct localStorage access
+  // Check if user is logged in, baseline approach with direct localStorage access
   isLoggedIn(): boolean {
     return LoginComponent.isLoggedIn();
   }

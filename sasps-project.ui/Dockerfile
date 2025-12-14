@@ -1,4 +1,4 @@
-# Stage 1: Build the Angular application
+# Build the Angular application
 FROM node:24-alpine AS build
 
 WORKDIR /app
@@ -15,7 +15,7 @@ COPY . .
 # Build the application
 RUN npm run build
 
-# Stage 2: Serve with nginx
+# Serve with nginx
 FROM nginx:alpine
 
 # Copy built assets from build stage

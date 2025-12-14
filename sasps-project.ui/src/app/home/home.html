@@ -1,29 +1,187 @@
-<div class="flex flex-col items-stretch justify-self-center h-screen">
-  <div class="flex flex-col items-stretch justify-self-center">
-    <h2 class="mt-4 text-2xl/7 font-bold text-gray-600 sm:text-3xl sm:tracking-tight">Programare ghișeu</h2>
-  </div>
-  <div class="m-auto">
-    <div>
-      <p-inputgroup>
-        <p-floatlabel variant="on">
-          <input pInputText id="in_label" [(ngModel)]="email" autocomplete="off" email />
-          <label for="in_label">Căutare după e-mail</label>
-        </p-floatlabel>
-        <p-inputgroup-addon>
-          <p-button icon="pi pi-search" />
-        </p-inputgroup-addon>
-      </p-inputgroup>
-
+<div class="container mx-auto p-6">
+  <!-- Not logged in -->
+  <div *ngIf="!isLoggedIn" class="flex flex-col items-center justify-center min-h-[60vh]">
+    <h1 class="text-4xl font-bold text-gray-800 mb-4">Bun venit la Sistemul de Programari</h1>
+    <p class="text-lg text-gray-600 mb-8">
+      Creați și gestionați programări pentru servicii publice
+    </p>
+    <div class="flex gap-4">
+      <p-button label="Autentificare" size="large" routerLink="/login" icon="pi pi-sign-in" />
+      <p-button
+        label="Programare noua"
+        size="large"
+        routerLink="/new-appointment"
+        severity="secondary"
+        icon="pi pi-calendar-plus"
+      />
     </div>
-    <div class="relative flex py-5 items-center">
-      <div class="flex-grow border-t border-gray-400"></div>
-      <span class="flex-shrink mx-4 text-gray-400">SAU</span>
-      <div class="flex-grow border-t border-gray-400"></div>
-    </div>
-    <div class="mt-5 justify-self-center">
-      <p-button label="Programare noua" size="large" routerLink="/new-appointment" />
-    </div>
-
   </div>
 
+  <!-- Logged in - User Dashboard -->
+  <div *ngIf="isLoggedIn && !isAdmin">
+    <h1 class="text-3xl font-bold mb-6">Bun venit, {{ userName }}!</h1>
+
+    <!-- Statistics Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+      <p-card>
+        <div class="text-center">
+          <i class="pi pi-calendar text-4xl text-blue-500 mb-2"></i>
+          <h3 class="text-2xl font-bold">{{ stats.totalAppointments }}</h3>
+          <p class="text-gray-600">Total programari</p>
+        </div>
+      </p-card>
+
+      <p-card>
+        <div class="text-center">
+          <i class="pi pi-clock text-4xl text-yellow-500 mb-2"></i>
+          <h3 class="text-2xl font-bold">{{ stats.pendingAppointments }}</h3>
+          <p class="text-gray-600">In asteptare</p>
+        </div>
+      </p-card>
+
+      <p-card>
+        <div class="text-center">
+          <i class="pi pi-check-circle text-4xl text-green-500 mb-2"></i>
+          <h3 class="text-2xl font-bold">{{ stats.confirmedAppointments }}</h3>
+          <p class="text-gray-600">Confirmate</p>
+        </div>
+      </p-card>
+
+      <p-card>
+        <div class="text-center">
+          <i class="pi pi-check text-4xl text-blue-500 mb-2"></i>
+          <h3 class="text-2xl font-bold">{{ stats.completedAppointments }}</h3>
+          <p class="text-gray-600">Finalizate</p>
+        </div>
+      </p-card>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="mb-6">
+      <h2 class="text-xl font-bold mb-4">Actiuni rapide</h2>
+      <div class="flex gap-4">
+        <p-button
+          label="Programare noua"
+          icon="pi pi-calendar-plus"
+          routerLink="/new-appointment"
+          size="large"
+        />
+        <p-button
+          label="Programarile mele"
+          icon="pi pi-list"
+          routerLink="/user-appointments"
+          severity="secondary"
+          size="large"
+        />
+      </div>
+    </div>
+
+    <!-- Recent Appointments -->
+    <div *ngIf="recentAppointments.length > 0">
+      <h2 class="text-xl font-bold mb-4">Ultimele programari</h2>
+      <p-table [value]="recentAppointments" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Titlu</th>
+            <th>Data si Ora</th>
+            <th>Tip Serviciu</th>
+            <th>Status</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-appointment>
+          <tr>
+            <td>{{ appointment.title }}</td>
+            <td>{{ appointment.appointmentTime | date : 'dd/MM/yyyy HH:mm' }}</td>
+            <td>{{ appointment.serviceType }}</td>
+            <td>
+              <span [class]="getStatusClass(appointment.status)">
+                {{ appointment.status }}
+              </span>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <div
+      *ngIf="recentAppointments.length === 0 && !loading"
+      class="text-center p-6 bg-gray-100 rounded mt-4"
+    >
+      <i class="pi pi-inbox text-4xl text-gray-400 mb-2"></i>
+      <p class="text-gray-600">Nu aveti inca nicio programare.</p>
+      <p-button
+        label="Creaza prima programare"
+        icon="pi pi-plus"
+        routerLink="/new-appointment"
+        class="mt-4"
+      />
+    </div>
+  </div>
+
+  <!-- Logged in - Admin Dashboard -->
+  <div *ngIf="isLoggedIn && isAdmin">
+    <h1 class="text-3xl font-bold mb-6">Dashboard Administrator</h1>
+
+    <!-- Admin Statistics Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+      <p-card>
+        <div class="text-center">
+          <i class="pi pi-calendar text-4xl text-blue-500 mb-2"></i>
+          <h3 class="text-2xl font-bold">{{ stats.totalAppointments }}</h3>
+          <p class="text-gray-600">Total programari sistem</p>
+        </div>
+      </p-card>
+
+      <p-card>
+        <div class="text-center">
+          <i class="pi pi-clock text-4xl text-yellow-500 mb-2"></i>
+          <h3 class="text-2xl font-bold">{{ stats.pendingAppointments }}</h3>
+          <p class="text-gray-600">In asteptare</p>
+        </div>
+      </p-card>
+
+      <p-card>
+        <div class="text-center">
+          <i class="pi pi-check-circle text-4xl text-green-500 mb-2"></i>
+          <h3 class="text-2xl font-bold">{{ stats.confirmedAppointments }}</h3>
+          <p class="text-gray-600">Confirmate</p>
+        </div>
+      </p-card>
+
+      <p-card>
+        <div class="text-center">
+          <i class="pi pi-check text-4xl text-blue-500 mb-2"></i>
+          <h3 class="text-2xl font-bold">{{ stats.completedAppointments }}</h3>
+          <p class="text-gray-600">Finalizate</p>
+        </div>
+      </p-card>
+    </div>
+
+    <!-- Admin Quick Actions -->
+    <div class="mb-6">
+      <h2 class="text-xl font-bold mb-4">Actiuni rapide</h2>
+      <div class="flex gap-4">
+        <p-button
+          label="Gestionare notificari"
+          icon="pi pi-bell"
+          routerLink="/admin-notifications"
+          size="large"
+        />
+        <p-button
+          label="Cauta programari"
+          icon="pi pi-search"
+          routerLink="/user-appointments"
+          severity="secondary"
+          size="large"
+        />
+        <p-button
+          label="Programare noua"
+          icon="pi pi-calendar-plus"
+          routerLink="/new-appointment"
+          severity="secondary"
+          size="large"
+        />
+      </div>
+    </div>
+  </div>
 </div>

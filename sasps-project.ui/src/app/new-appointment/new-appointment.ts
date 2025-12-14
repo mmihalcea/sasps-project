@@ -213,7 +213,14 @@ export class NewAppointment implements OnInit {
   private combineDateAndTime(date: Date, time: Date): string {
     const combined = new Date(date);
     combined.setHours(time.getHours(), time.getMinutes(), 0, 0);
-    return combined.toISOString();
+    // Format as local datetime without timezone (ISO format without Z)
+    const year = combined.getFullYear();
+    const month = String(combined.getMonth() + 1).padStart(2, '0');
+    const day = String(combined.getDate()).padStart(2, '0');
+    const hours = String(combined.getHours()).padStart(2, '0');
+    const minutes = String(combined.getMinutes()).padStart(2, '0');
+    const seconds = String(combined.getSeconds()).padStart(2, '0');
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
   }
 
   protected getServicesByInstitutionType() {

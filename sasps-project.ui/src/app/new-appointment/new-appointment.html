@@ -69,7 +69,7 @@
                     formControlName="date"
                     [inline]="true"
                     [firstDayOfWeek]="1"
-                    [minDate]="today"
+                    [minDate]="defaultDate"
                     [disabledDays]="[0, 6]"
                   />
                 </div>
@@ -146,29 +146,49 @@
                   <div class="flex flex-col">
                     <label class="text-sm font-semibold mb-2">Nume complet</label>
                     <input
-                      type="text"
+                      pInputText
                       formControlName="name"
                       class="p-3 border border-gray-300 rounded-md"
                       placeholder="Ex: Ion Popescu"
                     />
+                    @if (isInvalid('user.name')) {
+                      <p-message severity="error" size="small" variant="simple">Numele este obligatoriu.</p-message>
+                    }
                   </div>
                   <div class="flex flex-col">
                     <label class="text-sm font-semibold mb-2">Email</label>
                     <input
-                      type="email"
+                      pInputText
                       formControlName="email"
                       class="p-3 border border-gray-300 rounded-md"
                       placeholder="Ex: ion.popescu@email.com"
                     />
+                    @if (isInvalid('user.email')) {
+                      @if (appointmentForm.get('user.email')?.errors?.['required']) {
+                        <p-message severity="error" size="small" variant="simple">Email-ul este obligatoriu.</p-message>
+                      }
+                      @if (appointmentForm.get('user.email')?.errors?.['email']) {
+                        <p-message severity="error" size="small" variant="simple">Adresa de e-mail nu este valida.</p-message>
+                      }
+                    }
                   </div>
                   <div class="flex flex-col">
                     <label class="text-sm font-semibold mb-2">Telefon</label>
                     <input
-                      type="tel"
+                      pInputText
                       formControlName="phone"
                       class="p-3 border border-gray-300 rounded-md"
                       placeholder="Ex: 0700000000"
                     />
+                    @if (isInvalid('user.phone')) {
+                      @if (appointmentForm.get('user.phone')?.errors?.['required']) {
+                        <p-message severity="error" size="small" variant="simple">Telefonul este
+                          obligatoriu.</p-message>
+                      }
+                      @if (appointmentForm.get('user.phone')?.errors?.['pattern'] ) {
+                        <p-message severity="error" size="small" variant="simple">Numarul de telefon nu este corect.</p-message>
+                      }
+                    }
                   </div>
                 </div>
               </div>

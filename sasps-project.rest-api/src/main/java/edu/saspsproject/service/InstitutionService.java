@@ -13,15 +13,10 @@ import edu.saspsproject.repository.CountyRepository;
 import edu.saspsproject.repository.InstitutionRepository;
 import edu.saspsproject.repository.PublicServiceRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ResourceUtils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -30,7 +25,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -52,7 +47,7 @@ public class InstitutionService {
         }
 
         Institution institution = institutionRepository.findByType(type).get(0);
-        List<LocalDateTime> slots = appointmentService.getAvailability(institution.getId()).getAvailableSlots();
+        List<LocalDateTime> slots = appointmentService.getAvailability(institution.getId(), Optional.empty()).getAvailableSlots();
 
         List<PublicServiceDetailResponse> services = institution.getAvailableServices().stream().map(s ->
                 new PublicServiceDetailResponse(s.getId(), s.getName(), s.getDescription(), s.getFee(), s.getEstimatedDuration())

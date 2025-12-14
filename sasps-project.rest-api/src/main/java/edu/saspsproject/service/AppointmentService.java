@@ -4,7 +4,6 @@ import edu.saspsproject.dto.request.AppointmentRequest;
 import edu.saspsproject.dto.response.*;
 import edu.saspsproject.model.Appointment;
 import edu.saspsproject.model.Institution;
-import edu.saspsproject.model.PublicService;
 import edu.saspsproject.model.User;
 import edu.saspsproject.repository.AppointmentRepository;
 import edu.saspsproject.repository.CountyRepository;
@@ -195,12 +194,12 @@ public class AppointmentService {
         }
     }
 
-    public AvailabilityResponse getAvailability(Long institutionId) {
+    public AvailabilityResponse getAvailability(Long institutionId, Optional<LocalDate> startDate) {
         Institution institution = institutionRepository.findById(institutionId)
                 .orElseThrow(() -> new IllegalArgumentException("Institution not found"));
 
         // Generate slots based on institution-specific rules - hardcoded
-        List<LocalDateTime> allSlots = generateAvailableSlots(institution);
+        List<LocalDateTime> allSlots = generateAvailableSlots(institution, startDate);
 
         // Get all booked slots
         Set<LocalDateTime> bookedSlots = appointmentRepository.findByInstitutionId(institutionId)
@@ -217,9 +216,9 @@ public class AppointmentService {
         return new AvailabilityResponse(institutionId, availableSlots);
     }
 
-    private List<LocalDateTime> generateAvailableSlots(Institution institution) {
+    private List<LocalDateTime> generateAvailableSlots(Institution institution, Optional<LocalDate> startDateRequest) {
         List<LocalDateTime> slots = new ArrayList<>();
-        LocalDate startDate = LocalDate.now().plusDays(1);
+        LocalDate startDate = startDateRequest.orElseGet(() -> LocalDate.now().plusDays(1));
 
         for (int day = 0; day < 14; day++) {
             LocalDate currentDate = startDate.plusDays(day);

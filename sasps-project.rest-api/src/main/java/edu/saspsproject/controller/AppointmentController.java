@@ -1,17 +1,19 @@
 package edu.saspsproject.controller;
 
 import edu.saspsproject.dto.response.CountyResponse;
-import edu.saspsproject.dto.response.InstitutionDetailResponse;
 import edu.saspsproject.repository.AppointmentRepository;
 import edu.saspsproject.dto.request.AppointmentRequest;
 import edu.saspsproject.dto.response.AvailabilityResponse;
 import edu.saspsproject.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.Map;
 
 @Slf4j
@@ -36,9 +38,9 @@ public class AppointmentController {
     }
 
     @GetMapping("/availability")
-    public ResponseEntity<AvailabilityResponse> getAvailability(@RequestParam Long institutionId) {
+    public ResponseEntity<AvailabilityResponse> getAvailability(@RequestParam Long institutionId, @RequestParam @DateTimeFormat(pattern = "ddMMyyyy") LocalDate startDate) {
         try {
-            AvailabilityResponse availability = appointmentService.getAvailability(institutionId);
+            AvailabilityResponse availability = appointmentService.getAvailability(institutionId, Optional.ofNullable(startDate));
             log.info("Retrieved {} available slots for institution {}",
                     availability.getAvailableSlots().size(), institutionId);
             return ResponseEntity.ok(availability);

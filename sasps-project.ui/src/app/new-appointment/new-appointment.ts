@@ -18,6 +18,8 @@ import { InstitutionResponse } from './institution-response';
 import { DatePickerModule } from 'primeng/datepicker';
 import { SelectButton } from 'primeng/selectbutton';
 import { InstitutionDetailsResponse } from './institution-details-response';
+import {MessageModule} from 'primeng/message';
+import {InputText} from 'primeng/inputtext';
 
 @Component({
   selector: 'app-new-appointment',
@@ -31,26 +33,25 @@ import { InstitutionDetailsResponse } from './institution-details-response';
     FormsModule,
     DatePickerModule,
     SelectButton,
+    MessageModule,
+    InputText
   ],
   templateUrl: './new-appointment.html',
   standalone: true,
   styleUrl: './new-appointment.css',
 })
 export class NewAppointment implements OnInit {
-  counties: CountyResponse[] | undefined = undefined;
-  institutions: InstitutionResponse[] | undefined = undefined;
-  institutionDetails: InstitutionDetailsResponse | undefined = undefined;
-  appointmentForm: FormGroup;
-  protected today: Date = new Date();
+ counties: CountyResponse[] | undefined = undefined;
+ institutions: InstitutionResponse[] | undefined = undefined;
+ institutionDetails: InstitutionDetailsResponse | undefined = undefined;
+ appointmentForm: FormGroup;
+  protected defaultDate: Date = new Date();
   protected timeOptions: Date[] = [];
   currentStep: number = 1;
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private fb: FormBuilder,
-    private newAppointmentService: NewAppointmentService
-  ) {
+  constructor( private route: ActivatedRoute, private fb: FormBuilder,  private router: Router, private newAppointmentService: NewAppointmentService) {
+    this.defaultDate.setDate(this.defaultDate.getDate() + 1);
+    this.defaultDate.setHours(8)
     this.appointmentForm = this.fb.group({
       institution: this.fb.group({
         county: [undefined, [Validators.required]],
@@ -64,7 +65,7 @@ export class NewAppointment implements OnInit {
       user: this.fb.group({
         name: ['Test User', [Validators.required]],
         email: ['test@test.com', [Validators.required, Validators.email]],
-        phone: ['0700000000', [Validators.required]],
+        phone: ['0700000000', [Validators.required,  Validators.pattern('07[0-9]{8}')]],
       }),
     });
 
@@ -99,6 +100,13 @@ export class NewAppointment implements OnInit {
   ngOnInit(): void {
     this.route.data.subscribe(({ counties }) => {
       this.counties = counties;
+    });
+
+    this.appointmentForm.get('appointment.date')?.valueChanges.subscribe(value => {
+      this.timeOptions = [];
+      this.newAppointmentService.getAvailability(Number(this.institutionDetails?.id), value).subscribe(availability => {
+        this.timeOptions = availability.availableSlots.map(availability=> new Date(Date.parse(availability))).filter(availability=> availability.getDate() === value.getDate());
+      })
     });
 
     // Restore form data from localStorage if available
@@ -163,7 +171,7 @@ export class NewAppointment implements OnInit {
         localStorage.removeItem('appointmentFormData');
       }
     }
-  }
+    }
 
   protected onSubmit() {
     if (this.appointmentForm.invalid) {
@@ -252,6 +260,10 @@ export class NewAppointment implements OnInit {
     });
   }
 
+  isInvalid(controlName: string) {
+    const control = this.appointmentForm.get(controlName);
+    return control?.invalid && (control.touched);
+  }
   protected getSelectedCountyName(): string {
     const countyId = this.appointmentForm.get('institution.county')?.value;
     return this.counties?.find((c) => c.id === countyId)?.name || '';

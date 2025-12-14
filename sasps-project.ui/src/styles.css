@@ -16,18 +16,23 @@
       --p-datepicker-date-padding: 0.5rem;
       --p-datepicker-date-width: 2.5rem;
       --p-datepicker-date-height: 2.5rem;
+      --p-datepicker-day-view-margin: 0.5rem 8rem 0 0;
     }
 
     .p-selectbutton {
-      max-width: 420px;
+      max-width: 550px;
       display: flex;
       user-select: none;
       flex-wrap: wrap;
       vertical-align: bottom;
-      justify-content: space-evenly;
+      justify-content: space-around;
       outline-color: transparent;
       border-radius: var(--p-selectbutton-border-radius);
       background: var(--p-togglebutton-background);
+    }
+
+    .p-selectbutton .p-togglebutton{
+      width: 79px;
     }
   }
 }

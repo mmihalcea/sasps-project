@@ -42,6 +42,13 @@ export class App {
     return user ? user.name : '';
   }
 
+  // Get user role display
+  getUserRoleDisplay(): string {
+    const user = LoginComponent.getCurrentUser();
+    if (!user) return '';
+    return user.role === 'ADMIN' ? 'Admin' : 'Normal';
+  }
+
   // Logout
   logout() {
     LoginComponent.logout();

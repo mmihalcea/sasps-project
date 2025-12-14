@@ -33,13 +33,10 @@ public class SecurityConfig {
                 .requestMatchers("/api/appointment").permitAll()
                 .requestMatchers("/api/user/**").permitAll() // Allow user creation/lookup
                 
-                // Admin endpoints - require ADMIN role
-                .requestMatchers("/api/notifications/all").hasRole("ADMIN")
-                .requestMatchers("/api/notifications/status/**").hasRole("ADMIN")
-                .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                
-                // User endpoints - require authentication (via Keycloak JWT)
-                .requestMatchers("/api/notifications/user/**").authenticated()
+                // BASELINE: Admin endpoints are public for comparison without Keycloak
+                // In production, these should be protected with proper JWT validation
+                .requestMatchers("/api/notifications/**").permitAll() // Temporarily public for baseline
+                .requestMatchers("/api/admin/**").permitAll() // Temporarily public for baseline
                 
                 // All other requests are allowed (for baseline comparison)
                 .anyRequest().permitAll()

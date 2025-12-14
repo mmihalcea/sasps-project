@@ -2,15 +2,15 @@
   <!-- Simple navigation bar -->
   <nav class="navbar">
     <div class="nav-brand">
-      <a routerLink="/home">Appointment System</a>
+      <a routerLink="/home">Sistem de programari</a>
     </div>
 
     <div class="nav-links">
-      <a routerLink="/home" routerLinkActive="active">Home</a>
-      <a routerLink="/new-appointment" routerLinkActive="active">New Appointment</a>
+      <a routerLink="/home" routerLinkActive="active">Acasa</a>
+      <a routerLink="/new-appointment" routerLinkActive="active">Programare noua</a>
 
       <ng-container *ngIf="isLoggedIn()">
-        <a routerLink="/user-appointments" routerLinkActive="active">My Appointments</a>
+        <a routerLink="/user-appointments" routerLinkActive="active">Programarile mele</a>
 
         <ng-container *ngIf="isAdmin()">
           <a routerLink="/admin-notifications" routerLinkActive="active" class="admin-link">
@@ -18,12 +18,12 @@
           </a>
         </ng-container>
 
-        <span class="user-info">{{ getCurrentUserName() }}</span>
-        <a (click)="logout()" class="logout-link"> <i class="pi pi-sign-out"></i> Logout </a>
+        <span class="user-info">{{ getCurrentUserName() }} ({{ getUserRoleDisplay() }})</span>
+        <a (click)="logout()" class="logout-link"> <i class="pi pi-sign-out"></i> Deconectare </a>
       </ng-container>
 
       <ng-container *ngIf="!isLoggedIn()">
-        <a routerLink="/login" routerLinkActive="active">Login</a>
+        <a routerLink="/login" routerLinkActive="active">Autentificare</a>
       </ng-container>
     </div>
   </nav>

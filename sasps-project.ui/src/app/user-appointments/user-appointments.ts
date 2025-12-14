@@ -43,6 +43,10 @@ export class UserAppointmentsComponent implements OnInit {
     }
   }
 
+  isAdmin(): boolean {
+    return LoginComponent.isAdmin();
+  }
+
   searchAppointments() {
     if (!this.email || this.email.trim() === '') {
       return;

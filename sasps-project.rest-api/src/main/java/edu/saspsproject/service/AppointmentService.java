@@ -2,6 +2,7 @@ package edu.saspsproject.service;
 
 import edu.saspsproject.dto.request.AppointmentRequest;
 import edu.saspsproject.dto.response.*;
+import edu.saspsproject.factory.AppointmentFactory;
 import edu.saspsproject.model.Appointment;
 import edu.saspsproject.model.Institution;
 import edu.saspsproject.model.User;
@@ -29,8 +30,10 @@ public class AppointmentService {
     private final CountyRepository countyRepository;
     private final EmailService emailService;
 
+    // Factory injected
+    private final AppointmentFactory appointmentFactory;
+
     public Long saveAppointment(AppointmentRequest request) {
-        // Complex validation logic, hardcoded without Validator pattern
         validateAppointmentRequest(request);
 
         Institution institution = institutionRepository.findById(request.getInstitutionId())
@@ -41,8 +44,8 @@ public class AppointmentService {
 
         User user = findOrCreateUser(request);
 
-        // Create appointment with complex logic, no Factory pattern
-        Appointment appointment = createAppointmentFromRequest(request, user.getId());
+        // Create appointment via Factory
+        Appointment appointment = appointmentFactory.create(request, user.getId());
 
         // Calculate estimated duration based on service type, hardcoded
         calculateEstimatedDuration(appointment);
@@ -108,50 +111,7 @@ public class AppointmentService {
                 });
     }
 
-    private Appointment createAppointmentFromRequest(AppointmentRequest request, Long userId) {
-        LocalDateTime now = LocalDateTime.now();
-
-        Appointment appointment = new Appointment();
-        appointment.setInstitutionId(request.getInstitutionId());
-        appointment.setUserId(userId);
-        appointment.setInstitutionType(request.getInstitutionType());
-
-        String title = "Programare " + request.getServiceType() + " la instituția " + request.getInstitutionId();
-        appointment.setTitle(title);
-
-        appointment.setNotes(request.getNotes());
-        appointment.setAppointmentTime(request.getAppointmentTime());
-        appointment.setServiceType(parseServiceType(request.getServiceType()));
-        appointment.setPriorityLevel(parsePriorityLevel(request.getPriorityLevel()));
-        appointment.setDocumentRequired(request.getDocumentRequired());
-        appointment.setReminderSent(false);
-        appointment.setCreatedAt(now);
-        appointment.setUpdatedAt(now);
-
-        return appointment;
-    }
-
-    private Appointment.ServiceType parseServiceType(String value) {
-        try {
-            return Appointment.ServiceType.valueOf(value.toUpperCase(Locale.ROOT));
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Invalid service type: " + value);
-        }
-    }
-
-    private Appointment.PriorityLevel parsePriorityLevel(String value) {
-        if (value == null || value.isBlank()) {
-            return Appointment.PriorityLevel.MEDIUM;
-        }
-        try {
-            return Appointment.PriorityLevel.valueOf(value.toUpperCase(Locale.ROOT));
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Invalid priority level: " + value);
-        }
-    }
-
     private void calculateEstimatedDuration(Appointment appointment) {
-        // Hardcoded duration calculation,should use Strategy pattern in v2
         double baseDuration;
 
         switch (appointment.getServiceType()) {
@@ -346,21 +306,31 @@ public class AppointmentService {
     }
 
     public List<Appointment> getAppointmentsByService(String serviceType) {
-        Appointment.ServiceType parsed = parseServiceType(serviceType);
+        // parsing now lives in factory, so simplest is:
+        Appointment.ServiceType parsed;
+        try {
+            parsed = Appointment.ServiceType.valueOf(serviceType.toUpperCase(Locale.ROOT));
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid service type: " + serviceType);
+        }
+
+        Appointment.ServiceType finalParsed = parsed;
         return appointmentRepository.findAll().stream()
-                .filter(a -> parsed == a.getServiceType())
+                .filter(a -> finalParsed == a.getServiceType())
                 .collect(Collectors.toList());
     }
 
     public List<CountyResponse> getAllCounties() {
-        return countyRepository.findAll().stream().map(county -> new CountyResponse(county.getId(), county.getName())).collect(Collectors.toList());
+        return countyRepository.findAll().stream()
+                .map(county -> new CountyResponse(county.getId(), county.getName()))
+                .collect(Collectors.toList());
     }
 
     // Cancel appointment with email notification, tightly coupled
     public void cancelAppointment(Long appointmentId, String reason) {
         Appointment appointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow(() -> new RuntimeException("Appointment not found"));
-        
+
         appointment.setStatus(Appointment.Status.CANCELLED);
         appointment.setUpdatedAt(LocalDateTime.now());
         appointmentRepository.save(appointment);
@@ -373,11 +343,11 @@ public class AppointmentService {
                 String institutionName = institution != null ? institution.getName() : "Instituție necunoscută";
                 emailService.sendAppointmentCancellationEmail(user, appointment, institutionName, reason);
             }
-            
+
             notificationService.createNotification(
-                appointment.getUserId(),
-                "Programarea dumneavoastră a fost anulată" + (reason != null ? ": " + reason : ""),
-                "CANCELLATION"
+                    appointment.getUserId(),
+                    "Programarea dumneavoastră a fost anulată" + (reason != null ? ": " + reason : ""),
+                    "CANCELLATION"
             );
         } catch (Exception e) {
             System.err.println("Failed to send cancellation notifications: " + e.getMessage());
@@ -388,16 +358,16 @@ public class AppointmentService {
     public void confirmAppointment(Long appointmentId) {
         Appointment appointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow(() -> new RuntimeException("Appointment not found"));
-        
+
         appointment.setStatus(Appointment.Status.CONFIRMED);
         appointment.setUpdatedAt(LocalDateTime.now());
         appointmentRepository.save(appointment);
 
         try {
             notificationService.createNotification(
-                appointment.getUserId(),
-                "Programarea dumneavoastră a fost confirmată",
-                "CONFIRMATION"
+                    appointment.getUserId(),
+                    "Programarea dumneavoastră a fost confirmată",
+                    "CONFIRMATION"
             );
         } catch (Exception e) {
             System.err.println("Failed to send confirmation notification: " + e.getMessage());
@@ -408,16 +378,16 @@ public class AppointmentService {
     public void completeAppointment(Long appointmentId) {
         Appointment appointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow(() -> new RuntimeException("Appointment not found"));
-        
+
         appointment.setStatus(Appointment.Status.COMPLETED);
         appointment.setUpdatedAt(LocalDateTime.now());
         appointmentRepository.save(appointment);
 
         try {
             notificationService.createNotification(
-                appointment.getUserId(),
-                "Programarea dumneavoastră a fost finalizată",
-                "COMPLETION"
+                    appointment.getUserId(),
+                    "Programarea dumneavoastră a fost finalizată",
+                    "COMPLETION"
             );
         } catch (Exception e) {
             System.err.println("Failed to send completion notification: " + e.getMessage());

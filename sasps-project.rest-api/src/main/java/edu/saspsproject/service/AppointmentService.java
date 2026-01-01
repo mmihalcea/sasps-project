@@ -3,6 +3,7 @@ package edu.saspsproject.service;
 import edu.saspsproject.dto.request.AppointmentRequest;
 import edu.saspsproject.dto.response.*;
 import edu.saspsproject.factory.AppointmentFactory;
+import edu.saspsproject.factory.AppointmentFactoryProvider;
 import edu.saspsproject.model.Appointment;
 import edu.saspsproject.model.Institution;
 import edu.saspsproject.model.User;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AppointmentService {
 
+    private final AppointmentFactoryProvider appointmentFactoryProvider;
     private final AppointmentRepository appointmentRepository;
     private final InstitutionRepository institutionRepository;
     private final UserRepository userRepository;
@@ -30,8 +32,6 @@ public class AppointmentService {
     private final CountyRepository countyRepository;
     private final EmailService emailService;
 
-    // Factory injected
-    private final AppointmentFactory appointmentFactory;
 
     public Long saveAppointment(AppointmentRequest request) {
         validateAppointmentRequest(request);
@@ -39,16 +39,20 @@ public class AppointmentService {
         Institution institution = institutionRepository.findById(request.getInstitutionId())
                 .orElseThrow(() -> new IllegalArgumentException("Institution not found"));
 
-        // Business rules validation, hardcoded without Strategy pattern
         validateBusinessRules(request, institution);
 
         User user = findOrCreateUser(request);
 
-        // Create appointment via Factory
-        Appointment appointment = appointmentFactory.create(request, user.getId());
+        Appointment.ServiceType serviceType;
+        try {
+            serviceType = Appointment.ServiceType.valueOf(request.getServiceType().toUpperCase(Locale.ROOT));
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid service type: " + request.getServiceType());
+        }
 
-        // Calculate estimated duration based on service type, hardcoded
-        calculateEstimatedDuration(appointment);
+        Appointment appointment = appointmentFactoryProvider
+                .get(serviceType)
+                .create(request, user.getId());
 
         // Set priority and status based on complex rules, no Strategy pattern
         setPriorityAndStatus(appointment);
@@ -109,24 +113,6 @@ public class AppointmentService {
                     user.setPhone(request.getCustomerPhone());
                     return userRepository.save(user);
                 });
-    }
-
-    private void calculateEstimatedDuration(Appointment appointment) {
-        double baseDuration;
-
-        switch (appointment.getServiceType()) {
-            case ELIBERARE_CI -> baseDuration = 30.0;
-            case CERTIFICAT_NASTERE -> baseDuration = 20.0;
-            case DECLARATIE_FISCALA -> baseDuration = 45.0;
-            default -> baseDuration = 30.0;
-        }
-
-        // Add extra time based on priority
-        if (appointment.getPriorityLevel() == Appointment.PriorityLevel.URGENT) {
-            baseDuration *= 0.8;
-        }
-
-        appointment.setEstimatedDuration(baseDuration);
     }
 
     private void setPriorityAndStatus(Appointment appointment) {

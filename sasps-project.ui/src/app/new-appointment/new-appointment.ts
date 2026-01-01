@@ -20,6 +20,7 @@ import { SelectButton } from 'primeng/selectbutton';
 import { InstitutionDetailsResponse } from './institution-details-response';
 import {MessageModule} from 'primeng/message';
 import {InputText} from 'primeng/inputtext';
+import {SERVICE_TYPE_MAP} from './service-type-map';
 
 @Component({
   selector: 'app-new-appointment',
@@ -185,6 +186,15 @@ export class NewAppointment implements OnInit {
     const selectedService = this.institutionDetails?.availableServices.find(
       (s: any) => s.id === formValue.appointment.service
     );
+    if (!selectedService) {
+      alert('Serviciu selectat invalid.');
+      return;
+    }
+    const mappedServiceType = SERVICE_TYPE_MAP[selectedService?.name || ''];
+    if (!mappedServiceType) {
+      alert(`Nu există mapare pentru serviciul: ${selectedService.name}`);
+      return;
+    }
 
     const appointmentRequest = {
       institutionId: formValue.institution.institution,
@@ -196,9 +206,9 @@ export class NewAppointment implements OnInit {
       customerName: formValue.user.name,
       customerEmail: formValue.user.email,
       customerPhone: formValue.user.phone,
-      serviceType: 'ELIBERARE_CI',
-      priorityLevel: 'MEDIUM',
-      notes: selectedService?.name || '',
+      serviceType: mappedServiceType,
+      priorityLevel: '',
+      notes: selectedService?.name,
       documentRequired: '',
     };
 

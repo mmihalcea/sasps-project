@@ -17,7 +17,7 @@ public class Appointment {
     }
 
     public enum ServiceType {
-        ELIBERARE_CI, CERTIFICAT_NASTERE, DECLARATIE_FISCALA
+        ELIBERARE_CI, CERTIFICAT_NASTERE, DECLARATIE_FISCALA, PRESCHIMBARE_PERMIS, INMATRICULARE_VEHICUL
     }
 
     public enum PriorityLevel {

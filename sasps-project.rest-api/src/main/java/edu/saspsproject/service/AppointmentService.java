@@ -2,7 +2,6 @@ package edu.saspsproject.service;
 
 import edu.saspsproject.dto.request.AppointmentRequest;
 import edu.saspsproject.dto.response.*;
-import edu.saspsproject.factory.AppointmentFactory;
 import edu.saspsproject.factory.AppointmentFactoryProvider;
 import edu.saspsproject.model.Appointment;
 import edu.saspsproject.model.Institution;
@@ -11,6 +10,7 @@ import edu.saspsproject.repository.AppointmentRepository;
 import edu.saspsproject.repository.CountyRepository;
 import edu.saspsproject.repository.InstitutionRepository;
 import edu.saspsproject.repository.UserRepository;
+import edu.saspsproject.service.validation.AppointmentValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,16 +31,10 @@ public class AppointmentService {
     private final NotificationService notificationService;
     private final CountyRepository countyRepository;
     private final EmailService emailService;
+    private final AppointmentValidator appointmentValidator;
 
 
     public Long saveAppointment(AppointmentRequest request) {
-        validateAppointmentRequest(request);
-
-        Institution institution = institutionRepository.findById(request.getInstitutionId())
-                .orElseThrow(() -> new IllegalArgumentException("Institution not found"));
-
-        validateBusinessRules(request, institution);
-
         User user = findOrCreateUser(request);
 
         Appointment.ServiceType serviceType;
@@ -54,6 +48,9 @@ public class AppointmentService {
                 .get(serviceType)
                 .create(request, user.getId());
 
+        //validate using strategies
+        appointmentValidator.validate(appointment);
+
         // Set priority and status based on complex rules, no Strategy pattern
         setPriorityAndStatus(appointment);
 
@@ -64,38 +61,6 @@ public class AppointmentService {
         sendNotifications(saved);
 
         return saved.getId();
-    }
-
-    private void validateAppointmentRequest(AppointmentRequest request) {
-        if (request.getInstitutionId() == null) {
-            throw new IllegalArgumentException("Institution ID is required");
-        }
-        if (request.getAppointmentTime() == null) {
-            throw new IllegalArgumentException("Appointment time is required");
-        }
-        if (request.getCustomerName() == null || request.getCustomerName().isBlank()) {
-            throw new IllegalArgumentException("Customer name is required");
-        }
-        if (request.getCustomerEmail() == null || !request.getCustomerEmail().contains("@")) {
-            throw new IllegalArgumentException("Valid email is required");
-        }
-        if (request.getServiceType() == null || request.getServiceType().isBlank()) {
-            throw new IllegalArgumentException("Service type is required");
-        }
-    }
-
-    private void validateBusinessRules(AppointmentRequest request, Institution institution) {
-        // Check if appointment is in the past
-        if (request.getAppointmentTime().isBefore(LocalDateTime.now())) {
-            throw new IllegalArgumentException("Cannot book appointments in the past");
-        }
-
-        // Check if appointment is within institution hours
-        LocalTime appointmentTime = request.getAppointmentTime().toLocalTime();
-        if (appointmentTime.isBefore(institution.getOpeningTime()) ||
-                appointmentTime.isAfter(institution.getClosingTime())) {
-            throw new IllegalArgumentException("Appointment must be within institution hours");
-        }
     }
 
     private User findOrCreateUser(AppointmentRequest request) {

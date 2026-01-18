@@ -5,8 +5,22 @@ Sistemul va permite unui utilizator sa se programeze creeze programari pentru gh
 Aplicatia este compusa dintr-o interfata utilizator web si un serviciu de back-end. Vor exista 2 implementari pe branch-uri diferite: 
  * O varianta fara a utiliza design patterns
  * O varianta refactorizata cu design patterns
-###
-Design patterns luate in vedere: Factory Method, Facade, Adapter, Strategy
+
+## 🎯 Design Patterns Implementate
+
+| Pattern | Categorie | Descriere | Locație |
+|---------|-----------|-----------|---------|
+| **Factory Pattern** | Creational | Crearea programărilor specifice fiecărui tip de serviciu | `factory/` |
+| **Strategy Pattern** | Behavioral | Validare flexibilă a programărilor | `service/validation/` |
+| **Adapter Pattern** | Structural | Integrare uniformă provideri email/SMS | `adapter/` |
+| **Template Method** | Behavioral | Template-uri email reutilizabile | `template/` |
+| **Builder Pattern** | Creational | Construire fluent obiecte complexe | `builder/` |
+| **Observer Pattern** | Behavioral | Sistem event-driven pentru notificări | `observer/` |
+| **Singleton Pattern** | Creational | Cache manager pentru instituții | `singleton/` |
+| **Decorator Pattern** | Structural | Logging, retry, metrici pentru email | `decorator/` |
+
+📚 **Documentație detaliată:** [DESIGN_PATTERNS_IMPLEMENTED.md](DESIGN_PATTERNS_IMPLEMENTED.md)  
+📊 **Analiza inițială:** [DESIGN_PATTERNS_ANALYSIS.md](DESIGN_PATTERNS_ANALYSIS.md)
 
 ## Functionalitati
  * Calendar pentru programare la o anumita institutie

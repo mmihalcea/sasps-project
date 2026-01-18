@@ -31,14 +31,20 @@ public class AppointmentController {
     private final AppointmentRepository repo;
 
     @PostMapping()
-    public ResponseEntity<Long> saveAppointment(@RequestBody AppointmentRequest appointmentRequest) {
+    public ResponseEntity<?> saveAppointment(@RequestBody AppointmentRequest appointmentRequest) {
         try {
             Long appointmentId = appointmentService.saveAppointment(appointmentRequest);
             log.info("Created appointment with ID: {}", appointmentId);
-            return ResponseEntity.ok(appointmentId);
-        } catch (IllegalArgumentException | IllegalStateException e) {
-            log.error("Error creating appointment: {}", e.getMessage());
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.ok(Map.of("id", appointmentId, "message", "Appointment created successfully"));
+        } catch (IllegalArgumentException e) {
+            log.error("Validation error creating appointment: {}", e.getMessage());
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage(), "type", "VALIDATION_ERROR"));
+        } catch (IllegalStateException e) {
+            log.error("State error creating appointment: {}", e.getMessage());
+            return ResponseEntity.status(409).body(Map.of("error", e.getMessage(), "type", "CONFLICT"));
+        } catch (Exception e) {
+            log.error("Unexpected error creating appointment: {}", e.getMessage(), e);
+            return ResponseEntity.internalServerError().body(Map.of("error", "Internal server error: " + e.getMessage(), "type", "SERVER_ERROR"));
         }
     }
 

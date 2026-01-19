@@ -80,6 +80,45 @@ Write-Host "  Test users inserted/updated" -ForegroundColor Green
 # Reset sequence for users table
 docker exec $DB_CONTAINER psql -U $DB_USER -d $DB_NAME -c "SELECT setval('users_id_seq', (SELECT MAX(id) FROM users));" 2>$null | Out-Null
 
+# Insert demo appointments
+Write-Host "Inserting demo appointments..." -ForegroundColor Yellow
+$appointmentsSQL = @"
+INSERT INTO appointments (id, institution_id, user_id, title, notes, appointment_time, service_type, priority_level, status, institution_type, estimated_duration, document_required, reminder_sent, created_at, updated_at)
+VALUES 
+(1, 1, 2, 'Eliberare CI - Ion Popescu', 'Prima programare pentru CI', NOW() + INTERVAL '2 days', 'ELIBERARE_CI', 'MEDIUM', 'PENDING', 'SPCLEP', 30, 'Certificat nastere, Dovada adresa', false, NOW(), NOW()),
+(2, 1, 3, 'Certificat nastere copil', 'Solicitare certificat nastere', NOW() + INTERVAL '3 days', 'CERTIFICAT_NASTERE', 'HIGH', 'CONFIRMED', 'PRIMARIA', 20, 'Buletin parinti', false, NOW(), NOW()),
+(3, 2, 2, 'Declaratie fiscala anuala', 'Depunere declaratie fiscala', NOW() + INTERVAL '1 day', 'DECLARATIE_FISCALA', 'URGENT', 'CONFIRMED', 'ANAF', 15, 'Documente contabile', true, NOW(), NOW()),
+(4, 3, 3, 'Preschimbare permis conducere', 'Permis expirat', NOW() - INTERVAL '1 day', 'PRESCHIMBARE_PERMIS', 'MEDIUM', 'COMPLETED', 'DRPCIV', 10, 'Permis vechi, Fisa medicala', true, NOW() - INTERVAL '2 days', NOW()),
+(5, 1, 2, 'Inmatriculare vehicul nou', 'Masina noua', NOW() + INTERVAL '5 days', 'INMATRICULARE_VEHICUL', 'LOW', 'PENDING', 'DRPCIV', 25, 'Factura, Contract', false, NOW(), NOW())
+ON CONFLICT (id) DO NOTHING;
+"@
+docker exec $DB_CONTAINER psql -U $DB_USER -d $DB_NAME -c $appointmentsSQL 2>$null
+Write-Host "  Demo appointments inserted" -ForegroundColor Green
+
+# Reset sequence for appointments table
+docker exec $DB_CONTAINER psql -U $DB_USER -d $DB_NAME -c "SELECT setval('appointments_id_seq', COALESCE((SELECT MAX(id) FROM appointments), 1));" 2>$null | Out-Null
+
+# Insert demo notifications
+Write-Host "Inserting demo notifications..." -ForegroundColor Yellow
+$notificationsSQL = @"
+INSERT INTO notifications (id, user_id, appointment_id, institution_id, recipient_email, recipient_phone, method, notification_type, status, message, sent_at, created_at)
+VALUES 
+(1, 2, 1, 1, 'user@test.com', '0700000002', 'EMAIL', 'CONFIRMATION', 'SENT', 'Programarea dumneavoastra pentru Eliberare CI a fost confirmata pentru data de maine.', NOW() - INTERVAL '1 hour', NOW() - INTERVAL '1 hour'),
+(2, 3, 2, 1, 'test@example.com', '0700000003', 'EMAIL', 'CONFIRMATION', 'SENT', 'Programarea pentru Certificat nastere a fost inregistrata cu succes.', NOW() - INTERVAL '2 hours', NOW() - INTERVAL '2 hours'),
+(3, 2, 3, 2, 'user@test.com', '0700000002', 'SMS', 'REMINDER', 'SENT', 'Reminder: Maine aveti programare la ANAF pentru Declaratie fiscala.', NOW() - INTERVAL '30 minutes', NOW() - INTERVAL '30 minutes'),
+(4, 3, 4, 3, 'test@example.com', '0700000003', 'EMAIL', 'REMINDER', 'PENDING', 'Programarea dumneavoastra la DRPCIV este in curand.', NULL, NOW()),
+(5, 2, NULL, NULL, 'user@test.com', '0700000002', 'EMAIL', 'ANNOUNCEMENT', 'PENDING', 'Noi servicii disponibile! Acum puteti programa online si pentru Pasapoarte.', NULL, NOW()),
+(6, 1, NULL, NULL, 'admin@test.com', '0700000001', 'EMAIL', 'WELCOME', 'SENT', 'Bine ati venit in sistemul SASPS! Contul dumneavoastra de administrator a fost creat.', NOW() - INTERVAL '1 day', NOW() - INTERVAL '1 day'),
+(7, 2, 1, 1, 'user@test.com', '0700000002', 'SMS', 'CONFIRMATION', 'FAILED', 'Eroare la trimiterea SMS-ului de confirmare.', NULL, NOW() - INTERVAL '1 hour'),
+(8, 3, 5, 1, 'test@example.com', '0700000003', 'EMAIL', 'CONFIRMATION', 'PENDING', 'Programarea pentru Inmatriculare vehicul a fost primita si asteapta confirmare.', NULL, NOW())
+ON CONFLICT (id) DO NOTHING;
+"@
+docker exec $DB_CONTAINER psql -U $DB_USER -d $DB_NAME -c $notificationsSQL 2>$null
+Write-Host "  Demo notifications inserted" -ForegroundColor Green
+
+# Reset sequence for notifications table
+docker exec $DB_CONTAINER psql -U $DB_USER -d $DB_NAME -c "SELECT setval('notifications_id_seq', COALESCE((SELECT MAX(id) FROM notifications), 1));" 2>$null | Out-Null
+
 Write-Host "  Database setup completed!" -ForegroundColor Green
 Write-Host ""
 

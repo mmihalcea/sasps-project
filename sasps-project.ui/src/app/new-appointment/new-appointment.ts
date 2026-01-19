@@ -21,6 +21,9 @@ import { InstitutionDetailsResponse } from './institution-details-response';
 import {MessageModule} from 'primeng/message';
 import {InputText} from 'primeng/inputtext';
 import {SERVICE_TYPE_MAP} from './service-type-map';
+import {ToastModule} from 'primeng/toast';
+import {MessageService} from 'primeng/api';
+import {ProgressSpinner} from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-new-appointment',
@@ -35,7 +38,9 @@ import {SERVICE_TYPE_MAP} from './service-type-map';
     DatePickerModule,
     SelectButton,
     MessageModule,
-    InputText
+    InputText,
+    ToastModule,
+    ProgressSpinner
   ],
   templateUrl: './new-appointment.html',
   standalone: true,
@@ -49,6 +54,9 @@ export class NewAppointment implements OnInit {
   protected defaultDate: Date = new Date();
   protected timeOptions: Date[] = [];
   currentStep: number = 1;
+  isSubmitting: boolean = false;
+
+  private messageService = inject(MessageService);
 
   constructor( private route: ActivatedRoute, private fb: FormBuilder,  private router: Router, private newAppointmentService: NewAppointmentService) {
     this.defaultDate.setDate(this.defaultDate.getDate() + 1);
@@ -176,6 +184,16 @@ export class NewAppointment implements OnInit {
 
   protected onSubmit() {
     if (this.appointmentForm.invalid) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Formular incomplet',
+        detail: 'Vă rugăm să completați toate câmpurile obligatorii.',
+        life: 5000
+      });
+      return;
+    }
+
+    if (this.isSubmitting) {
       return;
     }
 
@@ -187,12 +205,22 @@ export class NewAppointment implements OnInit {
       (s: any) => s.id === formValue.appointment.service
     );
     if (!selectedService) {
-      alert('Serviciu selectat invalid.');
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Eroare',
+        detail: 'Serviciul selectat nu este valid.',
+        life: 5000
+      });
       return;
     }
     const mappedServiceType = SERVICE_TYPE_MAP[selectedService?.name || ''];
     if (!mappedServiceType) {
-      alert(`Nu există mapare pentru serviciul: ${selectedService.name}`);
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Eroare de configurare',
+        detail: `Nu există mapare pentru serviciul: ${selectedService.name}`,
+        life: 5000
+      });
       return;
     }
 
@@ -213,17 +241,68 @@ export class NewAppointment implements OnInit {
     };
 
     console.log('Sending appointment request:', appointmentRequest);
+    this.isSubmitting = true;
 
     this.newAppointmentService.saveAppointment(appointmentRequest).subscribe({
       next: (appointmentId: number) => {
-        localStorage.removeItem('appointmentFormData'); // Clear saved data
-        alert('Programare creata cu succes! ID: ' + appointmentId);
+        this.isSubmitting = false;
+        localStorage.removeItem('appointmentFormData');
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Programare creată cu succes!',
+          detail: `Programarea dumneavoastră a fost înregistrată cu numărul #${appointmentId}. Veți primi o confirmare pe email.`,
+          life: 8000
+        });
         this.appointmentForm.reset();
-        this.router.navigate(['/user-appointments']);
+        setTimeout(() => {
+          this.router.navigate(['/user-appointments']);
+        }, 2000);
       },
       error: (error: any) => {
+        this.isSubmitting = false;
         console.error('Error saving appointment:', error);
-        alert('Eroare la crearea programarii. Va rugam incercati din nou.');
+        
+        let errorMessage = 'A apărut o eroare la crearea programării. Vă rugăm încercați din nou.';
+        let errorSummary = 'Eroare';
+        
+        // Parse error message from backend
+        if (error.error) {
+          if (typeof error.error === 'string') {
+            errorMessage = error.error;
+          } else if (error.error.message) {
+            errorMessage = error.error.message;
+          } else if (error.error.error) {
+            errorMessage = error.error.error;
+          }
+        }
+        
+        // Provide user-friendly messages for common errors
+        if (errorMessage.toLowerCase().includes('overlap')) {
+          errorSummary = 'Slot ocupat';
+          errorMessage = 'Acest interval orar este deja ocupat. Vă rugăm să alegeți altă oră.';
+        } else if (errorMessage.toLowerCase().includes('time')) {
+          errorSummary = 'Oră invalidă';
+          errorMessage = 'Ora selectată nu este disponibilă. Vă rugăm să alegeți altă oră.';
+        } else if (errorMessage.toLowerCase().includes('institution')) {
+          errorSummary = 'Instituție invalidă';
+          errorMessage = 'Instituția selectată nu este disponibilă momentan.';
+        } else if (errorMessage.toLowerCase().includes('service')) {
+          errorSummary = 'Serviciu invalid';
+          errorMessage = 'Serviciul selectat nu este disponibil la această instituție.';
+        } else if (error.status === 0) {
+          errorSummary = 'Eroare de conexiune';
+          errorMessage = 'Nu se poate conecta la server. Verificați conexiunea la internet.';
+        } else if (error.status === 500) {
+          errorSummary = 'Eroare server';
+          errorMessage = 'A apărut o eroare pe server. Vă rugăm încercați mai târziu.';
+        }
+        
+        this.messageService.add({
+          severity: 'error',
+          summary: errorSummary,
+          detail: errorMessage,
+          life: 8000
+        });
       },
     });
   }

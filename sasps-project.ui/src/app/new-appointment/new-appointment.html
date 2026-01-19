@@ -1,3 +1,5 @@
+<p-toast position="top-right" />
+
 <div class="m-10">
   <form [formGroup]="appointmentForm" (ngSubmit)="onSubmit()">
     <p-stepper [(value)]="currentStep" class="h-screen">
@@ -204,14 +206,16 @@
                 severity="secondary"
                 icon="pi pi-arrow-left"
                 (onClick)="activateCallback(2)"
+                [disabled]="isSubmitting"
               />
               <p-button
-                label="Confirmă programarea"
-                icon="pi pi-check"
+                [label]="isSubmitting ? 'Se procesează...' : 'Confirmă programarea'"
+                [icon]="isSubmitting ? 'pi pi-spin pi-spinner' : 'pi pi-check'"
                 iconPos="right"
-                [disabled]="appointmentForm.invalid"
+                [disabled]="appointmentForm.invalid || isSubmitting"
                 (onClick)="onSubmit()"
                 severity="success"
+                [loading]="isSubmitting"
               />
             </div>
           </ng-template>

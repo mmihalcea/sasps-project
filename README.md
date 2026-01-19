@@ -3,10 +3,10 @@
 ## Descriere
 Sistemul va permite unui utilizator sa se programeze creeze programari pentru ghiseele mai multor institutii.
 Aplicatia este compusa dintr-o interfata utilizator web si un serviciu de back-end. Vor exista 2 implementari pe branch-uri diferite: 
- * O varianta fara a utiliza design patterns
- * O varianta refactorizata cu design patterns
+ * O varianta fara a utiliza design patterns -> branch **main**
+ * O varianta refactorizata cu design patterns -> branch **design-patterns-refactor**
 ###
-Design patterns luate in vedere: Factory Method, Facade, Adapter, Strategy
+Design patterns luate in vedere: Factory Method, Adapter, Strategy, Observer, Singleton, Builder, Decorator
 
 ## Functionalitati
  * Calendar pentru programare la o anumita institutie

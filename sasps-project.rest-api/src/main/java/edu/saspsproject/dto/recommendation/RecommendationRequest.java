@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Map;
+
 /**
  * DTO pentru cererea de recomandare
  */
@@ -26,7 +28,7 @@ public class RecommendationRequest {
     
     /**
      * Strategia de recomandare dorită
-     * Valori: NEAREST_LOCATION, FASTEST_AVAILABILITY, BEST_RATED, LEAST_BUSY
+     * Valori: NEAREST_LOCATION, FASTEST_AVAILABILITY, BEST_RATED, LEAST_BUSY, COMPOSITE
      */
     private String strategy;
     
@@ -49,4 +51,10 @@ public class RecommendationRequest {
      * Rating minim acceptat (1-5)
      */
     private Double minRating;
+    
+    /**
+     * COMPOSITE PATTERN - Ponderi pentru fiecare strategie (0-100)
+     * Ex: {"NEAREST_LOCATION": 40, "BEST_RATED": 30, "FASTEST_AVAILABILITY": 30}
+     */
+    private Map<String, Integer> strategyWeights;
 }

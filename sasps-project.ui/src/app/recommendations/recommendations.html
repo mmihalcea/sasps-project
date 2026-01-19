@@ -10,9 +10,36 @@
     </div>
     
     <div class="design-patterns-badge">
-      <p-tag severity="info" value="4 Design Patterns" />
-      <span class="patterns-list">Strategy • Factory • Decorator • Template Method</span>
+      <p-tag severity="info" [value]="compositeMode() ? '5 Design Patterns' : '4 Design Patterns'" />
+      <span class="patterns-list">
+        Strategy • Factory • Decorator • Template Method
+        @if (compositeMode()) {
+          • <strong>Composite</strong>
+        }
+      </span>
     </div>
+  </div>
+
+  <!-- Composite Mode Toggle -->
+  <div class="mode-toggle-section">
+    <div class="mode-toggle">
+      <span class="mode-label" [class.active]="!compositeMode()">Mod Simplu</span>
+      <p-toggleButton 
+        [(ngModel)]="compositeMode"
+        onLabel=""
+        offLabel=""
+        onIcon="pi pi-sliders-h"
+        offIcon="pi pi-sliders-h"
+        (onChange)="toggleCompositeMode()"
+        styleClass="mode-switch" />
+      <span class="mode-label" [class.active]="compositeMode()">Mod Avansat (Composite)</span>
+    </div>
+    @if (compositeMode()) {
+      <p class="composite-hint">
+        <i class="pi pi-info-circle"></i>
+        Combină mai multe strategii cu ponderi personalizate
+      </p>
+    }
   </div>
 
   <!-- Filters -->
@@ -41,18 +68,67 @@
         styleClass="w-full" />
     </div>
 
-    <div class="filter-group">
-      <label>Strategie de recomandare</label>
-      <p-select 
-        [options]="strategyOptions()" 
-        [(ngModel)]="selectedStrategy"
-        optionLabel="label"
-        optionValue="value"
-        placeholder="Selectează strategia"
-        (onChange)="getRecommendations()"
-        styleClass="w-full" />
-    </div>
+    @if (!compositeMode()) {
+      <div class="filter-group">
+        <label>Strategie de recomandare</label>
+        <p-select 
+          [options]="strategyOptions()" 
+          [(ngModel)]="selectedStrategy"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Selectează strategia"
+          (onChange)="getRecommendations()"
+          styleClass="w-full" />
+      </div>
+    }
   </div>
+
+  <!-- COMPOSITE Pattern - Sliders pentru ponderi -->
+  @if (compositeMode()) {
+    <div class="composite-section">
+      <div class="composite-header">
+        <h3><i class="pi pi-sliders-h"></i> Configurare Ponderi</h3>
+        <div class="weight-total" [class.valid]="weightsValid()" [class.invalid]="!weightsValid()">
+          Total: {{ totalWeight() }}%
+          @if (!weightsValid()) {
+            <button class="normalize-btn" (click)="normalizeWeights()">
+              <i class="pi pi-sync"></i> Normalizează
+            </button>
+          }
+        </div>
+      </div>
+      
+      <div class="sliders-grid">
+        @for (entry of strategyWeights() | keyvalue; track entry.key) {
+          <div class="slider-item">
+            <div class="slider-header">
+              <span class="slider-label">
+                <i class="pi" [ngClass]="strategyIcons[entry.key]"></i>
+                {{ strategyLabels[entry.key] }}
+              </span>
+              <span class="slider-value">{{ entry.value }}%</span>
+            </div>
+            <p-slider 
+              [ngModel]="entry.value"
+              (ngModelChange)="updateWeight(entry.key, $event)"
+              [min]="0" 
+              [max]="100" 
+              [step]="5"
+              styleClass="custom-slider" />
+          </div>
+        }
+      </div>
+
+      <div class="composite-actions">
+        <p-button 
+          label="Obține Recomandări Compozite" 
+          icon="pi pi-sparkles"
+          [disabled]="!weightsValid()"
+          (onClick)="getRecommendations()"
+          severity="success" />
+      </div>
+    </div>
+  }
 
   <!-- Strategy Info -->
   @if (response()) {

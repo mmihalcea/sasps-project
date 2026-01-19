@@ -25,7 +25,7 @@ public class MinimumScoreBoostFilter implements RecommendationFilter {
             List<InstitutionRecommendation> recommendations,
             RecommendationRequest request) {
         
-        log.info("📈 MinimumScoreBoostFilter: Boost pentru instituții cu scor > {}", BOOST_THRESHOLD);
+        log.info("MinimumScoreBoostFilter: Boost pentru instituții cu scor > {}", BOOST_THRESHOLD);
         
         recommendations.forEach(r -> {
             if (r.getScore() >= BOOST_THRESHOLD) {

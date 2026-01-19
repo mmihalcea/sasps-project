@@ -1,5 +1,6 @@
 package edu.saspsproject.service;
 
+import edu.saspsproject.composite.recommendation.CompositeRecommendationStrategy;
 import edu.saspsproject.decorator.recommendation.RecommendationFilter;
 import edu.saspsproject.dto.recommendation.RecommendationRequest;
 import edu.saspsproject.dto.recommendation.RecommendationResponse;
@@ -11,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * SERVICE - Orchestrează motorul de recomandări
@@ -20,6 +22,7 @@ import java.util.List;
  * - Strategy Pattern: pentru algoritmi interschimbabili
  * - Decorator Pattern: pentru filtre adiționale
  * - Template Method: pentru flow-ul de procesare
+ * - Composite Pattern: pentru combinarea strategiilor cu ponderi
  * 
  * Aceasta demonstrează puterea combinării design patterns:
  * - Codul e modular și ușor de testat
@@ -42,8 +45,18 @@ public class RecommendationService {
         log.info("📍 RecommendationService: Primesc cerere pentru {} cu strategia {}",
             request.getServiceType(), request.getStrategy());
         
-        // Factory Pattern - obține strategia
-        RecommendationStrategy strategy = strategyFactory.getStrategy(request.getStrategy());
+        RecommendationStrategy strategy;
+        
+        // COMPOSITE PATTERN - Verifică dacă avem ponderi pentru combinare
+        if ("COMPOSITE".equals(request.getStrategy()) && request.getStrategyWeights() != null) {
+            strategy = buildCompositeStrategy(request.getStrategyWeights());
+            log.info("🎯 COMPOSITE Strategy creat cu {} strategii combinate", 
+                request.getStrategyWeights().size());
+        } else {
+            // Factory Pattern - obține strategia simplă
+            strategy = strategyFactory.getStrategy(request.getStrategy());
+        }
+        
         log.info("🏭 Strategie selectată: {} - {}", 
             strategy.getStrategyName(), strategy.getDescription());
         
@@ -54,6 +67,33 @@ public class RecommendationService {
             response.getTotalResults(), response.getProcessingTimeMs());
         
         return response;
+    }
+    
+    /**
+     * COMPOSITE PATTERN - Construiește o strategie compozită din ponderi
+     */
+    private CompositeRecommendationStrategy buildCompositeStrategy(Map<String, Integer> weights) {
+        CompositeRecommendationStrategy composite = new CompositeRecommendationStrategy();
+        
+        for (Map.Entry<String, Integer> entry : weights.entrySet()) {
+            String strategyName = entry.getKey();
+            Integer weight = entry.getValue();
+            
+            if (weight > 0) {
+                try {
+                    RecommendationStrategy strategy = strategyFactory.getStrategy(strategyName);
+                    composite.addStrategy(strategy, weight / 100.0);
+                    log.debug("➕ Adăugat {} cu pondere {}%", strategyName, weight);
+                } catch (Exception e) {
+                    log.warn("⚠️ Nu am putut adăuga strategia {}: {}", strategyName, e.getMessage());
+                }
+            }
+        }
+        
+        // Normalizează pentru a ne asigura că suma = 100%
+        composite.normalizeWeights();
+        
+        return composite;
     }
     
     /**

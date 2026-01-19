@@ -1,11 +1,13 @@
 package edu.saspsproject.service;
 
+import edu.saspsproject.adapter.SmsProviderFactory;
 import edu.saspsproject.model.Appointment;
 import edu.saspsproject.model.Institution;
 import edu.saspsproject.model.Notification;
 import edu.saspsproject.model.User;
 import edu.saspsproject.repository.NotificationRepository;
 import edu.saspsproject.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -14,14 +16,11 @@ import java.time.format.DateTimeFormatter;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class NotificationService {
     private final UserRepository userRepository;
     private final NotificationRepository notificationRepository;
-
-    public NotificationService(UserRepository userRepository, NotificationRepository notificationRepository) {
-        this.userRepository = userRepository;
-        this.notificationRepository = notificationRepository;
-    }
+    private final SmsProviderFactory smsProviderFactory;
 
     public void sendConfirmation(Appointment appointment) {
         String email = getEmail(appointment);
@@ -31,6 +30,7 @@ public class NotificationService {
                     appointment.getId(),
                     appointment.getAppointmentTime());
         }
+        smsProviderFactory.sendSms(userRepository.findById(appointment.getUserId()).get().getPhone(), String.format("Programare confirmata: Serviciul: %s, data: %s, ora: %s", appointment.getServiceType().toString(), appointment.getAppointmentTime().toLocalDate().toString(), appointment.getAppointmentTime().toLocalTime().toString()));
     }
 
     // Hardcoded email notification logic - should use Adapter pattern in v2

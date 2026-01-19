@@ -21,4 +21,22 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     List<Appointment> findByInstitutionIdAndAppointmentTime(Long institutionId, LocalDateTime appointmentTime);
 
     List<Appointment> findByUserId(Long userId);
+    
+    /**
+     * Găsește programările pentru o instituție într-un interval de timp
+     */
+    List<Appointment> findByInstitutionIdAndAppointmentTimeBetween(
+        Long institutionId, 
+        LocalDateTime startTime, 
+        LocalDateTime endTime
+    );
+    
+    /**
+     * Numără programările pentru o instituție într-un interval de timp
+     */
+    long countByInstitutionIdAndAppointmentTimeBetween(
+        Long institutionId, 
+        LocalDateTime startTime, 
+        LocalDateTime endTime
+    );
 }

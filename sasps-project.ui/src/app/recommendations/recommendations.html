@@ -1,0 +1,197 @@
+<div class="recommendations-container">
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <h1>
+        <i class="pi pi-compass"></i>
+        Motor de Recomandări
+      </h1>
+      <p class="subtitle">Găsește cea mai potrivită instituție pentru nevoile tale</p>
+    </div>
+    
+    <div class="design-patterns-badge">
+      <p-tag severity="info" value="4 Design Patterns" />
+      <span class="patterns-list">Strategy • Factory • Decorator • Template Method</span>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters-section">
+    <div class="filter-group">
+      <label>Serviciu dorit</label>
+      <p-select 
+        [options]="services" 
+        [(ngModel)]="selectedService"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="Selectează serviciul"
+        (onChange)="getRecommendations()"
+        styleClass="w-full" />
+    </div>
+
+    <div class="filter-group">
+      <label>Județul tău</label>
+      <p-select 
+        [options]="counties" 
+        [(ngModel)]="selectedCounty"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="Selectează județul"
+        (onChange)="getRecommendations()"
+        styleClass="w-full" />
+    </div>
+
+    <div class="filter-group">
+      <label>Strategie de recomandare</label>
+      <p-select 
+        [options]="strategyOptions()" 
+        [(ngModel)]="selectedStrategy"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="Selectează strategia"
+        (onChange)="getRecommendations()"
+        styleClass="w-full" />
+    </div>
+  </div>
+
+  <!-- Strategy Info -->
+  @if (response()) {
+    <div class="strategy-info">
+      <div class="strategy-badge">
+        <i class="pi" [ngClass]="getStrategyIcon()"></i>
+        <span>{{ response()?.strategyDescription }}</span>
+      </div>
+      <div class="processing-time">
+        <i class="pi pi-clock"></i>
+        Procesat în {{ response()?.processingTimeMs }}ms
+      </div>
+    </div>
+  }
+
+  <!-- Loading State -->
+  @if (loading()) {
+    <div class="recommendations-grid">
+      @for (i of [1, 2, 3, 4, 5]; track i) {
+        <div class="recommendation-card skeleton-card">
+          <p-skeleton width="60%" height="1.5rem" />
+          <p-skeleton width="40%" height="1rem" styleClass="mt-2" />
+          <p-skeleton width="100%" height="0.5rem" styleClass="mt-3" />
+          <p-skeleton width="80%" height="1rem" styleClass="mt-2" />
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (error()) {
+    <p-message severity="error" [text]="error()!" styleClass="w-full" />
+  }
+
+  <!-- Results -->
+  @if (!loading() && recommendations().length > 0) {
+    <div class="recommendations-grid">
+      @for (rec of recommendations(); track rec.institutionId) {
+        <div class="recommendation-card" [class.boosted]="rec.boosted" (click)="selectInstitution(rec)">
+          <!-- Rank Badge -->
+          <div class="rank-badge" [class.top-rank]="rec.rank === 1">
+            @if (rec.rank === 1) {
+              <i class="pi pi-trophy"></i>
+            } @else {
+              #{{ rec.rank }}
+            }
+          </div>
+
+          <!-- Boosted Badge -->
+          @if (rec.boosted) {
+            <div class="boosted-badge" pTooltip="{{ rec.boostReason }}">
+              <i class="pi pi-bolt"></i> Top
+            </div>
+          }
+
+          <!-- Header -->
+          <div class="card-header">
+            <h3>{{ rec.institutionName }}</h3>
+            <p-tag [value]="rec.county" severity="secondary" />
+          </div>
+
+          <!-- Score -->
+          <div class="score-section">
+            <div class="score-label">Scor potrivire</div>
+            <div class="score-bar">
+              <p-progressBar 
+                [value]="rec.score" 
+                [showValue]="false"
+                [style]="{ height: '8px' }"
+                [styleClass]="'score-' + getScoreColor(rec.score)" />
+            </div>
+            <div class="score-value">
+              <p-tag [value]="rec.score.toFixed(0) + '%'" [severity]="getScoreSeverity(rec.score)" />
+            </div>
+          </div>
+
+          <!-- Details based on strategy -->
+          <div class="details-section">
+            @if (rec.distance !== undefined && rec.distance > 0) {
+              <div class="detail-item">
+                <i class="pi pi-map-marker"></i>
+                <span>{{ formatDistance(rec.distance) }}</span>
+              </div>
+            }
+            
+            @if (rec.waitTimeHours !== undefined) {
+              <div class="detail-item">
+                <i class="pi pi-clock"></i>
+                <span>Disponibil în {{ formatWaitTime(rec.waitTimeHours) }}</span>
+              </div>
+            }
+            
+            @if (rec.rating !== undefined) {
+              <div class="detail-item">
+                <i class="pi pi-star-fill" style="color: #f59e0b;"></i>
+                <span>{{ rec.rating.toFixed(1) }} ({{ rec.totalReviews }} recenzii)</span>
+              </div>
+            }
+            
+            @if (rec.occupancyRate !== undefined) {
+              <div class="detail-item">
+                <i class="pi pi-chart-bar"></i>
+                <span>{{ rec.occupancyRate.toFixed(0) }}% ocupat</span>
+              </div>
+            }
+
+            @if (rec.availableSlots !== undefined) {
+              <div class="detail-item">
+                <i class="pi pi-calendar"></i>
+                <span>{{ rec.availableSlots }} sloturi libere</span>
+              </div>
+            }
+          </div>
+
+          <!-- Reason -->
+          <div class="reason-section">
+            <i class="pi pi-info-circle"></i>
+            <span>{{ rec.reason }}</span>
+          </div>
+
+          <!-- Action -->
+          <div class="card-action">
+            <p-button 
+              label="Programează-te aici" 
+              icon="pi pi-arrow-right" 
+              iconPos="right"
+              styleClass="w-full" />
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Empty State -->
+  @if (!loading() && recommendations().length === 0 && !error()) {
+    <div class="empty-state">
+      <i class="pi pi-search"></i>
+      <h3>Nu am găsit recomandări</h3>
+      <p>Încearcă să schimbi criteriile de căutare</p>
+    </div>
+  }
+</div>

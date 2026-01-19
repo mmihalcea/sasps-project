@@ -1,0 +1,331 @@
+.recommendations-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* Header */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.header-content h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.header-content h1 i {
+  color: #6366f1;
+}
+
+.subtitle {
+  color: #64748b;
+  margin: 0.5rem 0 0;
+}
+
+.design-patterns-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.patterns-list {
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+/* Filters */
+.filters-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1.5rem;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+/* Strategy Info */
+.strategy-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: linear-gradient(135deg, #eff6ff, #dbeafe);
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+
+.strategy-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 600;
+  color: #1e40af;
+}
+
+.strategy-badge i {
+  font-size: 1.25rem;
+}
+
+.processing-time {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+/* Recommendations Grid */
+.recommendations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Recommendation Card */
+.recommendation-card {
+  position: relative;
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.recommendation-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  border-color: #6366f1;
+}
+
+.recommendation-card.boosted {
+  background: linear-gradient(135deg, #fefce8, #fef9c3);
+  border-color: #f59e0b;
+}
+
+/* Rank Badge */
+.rank-badge {
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #6366f1;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+}
+
+.rank-badge.top-rank {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  width: 42px;
+  height: 42px;
+}
+
+.rank-badge.top-rank i {
+  font-size: 1.1rem;
+}
+
+/* Boosted Badge */
+.boosted-badge {
+  position: absolute;
+  top: -8px;
+  right: 12px;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Card Header */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  margin-top: 0.5rem;
+}
+
+.card-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1e293b;
+  flex: 1;
+  padding-right: 0.5rem;
+}
+
+/* Score Section */
+.score-section {
+  margin-bottom: 1rem;
+}
+
+.score-label {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  margin-bottom: 0.5rem;
+}
+
+.score-bar {
+  margin-bottom: 0.5rem;
+}
+
+.score-value {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Custom progress bar colors */
+:host ::ng-deep .score-success .p-progressbar-value {
+  background: linear-gradient(90deg, #10b981, #059669) !important;
+}
+
+:host ::ng-deep .score-info .p-progressbar-value {
+  background: linear-gradient(90deg, #3b82f6, #2563eb) !important;
+}
+
+:host ::ng-deep .score-warn .p-progressbar-value {
+  background: linear-gradient(90deg, #f59e0b, #d97706) !important;
+}
+
+:host ::ng-deep .score-danger .p-progressbar-value {
+  background: linear-gradient(90deg, #ef4444, #dc2626) !important;
+}
+
+/* Details Section */
+.details-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #475569;
+  background: #f1f5f9;
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+}
+
+.detail-item i {
+  font-size: 0.9rem;
+  color: #6366f1;
+}
+
+/* Reason Section */
+.reason-section {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: #f8fafc;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.reason-section i {
+  color: #6366f1;
+  margin-top: 0.1rem;
+}
+
+.reason-section span {
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+/* Card Action */
+.card-action {
+  margin-top: auto;
+}
+
+/* Skeleton Card */
+.skeleton-card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #64748b;
+}
+
+.empty-state i {
+  font-size: 3rem;
+  color: #cbd5e1;
+  margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+  margin: 0 0 0.5rem;
+  color: #475569;
+}
+
+.empty-state p {
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .design-patterns-badge {
+    align-items: flex-start;
+  }
+
+  .strategy-info {
+    flex-direction: column;
+    gap: 0.75rem;
+    text-align: center;
+  }
+
+  .recommendations-grid {
+    grid-template-columns: 1fr;
+  }
+}

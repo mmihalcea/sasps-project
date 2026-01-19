@@ -52,4 +52,10 @@ export const routes: Routes = [
         (m) => m.AppointmentSuccessComponent
       ),
   },
+
+  {
+    path: 'recommendations',
+    loadComponent: () =>
+      import('./recommendations/recommendations').then((m) => m.RecommendationsComponent),
+  },
 ];

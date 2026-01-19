@@ -92,12 +92,19 @@ public class AppointmentService {
         // Hardcoded notification logic, should use Adapter pattern in v2
         notificationService.sendConfirmation(appointment);
         
+        // Create notification in database
+        Institution institution = institutionRepository.findById(appointment.getInstitutionId()).orElse(null);
+        String institutionName = institution != null ? institution.getName() : "Instituție";
+        String message = String.format("Programarea dvs. la %s pentru %s a fost creată cu succes. Data: %s",
+                institutionName,
+                appointment.getServiceType(),
+                appointment.getAppointmentTime().format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")));
+        notificationService.createNotification(appointment.getUserId(), message, "CONFIRMATION");
+        
         // Tightly coupled email sending, no event-driven architecture
         try {
             User user = userRepository.findById(appointment.getUserId()).orElse(null);
             if (user != null && user.getEmailNotificationsEnabled()) {
-                Institution institution = institutionRepository.findById(appointment.getInstitutionId()).orElse(null);
-                String institutionName = institution != null ? institution.getName() : "Instituție necunoscută";
                 emailService.sendAppointmentConfirmationEmail(user, appointment, institutionName);
             }
         } catch (Exception e) {

@@ -14,6 +14,13 @@
         severity="secondary"
         icon="pi pi-calendar-plus"
       />
+      <p-button
+        label="Dashboard Analytics"
+        size="large"
+        routerLink="/dashboard"
+        severity="info"
+        icon="pi pi-chart-bar"
+      />
     </div>
   </div>
 
@@ -160,7 +167,14 @@
     <!-- Admin Quick Actions -->
     <div class="mb-6">
       <h2 class="text-xl font-bold mb-4">Actiuni rapide</h2>
-      <div class="flex gap-4">
+      <div class="flex gap-4 flex-wrap">
+        <p-button
+          label="Dashboard Analytics"
+          icon="pi pi-chart-bar"
+          routerLink="/dashboard"
+          severity="info"
+          size="large"
+        />
         <p-button
           label="Gestionare notificari"
           icon="pi pi-bell"

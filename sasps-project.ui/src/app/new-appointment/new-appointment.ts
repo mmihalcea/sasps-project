@@ -244,19 +244,31 @@ export class NewAppointment implements OnInit {
     this.isSubmitting = true;
 
     this.newAppointmentService.saveAppointment(appointmentRequest).subscribe({
-      next: (appointmentId: number) => {
+      next: (response: {id: number, message: string}) => {
         this.isSubmitting = false;
         localStorage.removeItem('appointmentFormData');
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Programare creată cu succes!',
-          detail: `Programarea dumneavoastră a fost înregistrată cu numărul #${appointmentId}. Veți primi o confirmare pe email.`,
-          life: 8000
+        
+        // Navigate to success page with appointment details
+        const selectedInstitutionName = selectedInstitution?.name || 'Instituție';
+        
+        // Combine date and time for display
+        const combinedDateTime = this.combineDateAndTime(
+          formValue.appointment.date,
+          formValue.appointment.time
+        );
+        
+        this.router.navigate(['/appointment-success'], {
+          state: {
+            appointment: {
+              id: response.id,
+              institutionName: selectedInstitutionName,
+              serviceName: selectedService?.name || 'Serviciu',
+              appointmentTime: combinedDateTime,
+              customerName: formValue.user.name,
+              customerEmail: formValue.user.email
+            }
+          }
         });
-        this.appointmentForm.reset();
-        setTimeout(() => {
-          this.router.navigate(['/user-appointments']);
-        }, 2000);
       },
       error: (error: any) => {
         this.isSubmitting = false;

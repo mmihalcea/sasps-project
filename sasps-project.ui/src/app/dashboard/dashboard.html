@@ -1,0 +1,249 @@
+<div class="dashboard-container">
+  <!-- Header -->
+  <div class="dashboard-header">
+    <div class="header-content">
+      <h1>
+        <i class="pi pi-chart-bar"></i>
+        Dashboard Analytics
+      </h1>
+      <p class="subtitle">Monitorizare în timp real a programărilor</p>
+    </div>
+    <div class="header-actions">
+      <p-button
+        icon="pi pi-refresh"
+        label="Actualizează"
+        [loading]="loading"
+        (click)="refresh()"
+        severity="secondary"
+        [outlined]="true"
+      />
+      <span class="last-update">
+        <i class="pi pi-clock"></i>
+        Auto-refresh: 30s
+      </span>
+    </div>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="kpi-grid">
+    <!-- Total Appointments -->
+    <div class="kpi-card total">
+      <div class="kpi-icon">
+        <i class="pi pi-calendar"></i>
+      </div>
+      <div class="kpi-content">
+        <span class="kpi-value">{{ animatedStats.total }}</span>
+        <span class="kpi-label">Total Programări</span>
+      </div>
+      <div class="kpi-trend up">
+        <i class="pi pi-arrow-up"></i>
+        <span>+12%</span>
+      </div>
+    </div>
+
+    <!-- Pending -->
+    <div class="kpi-card pending">
+      <div class="kpi-icon">
+        <i class="pi pi-hourglass"></i>
+      </div>
+      <div class="kpi-content">
+        <span class="kpi-value">{{ animatedStats.pending }}</span>
+        <span class="kpi-label">În Așteptare</span>
+      </div>
+      <div class="kpi-badge">
+        <span class="pulse"></span>
+        Live
+      </div>
+    </div>
+
+    <!-- Confirmed -->
+    <div class="kpi-card confirmed">
+      <div class="kpi-icon">
+        <i class="pi pi-check-circle"></i>
+      </div>
+      <div class="kpi-content">
+        <span class="kpi-value">{{ animatedStats.confirmed }}</span>
+        <span class="kpi-label">Confirmate</span>
+      </div>
+      <div class="kpi-trend up">
+        <i class="pi pi-arrow-up"></i>
+        <span>+8%</span>
+      </div>
+    </div>
+
+    <!-- Completed -->
+    <div class="kpi-card completed">
+      <div class="kpi-icon">
+        <i class="pi pi-flag-fill"></i>
+      </div>
+      <div class="kpi-content">
+        <span class="kpi-value">{{ animatedStats.completed }}</span>
+        <span class="kpi-label">Finalizate</span>
+      </div>
+      <div class="kpi-trend up">
+        <i class="pi pi-arrow-up"></i>
+        <span>+15%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Row -->
+  <div class="charts-grid">
+    <!-- Status Distribution Pie Chart -->
+    <p-card styleClass="chart-card">
+      <ng-template #header>
+        <div class="chart-header">
+          <h3><i class="pi pi-chart-pie"></i> Distribuție Status</h3>
+        </div>
+      </ng-template>
+      @if (loading) {
+        <p-skeleton height="250px" />
+      } @else {
+        <div class="chart-container">
+          <p-chart type="doughnut" [data]="statusChartData" [options]="statusChartOptions" />
+        </div>
+      }
+    </p-card>
+
+    <!-- Weekly Appointments Bar Chart -->
+    <p-card styleClass="chart-card">
+      <ng-template #header>
+        <div class="chart-header">
+          <h3><i class="pi pi-chart-bar"></i> Programări Săptămânale</h3>
+        </div>
+      </ng-template>
+      @if (loading) {
+        <p-skeleton height="250px" />
+      } @else {
+        <div class="chart-container">
+          <p-chart type="bar" [data]="weeklyChartData" [options]="weeklyChartOptions" />
+        </div>
+      }
+    </p-card>
+
+    <!-- Service Types Chart -->
+    <p-card styleClass="chart-card">
+      <ng-template #header>
+        <div class="chart-header">
+          <h3><i class="pi pi-list"></i> Tipuri de Servicii</h3>
+        </div>
+      </ng-template>
+      @if (loading) {
+        <p-skeleton height="250px" />
+      } @else {
+        <div class="chart-container">
+          <p-chart type="bar" [data]="serviceTypeChartData" [options]="serviceTypeChartOptions" />
+        </div>
+      }
+    </p-card>
+  </div>
+
+  <!-- Bottom Row: Table + Institution Stats -->
+  <div class="bottom-grid">
+    <!-- Recent Appointments Table -->
+    <p-card styleClass="table-card">
+      <ng-template #header>
+        <div class="table-header">
+          <h3><i class="pi pi-history"></i> Programări Recente</h3>
+          <p-button icon="pi pi-external-link" label="Vezi toate" severity="secondary" [text]="true" size="small" />
+        </div>
+      </ng-template>
+      @if (loading) {
+        <p-skeleton height="300px" />
+      } @else {
+        <p-table [value]="recentAppointments" [tableStyle]="{ 'min-width': '100%' }" styleClass="p-datatable-sm">
+          <ng-template #header>
+            <tr>
+              <th>Client</th>
+              <th>Instituție</th>
+              <th>Data</th>
+              <th>Status</th>
+            </tr>
+          </ng-template>
+          <ng-template #body let-appointment>
+            <tr class="clickable-row" (click)="navigateToAppointment(appointment.id)">
+              <td>
+                <div class="customer-cell">
+                  <span class="avatar">{{ appointment.customerName.charAt(0) }}</span>
+                  <span>{{ appointment.customerName }}</span>
+                </div>
+              </td>
+              <td>{{ appointment.institutionName }}</td>
+              <td>{{ formatDate(appointment.appointmentTime) }}</td>
+              <td>
+                <p-tag [severity]="getStatusSeverity(appointment.status)" [value]="getStatusLabel(appointment.status)" />
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template #emptymessage>
+            <tr>
+              <td colspan="4" class="empty-message">
+                <i class="pi pi-inbox"></i>
+                <span>Nu există programări recente</span>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      }
+    </p-card>
+
+    <!-- Institution Performance -->
+    <p-card styleClass="stats-card">
+      <ng-template #header>
+        <div class="stats-header">
+          <h3><i class="pi pi-building"></i> Performanță Instituții</h3>
+        </div>
+      </ng-template>
+      @if (loading) {
+        <p-skeleton height="300px" />
+      } @else {
+        <div class="institution-list">
+          @for (inst of institutionStats; track inst.name) {
+            <div class="institution-item">
+              <div class="institution-info">
+                <span class="institution-name">{{ inst.name }}</span>
+                <span class="institution-count">{{ inst.totalAppointments }} programări</span>
+              </div>
+              <div class="institution-progress">
+                <p-progressbar [value]="inst.occupancyRate" [showValue]="false" styleClass="custom-progress" />
+                <span class="occupancy-label">{{ inst.occupancyRate }}%</span>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </p-card>
+  </div>
+
+  <!-- Quick Stats Footer -->
+  <div class="quick-stats">
+    <div class="quick-stat">
+      <i class="pi pi-calendar-plus"></i>
+      <div>
+        <span class="value">{{ stats.todayAppointments }}</span>
+        <span class="label">Programări Azi</span>
+      </div>
+    </div>
+    <div class="quick-stat">
+      <i class="pi pi-calendar"></i>
+      <div>
+        <span class="value">{{ stats.weekAppointments }}</span>
+        <span class="label">Ultima Săptămână</span>
+      </div>
+    </div>
+    <div class="quick-stat">
+      <i class="pi pi-clock"></i>
+      <div>
+        <span class="value">{{ stats.averageWaitTime }} min</span>
+        <span class="label">Timp Mediu</span>
+      </div>
+    </div>
+    <div class="quick-stat">
+      <i class="pi pi-times-circle"></i>
+      <div>
+        <span class="value">{{ stats.cancelledAppointments }}</span>
+        <span class="label">Anulări</span>
+      </div>
+    </div>
+  </div>
+</div>

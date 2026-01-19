@@ -1,0 +1,150 @@
+<div class="success-container">
+  <!-- Success Header with Animation -->
+  <div class="success-header">
+    <div class="success-icon-wrapper">
+      <div class="success-icon">
+        <i class="pi pi-check"></i>
+      </div>
+      <div class="success-rings">
+        <div class="ring ring-1"></div>
+        <div class="ring ring-2"></div>
+        <div class="ring ring-3"></div>
+      </div>
+    </div>
+    <h1 class="success-title">Programare Confirmată!</h1>
+    <p class="success-subtitle">Programarea dumneavoastră a fost creată cu succes</p>
+  </div>
+
+  <!-- Appointment Details Card -->
+  <div class="details-card">
+    <div class="appointment-id-section">
+      <span class="id-label">ID Programare</span>
+      <span class="id-value">#{{ appointmentId() }}</span>
+    </div>
+
+    <p-divider />
+
+    <div class="details-grid">
+      @if (appointmentData()?.serviceName) {
+        <div class="detail-item">
+          <i class="pi pi-file"></i>
+          <div>
+            <span class="detail-label">Serviciu</span>
+            <span class="detail-value">{{ appointmentData()?.serviceName }}</span>
+          </div>
+        </div>
+      }
+
+      @if (appointmentData()?.institutionName) {
+        <div class="detail-item">
+          <i class="pi pi-building"></i>
+          <div>
+            <span class="detail-label">Instituție</span>
+            <span class="detail-value">{{ appointmentData()?.institutionName }}</span>
+          </div>
+        </div>
+      }
+
+      @if (appointmentData()?.appointmentTime) {
+        <div class="detail-item">
+          <i class="pi pi-calendar"></i>
+          <div>
+            <span class="detail-label">Data și ora</span>
+            <span class="detail-value">{{ appointmentData()?.appointmentTime | date:'dd MMMM yyyy, HH:mm' }}</span>
+          </div>
+        </div>
+      }
+
+      @if (appointmentData()?.customerName) {
+        <div class="detail-item">
+          <i class="pi pi-user"></i>
+          <div>
+            <span class="detail-label">Titular</span>
+            <span class="detail-value">{{ appointmentData()?.customerName }}</span>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- QR Code Section -->
+    <div class="qr-section">
+      <h3>Cod QR pentru prezentare</h3>
+      <p class="qr-hint">Scanați acest cod la ghișeu pentru verificare rapidă</p>
+      <div class="qr-wrapper">
+        <img [src]="qrCodeUrl()" alt="QR Code" class="qr-code" />
+      </div>
+      <p-button 
+        icon="pi pi-download" 
+        label="Descarcă QR" 
+        severity="secondary" 
+        [outlined]="true"
+        size="small"
+        (onClick)="downloadQR()" 
+      />
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="action-buttons">
+    <p-button 
+      icon="pi pi-calendar-plus" 
+      label="Adaugă în Calendar" 
+      severity="info"
+      [outlined]="true"
+      (onClick)="addToCalendar()"
+      pTooltip="Adaugă în Google Calendar"
+    />
+    <p-button 
+      icon="pi pi-share-alt" 
+      label="Partajează" 
+      severity="secondary"
+      [outlined]="true"
+      (onClick)="shareAppointment()"
+    />
+    <p-button 
+      icon="pi pi-print" 
+      label="Printează" 
+      severity="secondary"
+      [outlined]="true"
+      (onClick)="printAppointment()"
+    />
+  </div>
+
+  <!-- Important Info -->
+  <div class="info-box">
+    <div class="info-icon">
+      <i class="pi pi-info-circle"></i>
+    </div>
+    <div class="info-content">
+      <h4>Informații importante</h4>
+      <ul>
+        <li>Prezentați-vă cu 10 minute înainte de ora programării</li>
+        <li>Aduceți un act de identitate valid</li>
+        <li>Păstrați codul QR pentru verificare rapidă</li>
+        <li>Veți primi un reminder cu 24 de ore înainte</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Navigation Buttons -->
+  <div class="nav-buttons">
+    <p-button 
+      icon="pi pi-home" 
+      label="Acasă" 
+      severity="secondary"
+      (onClick)="goHome()"
+    />
+    <p-button 
+      icon="pi pi-plus" 
+      label="Programare nouă" 
+      (onClick)="newAppointment()"
+    />
+  </div>
+</div>
+
+<!-- Print-only section -->
+<div class="print-only">
+  <h2>Confirmare Programare SASPS</h2>
+  <p>ID: {{ appointmentId() }}</p>
+  <img [src]="qrCodeUrl()" alt="QR Code" />
+</div>

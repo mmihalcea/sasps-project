@@ -42,7 +42,7 @@ export class NewAppointmentService {
       );
   }
 
-  saveAppointment(appointmentRequest: any): Observable<number> {
-    return this.http.post<number>(this.appointmentUrl, appointmentRequest);
+  saveAppointment(appointmentRequest: any): Observable<{id: number, message: string}> {
+    return this.http.post<{id: number, message: string}>(this.appointmentUrl, appointmentRequest);
   }
 }

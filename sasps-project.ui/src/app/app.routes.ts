@@ -39,4 +39,17 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./user-appointments/user-appointments').then((m) => m.UserAppointmentsComponent),
   },
+
+  {
+    path: 'dashboard',
+    loadComponent: () => import('./dashboard/dashboard').then((m) => m.DashboardComponent),
+  },
+
+  {
+    path: 'appointment-success',
+    loadComponent: () =>
+      import('./appointment-success/appointment-success').then(
+        (m) => m.AppointmentSuccessComponent
+      ),
+  },
 ];
